@@ -34,6 +34,8 @@ namespace engine {
         /** Return particle position */
         Vector getPosition() const;
 
+        void getPosition(Vector *pos) const;
+
         /** Set particle mass */
         void setMass(real mass);
 
@@ -45,6 +47,9 @@ namespace engine {
 
         /** Set the acceleration of the particle */
         void setAcceleration(const Vector &acc);
+
+        /** Set the position of the particle */
+        void setPosition(engine::real x, engine::real y, engine::real z);
 
 
     };
