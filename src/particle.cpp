@@ -6,9 +6,8 @@
 
 using namespace engine;
 
-void Particle::clearForces() {
-    // reset the acceleration
-    acceleration = {0.0, 0.0, 0.0};
+void Particle::clearForceStorage() {
+    storedForce = {0.0, 0.0, 0.0};
 }
 
 void Particle::integrate(real duration) {
@@ -22,12 +21,39 @@ void Particle::integrate(real duration) {
     Vector acc = acceleration;
 
     // Update velocity with the acceleration
-    position.addScaledVector(acc, duration);
+    velocity.addScaledVector(acc, duration);
 
     // Reduce the velocity with each frame
     velocity *= real_pow(damping, duration);
 
     // Clear the forces after calculations
-    clearForces();
+    clearForceStorage();
 }
+
+void Particle::setMass(real mass) {
+    // Ensure mass not equal to 0
+    if(mass <= 0) { return; }
+
+    // invertedMass used for acceleration calculation
+    Particle::invertedMass = 1/mass;
+}
+
+
+Vector Particle::getPosition() const {
+    return position;
+}
+
+void Particle::setVelocity(const Vector &velocity) {
+    Particle::velocity = velocity;
+}
+
+void Particle::setDamping(real damping) {
+    Particle::damping = damping;
+}
+
+void Particle::setAcceleration(const Vector &acc) {
+    Particle::acceleration = acc;
+}
+
+
 
