@@ -17,6 +17,7 @@ namespace engine {
     protected:
         Vector position; /** Hold the position of the particle. */
         Vector velocity; /** Holds the velocity of the particle. */
+        Vector storedForce; /** Force to be applied in next iteration. Reset at each integration */
         Vector acceleration; /** Holds the acceleration of the particle. */
         real damping; /** Holds the amount of damping applied to particle. */
         real invertedMass; /** Holds the inverted mass of the particle. */
@@ -28,7 +29,24 @@ namespace engine {
         void integrate(real duration);
 
         /** Clears the forces applied to the particle. */
-        void clearForces();
+        void clearForceStorage();
+
+        /** Return particle position */
+        Vector getPosition() const;
+
+        /** Set particle mass */
+        void setMass(real mass);
+
+        /** Set the velocity of the particle */
+        void setVelocity(const Vector &velocity);
+
+        /** Set damping value for the particle */
+        void setDamping(real damping);
+
+        /** Set the acceleration of the particle */
+        void setAcceleration(const Vector &acc);
+
+
     };
 }
 
