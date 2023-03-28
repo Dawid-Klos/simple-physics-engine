@@ -16,7 +16,7 @@ namespace engine {
      * Defines a real number precision. Allows to simply change the precision if needed.
      * By default single-precision is used.
      */
-    typedef  float real;
+    typedef float real;
 
     /**
      * Defines the precision of the square root operator.

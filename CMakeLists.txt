@@ -17,7 +17,9 @@ set(
         ${ENGINE_HEADERS}/engine/vector.h
         ${ENGINE_HEADERS}/engine/precision.h
         ${ENGINE_SOURCE}/particle.cpp
-        ${ENGINE_SOURCE}/main.cpp)
+        ${ENGINE_SOURCE}/main.cpp
+        ${ENGINE_SOURCE}/ball.h
+        ${ENGINE_SOURCE}/ball.cpp)
 
 add_executable(simple_physics_engine ${SOURCE_FILES})
 target_link_libraries(simple_physics_engine sfml-system sfml-window sfml-graphics)

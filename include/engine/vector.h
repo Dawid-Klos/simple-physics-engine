@@ -53,7 +53,7 @@ namespace engine {
         }
 
         /** Multiplies the stored vector by the given scalar */
-        void operator *=(const real value) {
+        void operator*=(const real value) {
             x *= value;
             y *= value;
             z *= value;
