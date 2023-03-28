@@ -21,7 +21,7 @@ Ball::Ball(engine::real rad) {
     engine::real y = 500.0f;
 
     circleShape.setRadius(radius);
-    circleShape.setFillColor(sf::Color::Magenta);
+    circleShape.setFillColor(sf::Color{169, 151, 223});
 
     circleShape.setPosition(x, y);
     circleParticle.setPosition(x, y, 0.0f);

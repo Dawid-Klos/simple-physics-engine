@@ -3,7 +3,7 @@
 //
 
 #include <engine/particle.h>
-#include <iostream>
+
 using namespace engine;
 
 void Particle::clearForceStorage() {
@@ -17,19 +17,15 @@ void Particle::integrate(real duration) {
 
     // Update position
     position.addScaledVector(velocity, duration);
-    std::cout << "Position: " << position.x << " " << position.y << std::endl;
 
     // Calculate acceleration from the force
     Vector acc = acceleration;
-    std::cout << "Acc: " << acc.x << " " << acc.y << std::endl;
 
     // Update velocity with the acceleration
     velocity.addScaledVector(acc, duration);
-    std::cout << "Velocity: " << " " << velocity.x << velocity.y << std::endl;
 
     // Reduce the velocity with each frame
     velocity *= real_pow(damping, duration);
-    std::cout << "Velocity after damping: " << " " << velocity.x << velocity.y << std::endl;
 
     // Clear the forces after calculations
     clearForceStorage();

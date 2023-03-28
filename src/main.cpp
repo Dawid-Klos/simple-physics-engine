@@ -15,7 +15,10 @@ int main() {
     Ball ball = Ball(50.0f);
 
 
-
+    sf::RectangleShape floor;
+    floor.setPosition(0.0f, 580.0f);
+    floor.setFillColor(sf::Color{25, 58, 58});
+    floor.setSize(sf::Vector2f{800.0f, 50.0f});
 
     while (window.isOpen()) {
         engine::real delta = clock.getElapsedTime().asSeconds();
@@ -50,6 +53,9 @@ int main() {
 
         // Draw the ball
         ball.draw(window);
+
+        // Draw the floor
+        window.draw(floor);
 
         // Reset delta time
         clock.restart();
