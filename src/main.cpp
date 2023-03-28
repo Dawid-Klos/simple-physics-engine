@@ -12,8 +12,10 @@ int main() {
 
     sf::RenderWindow window(sf::VideoMode(800, 600), "Physics Simulation");
     sf::Clock clock;
-
     Ball ball = Ball(50.0f);
+
+
+
 
     while (window.isOpen()) {
         engine::real delta = clock.getElapsedTime().asSeconds();
@@ -27,10 +29,10 @@ int main() {
             }
             if (event.type == sf::Event::KeyPressed) {
                 if (event.key.code == sf::Keyboard::Left) {
-                    acc = Vector(-15.0f, 0.0f, 0.0f);
+                    acc = Vector(-25.0f, 0.0f, 0.0f);
                     ball.move(acc);
                 } else if (event.key.code == sf::Keyboard::Right) {
-                    acc = Vector(15.0f, 0.0f, 0.0f);
+                    acc = Vector(25.0f, 0.0f, 0.0f);
                     ball.move(acc);
                 } else if (event.key.code == sf::Keyboard::Escape) {
                     window.close();
@@ -43,16 +45,16 @@ int main() {
         // Update particle position
         ball.update(delta);
 
-        // clear the window
+        // Clear the window
         window.clear();
 
-        // draw the ball
+        // Draw the ball
         ball.draw(window);
 
-        // reset delta time
+        // Reset delta time
         clock.restart();
 
-        // end
+        // End of frame
         window.display();
     }
 

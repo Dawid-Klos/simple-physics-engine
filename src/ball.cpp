@@ -12,8 +12,8 @@ Ball::Ball(engine::real rad) {
     /** init Particle variables */
     engine::Vector pos;
     circleParticle.getPosition(&pos);
-    circleParticle.setMass(5.0f);
-    circleParticle.setDamping(0.95f);
+    circleParticle.setMass(10.0f);
+    circleParticle.setDamping(0.99f);
 
     /** set the Ball randomly in the scene */
     srand (static_cast <unsigned> (time(0)));
@@ -45,7 +45,8 @@ void Ball::draw(sf::RenderWindow &window) {
 }
 
 void Ball::move(engine::Vector acc) {
-    circleParticle.setAcceleration(acc);
+    circleParticle.setVelocity(acc);
+    circleParticle.setAcceleration(engine::Vector(0.0f, -1.0f, 0.0f));
 }
 
 void Ball::jump() {
