@@ -41,17 +41,20 @@ namespace engine {
 
         /** Set the velocity of the particle */
         void setVelocity(const Vector &velocity);
+        void setVelocity(real x, real y, real z);
 
         /** Set damping value for the particle */
         void setDamping(real damping);
 
         /** Set the acceleration of the particle */
         void setAcceleration(const Vector &acc);
+        void setAcceleration(real x, real y, real z);
 
         /** Set the position of the particle */
         void setPosition(engine::real x, engine::real y, engine::real z);
 
-
+        /** Add force into the storage. */
+        void setStoredForce(const Vector &force);
     };
 }
 
