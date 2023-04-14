@@ -11,7 +11,7 @@ using namespace engine;
 sf::Text myText;
 sf::Font myFont;
 
-void drawText( const sf::String &str, const int fontSize, const float posX, const float posY, sf::RenderWindow& window)
+void drawText(const sf::String &str, const int fontSize, const float posX, const float posY, sf::RenderWindow& window)
 {
     myFont.loadFromFile("../Roboto-Medium.ttf");
     myText.setFont(myFont);
@@ -26,68 +26,69 @@ int main() {
     auto const width = 800, height = 600;
     sf::RenderWindow window(sf::VideoMode(width, height), "Physics Simulation");
 
+    unsigned int fps = 80;
+    window.setFramerateLimit(fps);
+
     // Clock and text
     sf::Clock clock;
-    std::ostringstream ss; // only output stream!
+    engine::real delta;
+    engine::real lastTime = 0.0f;
+    std::ostringstream ss;
 
     // Objects
-    Ball ball = Ball(50.0f);
-    sf::RectangleShape floor;
-    floor.setPosition(0.0f, 580.0f);
-    floor.setFillColor(sf::Color{25, 58, 58});
-    floor.setSize(sf::Vector2f{800.0f, 50.0f});
+    Ball lightBall = Ball(25.0f);
+    Ball heavyBall = Ball(50.0f);
 
     while (window.isOpen()) {
-        engine::real delta = clock.getElapsedTime().asSeconds();
+        // hacky solution to slow rendering
+        delta = clock.restart().asSeconds() + 0.035f;
+        // delta = clock.restart().asSeconds();
+
         // Handle events
         sf::Event event;
-        Vector acc;
 
         while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed) {
-                window.close();
-            }
-            if (event.type == sf::Event::KeyPressed) {
-                if (event.key.code == sf::Keyboard::Left) {
-                    acc = Vector(-10.0f, 0.0f, 0.0f);
-                    ball.move(acc);
-                } else if (event.key.code == sf::Keyboard::Right) {
-                    acc = Vector(10.0f, 0.0f, 0.0f);
-                    ball.move(acc);
-                } else if (event.key.code == sf::Keyboard::Escape) {
+            switch (event.type) {
+                case sf::Event::Closed:
                     window.close();
-                } else if (event.key.code == sf::Keyboard::Space) {
-                    ball.jump();
-                }
+                    break;
+                case sf::Event::KeyPressed:
+                    if (event.key.code == sf::Keyboard::Left) {
+                        lightBall.move(Vector(-15.0f, 0.0f, 0.0f));
+                    } else if (event.key.code == sf::Keyboard::Right) {
+                        lightBall.move(Vector(15.0f, 0.0f, 0.0f));
+                    } else if (event.key.code == sf::Keyboard::Escape) {
+                        window.close();
+                    } else if (event.key.code == sf::Keyboard::Space) {
+                        lightBall.jump();
+                    }
+                    break;
+                default:
+                    break;
             }
         }
 
-        // TEST
-        Vector acceleration = ball.getAcceleration();
-        Vector velocity = ball.getVelocity();
-        Vector position = ball.getCurrentPosition();
+        Vector acceleration = lightBall.getCurrentAcceleration();
+        Vector velocity = lightBall.getCurrentVelocity();
+        Vector position = lightBall.getCurrentPosition();
         ss << "Acc = x: " << acceleration.x << "  y: " << acceleration.y << std::endl;
         ss << "Vel = x: " << velocity.x << "  y: " << velocity.y << std::endl;
         ss << "Pos = x: " << position.x << "  y: " << position.y << std::endl;
 
         // Update particle position
-        ball.update(delta, window);
+        lightBall.update(delta, window);
+        heavyBall.update(delta, window);
 
         // Clear the window
-        window.clear();
+        window.clear(sf::Color::Black);
 
         // Draw the ball
-        ball.draw(window);
+        lightBall.draw(window);
+        heavyBall.draw(window);
 
         // Draw the text
         drawText(ss.str(), 16, 10.0f, 10.0f, window);
         ss.str(std::string());
-
-        // Draw the floor
-        window.draw(floor);
-
-        // Reset delta time
-        clock.restart();
 
         // End of frame
         window.display();
