@@ -68,6 +68,10 @@ void Particle::integrate(real delta) {
     // Add gravity to the accumulated forces
     gravity.updateForce(forceStorage);
 
+    // Add drag force
+    drag.getVelocityForDrag(velocity);
+    drag.updateForce(forceStorage);
+
     // Calculate acceleration from the force
     Vector acc = acceleration;
 

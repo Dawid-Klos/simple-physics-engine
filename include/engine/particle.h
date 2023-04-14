@@ -21,7 +21,8 @@ namespace engine {
         real invertedMass; /** Holds the inverted mass of the particle. */
         real damping; /** Holds the amount of damping applied to particle. */
         Vector forceStorage; /** Holds the accumulated forces */
-        GravityForce gravity; /** Applies the gravity force to the Particle */
+        GravityForce gravity; /** Applies gravity force to the Particle */
+        DragForce drag; /** Applies drag force to the Particle */
 
     public:
         /** Return position of given Particle */

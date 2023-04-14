@@ -17,12 +17,34 @@ namespace engine {
         virtual void updateForce(Vector& forceStorage) = 0;
     };
 
+    /** Gravity force simplified to the same unit for each Particle */
     class GravityForce : public ForceGeneratorAbstract {
         private:
             Vector gravity = Vector{0.0f, -100.0f, 0.0f};
         public:
             void updateForce(Vector& forceStorage) override {
                 forceStorage += gravity;
+            }
+    };
+
+    /** DragForce applied to the Particle to simulate any fluid or air resistance */
+    class DragForce : public ForceGeneratorAbstract {
+        private:
+            real dragCoefficient = 0.005f;
+            Vector velocity;
+            Vector drag;
+        public:
+            void getVelocityForDrag(Vector& vel) {
+                velocity = vel;
+            };
+
+            void updateForce(Vector& forceStorage) override {
+                real squaredSpeed = velocity.getSquaredMagnitude();
+                velocity.normalize();
+                velocity *= -1;
+                drag.addScaledVector(velocity, dragCoefficient * squaredSpeed);
+
+                forceStorage += drag;
             }
     };
 }
