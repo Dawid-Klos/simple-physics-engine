@@ -16,7 +16,6 @@ namespace engine {
         real y; /** Holds the value of y axis */
         real z; /** Holds the value of z axis */
 
-    public:
         /** The default constructor creates a new vector */
         Vector() : x(0), y(0), z(0) {}
 

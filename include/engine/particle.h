@@ -6,6 +6,7 @@
 #define SIMPLE_PHYSICS_ENGINE_PARTICLE_H
 
 #include "vector.h"
+#include "force_generator_abstract.h"
 
 namespace engine {
     /**
@@ -13,48 +14,48 @@ namespace engine {
     * physics system.
     */
     class Particle {
-
-    protected:
+    private:
         Vector position; /** Hold the position of the particle. */
         Vector velocity; /** Holds the velocity of the particle. */
-        Vector storedForce; /** Force to be applied in next iteration. Reset at each integration */
         Vector acceleration; /** Holds the acceleration of the particle. */
-        real damping; /** Holds the amount of damping applied to particle. */
         real invertedMass; /** Holds the inverted mass of the particle. */
+        real damping; /** Holds the amount of damping applied to particle. */
+        Vector forceStorage; /** Holds the accumulated forces */
+        GravityForce gravity; /** Applies the gravity force to the Particle */
+
     public:
-        /**
-         * Integrates the particle by updating the position and velocity.
-         * This function uses the Euler integration method.
-         */
-        void integrate(real duration);
-
-        /** Clears the forces applied to the particle. */
-        void clearForceStorage();
-
-        /** Return particle position */
-        Vector getPosition() const;
-
+        /** Return position of given Particle */
+        [[nodiscard]] Vector getPosition() const;
         void getPosition(Vector *pos) const;
 
-        /** Set particle mass */
-        void setMass(real mass);
+        /** Set position for given Particle */
+        void setPosition(engine::real x, engine::real y, engine::real z);
 
-        /** Set the velocity of the particle */
+        /** Set velocity for given Particle */
         void setVelocity(const Vector &velocity);
         void setVelocity(real x, real y, real z);
 
-        /** Set damping value for the particle */
-        void setDamping(real damping);
+        /** Get velocity for given Particle */
+        [[nodiscard]] Vector getVelocity() const;
 
-        /** Set the acceleration of the particle */
+        /** Set acceleration for given Particle */
         void setAcceleration(const Vector &acc);
         void setAcceleration(real x, real y, real z);
 
-        /** Set the position of the particle */
-        void setPosition(engine::real x, engine::real y, engine::real z);
+        /** Get acceleration for given Particle */
+        [[nodiscard]] Vector getAcceleration() const;
 
-        /** Add force into the storage. */
-        void setStoredForce(const Vector &force);
+        /** Set the damping value for given Particle */
+        void setDamping(real value);
+
+        /** Set particle mass for given Particle */
+        void setMass(real mass);
+
+        /** Perform integration by using the Euler method */
+        void integrate(real delta);
+
+        /** Clear the storage from accumulated forces */
+        void clearForceStorage();
     };
 }
 
