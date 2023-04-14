@@ -11,17 +11,18 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 
 
-/** Represents a single Ball in the demo.
+/**
+ * Represents a single Ball shape object.
  * Inherits from the Particle class to allow for applying physics.
  */
 class Ball : engine::Particle {
     private:
         sf::CircleShape circleShape; /** Stores a circle object from the SFML library */
-        engine::real radius; /** Stored the radius of the Ball */
+        engine::real radius; /** Stores the radius of the Ball */
 
     public:
-        /** Default contructor and destructor */
-        Ball(engine::real radius);
+        /** Default constructor and destructor */
+        explicit Ball(engine::real radius);
         ~Ball();
 
         /** Functions to render the circle by calling SFML window */
@@ -31,8 +32,8 @@ class Ball : engine::Particle {
         void jump();
 
         /** Get particle acceleration, velocity and position */
-        engine::Vector getAcceleration();
-        engine::Vector getVelocity();
+        engine::Vector getCurrentAcceleration();
+        engine::Vector getCurrentVelocity();
         engine::Vector getCurrentPosition();
 };
 
