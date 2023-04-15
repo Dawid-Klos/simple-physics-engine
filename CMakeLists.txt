@@ -19,8 +19,11 @@ set(
         ${ENGINE_HEADERS}/engine/force_generator_abstract.h
         ${ENGINE_SOURCE}/particle.cpp
         ${ENGINE_SOURCE}/main.cpp
+        ${ENGINE_SOURCE}/demo_spring.cpp
         ${ENGINE_SOURCE}/ball.h
-        ${ENGINE_SOURCE}/ball.cpp)
+        ${ENGINE_SOURCE}/ball.cpp
+        ${ENGINE_SOURCE}/spring.h
+        ${ENGINE_SOURCE}/spring.cpp)
 
 add_executable(simple_physics_engine ${SOURCE_FILES})
 target_link_libraries(simple_physics_engine sfml-system sfml-window sfml-graphics)

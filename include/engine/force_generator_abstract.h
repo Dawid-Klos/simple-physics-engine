@@ -85,6 +85,25 @@ namespace engine {
                 forceStorage += spring * (-k * stretchLength);
             }
     };
+
+    class FrictionForce : public ForceGeneratorAbstract {
+        private:
+            real frictionCoefficient = 0.01f; /** Constant value applied to the friction force formula */
+            Vector velocity;  /** Used to store the velocity of Particle for calculations */
+            Vector frictionForce; /** Used to store the friction force that is applied to Particle */
+        public:
+            void getVelocityForDrag(Vector& vel) {
+                velocity = vel;
+            };
+
+            void updateForce(Vector& forceStorage) override {
+                velocity.normalize();
+                frictionForce.addScaledVector(velocity, -1);
+                frictionForce *= frictionCoefficient;
+
+                forceStorage += frictionForce;
+            }
+    };
 }
 
 #endif //SIMPLE_PHYSICS_ENGINE_FORCE_GENERATOR_ABSTRACT_H
