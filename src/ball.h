@@ -26,8 +26,12 @@ class Ball : engine::Particle {
         ~Ball();
 
         /** Functions to render the circle by calling SFML window */
-        void update(engine::real delta, sf::Window &window);
         void draw(sf::RenderWindow &window);
+
+        /** Function that handles the update of position */
+        void update(engine::real delta, sf::Window &window);
+
+        /** Functions called to move the ball */
         void move(engine::Vector);
         void jump();
 

@@ -5,36 +5,45 @@
 #include "ball.h"
 
 Ball::Ball(engine::real rad) {
-    /** init variables */
+    /** Initialise variables */
     radius = rad;
 
-    /** init Particle variables */
-//    engine::Vector pos;
-//    this->getPosition(&pos);
+    /** Set the Ball randomly in the scene */
+    srand(static_cast <unsigned> (time(0)));
+    auto x = static_cast <float> (rand() % 700);
+    x += engine::real(1.555) * rad;
+    engine::real y = 150.0f;
+    circleShape.setRadius(radius);
+    circleShape.setFillColor(sf::Color{169, 151, 223});
+    circleShape.setPosition(x, y);
+
+    /** Initialise Particle variables */
     this->setMass(engine::real(1.2) * rad);
     this->setDamping(0.95f);
     this->setVelocity(0.0f, 5.0f, 0.0f);
     this->setAcceleration(0.0f, -5.0f, 0.0f);
-
-    /** set the Ball randomly in the scene */
-    srand (static_cast <unsigned> (time(0)));
-    auto x = static_cast <float> (rand() % 700);
-    x += engine::real(1.555) * rad;
-    engine::real y = 150.0f;
-
-    circleShape.setRadius(radius);
-    circleShape.setFillColor(sf::Color{169, 151, 223});
-
-    circleShape.setPosition(x, y);
     this->setPosition(x, y, 0.0f);
 }
 
 Ball::~Ball() = default;
 
 void Ball::update(engine::real delta, sf::Window &window) {
-    this->integrate(delta);
 
+    this->integrate(delta);
     engine::Vector newPosition = this->getPosition();
+
+//    if (newPosition.x < 0.0f) {
+//        newPosition.x = 0.0f;
+//    }
+//    if (newPosition.x > 800.0f - circleShape.getRadius()) {
+//        newPosition.x = 800.0f - circleShape.getRadius();
+//    }
+//    if (newPosition.y < 50.0f + circleShape.getRadius()) {
+//        newPosition.y = 50.0f + circleShape.getRadius();
+//    }
+//    if (newPosition.y > 600.0f - circleShape.getRadius()) {
+//        newPosition.y = 600.0f - circleShape.getRadius();
+//    }
 
     // fix conventional coordinates system into screen coordinates system
     circleShape.setPosition(newPosition.x, engine::real(window.getPosition().y) - newPosition.y);
