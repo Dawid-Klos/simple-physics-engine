@@ -21,8 +21,9 @@ namespace engine {
         real invertedMass; /** Holds the inverted mass of the particle. */
         real damping; /** Holds the amount of damping applied to particle. */
         Vector forceStorage; /** Holds the accumulated forces */
-        GravityForce gravity; /** Applies gravity force to the Particle */
-        DragForce drag; /** Applies drag force to the Particle */
+        GravityForce gravity; /** Allows for application of gravity force to the Particle */
+        DragForce drag; /** Allows for application of drag force to the Particle */
+        SpringForce spring; /** Allows for application of spring force behaviour to the Particle */
 
     public:
         /** Return position of given Particle */
@@ -54,6 +55,9 @@ namespace engine {
 
         /** Perform integration by using the Euler method */
         void integrate(real delta);
+
+        /** Add force to the force storage */
+        void addForce(Vector force);
 
         /** Clear the storage from accumulated forces */
         void clearForceStorage();

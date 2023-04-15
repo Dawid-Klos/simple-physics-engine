@@ -66,7 +66,7 @@ void Particle::integrate(real delta) {
     position.addScaledVector(velocity, delta);
 
     // Add gravity to the accumulated forces
-    gravity.updateForce(forceStorage);
+     gravity.updateForce(forceStorage);
 
     // Add drag force
     drag.getVelocityForDrag(velocity);
@@ -91,4 +91,8 @@ void Particle::integrate(real delta) {
 
 void Particle::clearForceStorage() {
     Particle::forceStorage = Vector(0.0f, 0.0f, 0.0f);
+}
+
+void Particle::addForce(Vector force) {
+    Particle::forceStorage += force;
 }
