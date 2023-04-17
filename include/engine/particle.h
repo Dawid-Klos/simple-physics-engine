@@ -6,7 +6,6 @@
 #define SIMPLE_PHYSICS_ENGINE_PARTICLE_H
 
 #include "vector.h"
-#include "force_generator_abstract.h"
 
 namespace engine {
     /**
@@ -21,17 +20,15 @@ namespace engine {
         real invertedMass; /** Holds the inverted mass of the particle. */
         real damping; /** Holds the amount of damping applied to particle. */
         Vector forceStorage; /** Holds the accumulated forces */
-        GravityForce gravity; /** Allows for application of gravity force to the Particle */
-        DragForce drag; /** Allows for application of drag force to the Particle */
-        SpringForce spring; /** Allows for application of spring force behaviour to the Particle */
-
+        Vector springOriginPosition; /** Holds the origin position of the Spring type particle */
+        real springRestLength; /** Holds the rest length of the Spring type particle */
     public:
         /** Return position of given Particle */
         [[nodiscard]] Vector getPosition() const;
         void getPosition(Vector *pos) const;
 
         /** Set position for given Particle */
-        void setPosition(engine::real x, engine::real y, engine::real z);
+        void setPosition(real x, real y, real z);
 
         /** Set velocity for given Particle */
         void setVelocity(const Vector &velocity);
@@ -46,6 +43,18 @@ namespace engine {
 
         /** Get acceleration for given Particle */
         [[nodiscard]] Vector getAcceleration() const;
+
+        /** Get the spring origin position for given Particle */
+        [[nodiscard]] Vector getSpringOriginPosition() const;
+
+        /** Set the spring origin position for given Particle */
+        void setSpringOriginPosition(Vector pos);
+
+        /** Set the spring rest length for given Particle */
+        void setSpringRestLength(real len);
+
+        /** Get the spring rest length for given Particle */
+        [[nodiscard]] real getSpringRestLength() const;
 
         /** Set the damping value for given Particle */
         void setDamping(real value);

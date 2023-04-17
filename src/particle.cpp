@@ -65,13 +65,6 @@ void Particle::integrate(real delta) {
     // Update position
     position.addScaledVector(velocity, delta);
 
-    // Add gravity to the accumulated forces
-     gravity.updateForce(forceStorage);
-
-    // Add drag force
-    drag.getVelocityForDrag(velocity);
-    drag.updateForce(forceStorage);
-
     // Calculate acceleration from the force
     Vector acc = acceleration;
 
@@ -96,3 +89,20 @@ void Particle::clearForceStorage() {
 void Particle::addForce(Vector force) {
     Particle::forceStorage += force;
 }
+
+void Particle::setSpringOriginPosition(Vector pos) {
+    Particle::springOriginPosition = pos;
+}
+
+Vector Particle::getSpringOriginPosition() const {
+    return springOriginPosition;
+}
+
+void Particle::setSpringRestLength(real len) {
+    Particle::springRestLength = len;
+}
+
+real Particle::getSpringRestLength() const {
+    return springRestLength;
+}
+
