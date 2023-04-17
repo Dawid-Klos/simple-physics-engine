@@ -13,7 +13,7 @@ sf::Font myFont;
 
 void drawText(const sf::String &str, const int fontSize, const float posX, const float posY, sf::RenderWindow& window)
 {
-    myFont.loadFromFile("../Roboto-Medium.ttf");
+    myFont.loadFromFile("../assets/Roboto-Medium.ttf");
     myText.setFont(myFont);
     myText.setFillColor(sf::Color(48,54,47));
     myText.setString(str);
