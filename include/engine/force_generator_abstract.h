@@ -6,6 +6,7 @@
 #define SIMPLE_PHYSICS_ENGINE_FORCE_GENERATOR_ABSTRACT_H
 
 #include "vector.h"
+#include "particle.h"
 
 namespace engine {
     /**
@@ -14,7 +15,7 @@ namespace engine {
      * that implement specific forces using the same methods.
      * */
     class ForceGeneratorAbstract {
-        virtual void updateForce(Vector& forceStorage) = 0;
+        virtual void updateForce(Particle *particle) = 0;
     };
 
     /**
@@ -24,13 +25,13 @@ namespace engine {
         private:
             Vector gravity = Vector{0.0f, -25.0f, 0.0f};
         public:
-            void updateForce(Vector& forceStorage) override {
-                forceStorage += gravity;
+            void updateForce(Particle *particle) override {
+                particle->addForce(gravity);
             }
     };
 
     /**
-     * DragForce applied to the Particle to simulate any fluid or air resistance
+     * DragForce applied to the Particle to simulate fluid or air resistance.
      * */
     class DragForce : public ForceGeneratorAbstract {
         private:
@@ -38,17 +39,14 @@ namespace engine {
             Vector velocity; /** Used to store the velocity of Particle for calculations */
             Vector drag; /** Used to store the drag value that is applied to Particle after calculation */
         public:
-            void getVelocityForDrag(Vector& vel) {
-                velocity = vel;
-            };
-
-            void updateForce(Vector& forceStorage) override {
+            void updateForce(Particle *particle) override {
+                velocity = particle->getVelocity();
                 real squaredSpeed = velocity.getSquaredMagnitude();
                 velocity.normalize();
                 velocity *= -1;
                 drag.addScaledVector(velocity, dragCoefficient * squaredSpeed);
 
-                forceStorage += drag;
+                particle->addForce(drag);
             }
     };
 
@@ -57,18 +55,17 @@ namespace engine {
      */
     class SpringForce : public ForceGeneratorAbstract {
         private:
-            real k = 0.002f; /** Constant value needed to calculate spring force */
-            real restLength = 0.0f; /** Length of the spring */
+            real k = 0.05f; /** Constant value needed to calculate spring force */
+            real restLength; /** Length of the spring */
             Vector origin; /** Spring origin position */
             Vector otherEnd; /** Spring other end position location */
 
         public:
-            void getSpringAttributes(Vector originPosition, Vector otherEndPosition, real length) {
-                origin = originPosition;
-                otherEnd = otherEndPosition;
-                restLength = length;
-            }
-            void updateForce(Vector& forceStorage) override {
+            void updateForce(Particle *particle) override {
+                restLength = particle->getSpringRestLength();
+                otherEnd = particle->getPosition();
+                origin = particle->getSpringOriginPosition();
+
                 // subtract the start and end of the spring
                 Vector spring = otherEnd - origin;
 
@@ -82,26 +79,27 @@ namespace engine {
                 real stretchLength = currentLength - restLength;
 
                 // finally calc
-                forceStorage += spring * (-k * stretchLength);
+                particle->addForce(spring * (-k * stretchLength));
             }
     };
 
+    /**
+     * A frictional force applied to a particle to simulate the resistance
+     * that arises when two surfaces come into contact.
+     */
     class FrictionForce : public ForceGeneratorAbstract {
         private:
             real frictionCoefficient = 0.01f; /** Constant value applied to the friction force formula */
             Vector velocity;  /** Used to store the velocity of Particle for calculations */
             Vector frictionForce; /** Used to store the friction force that is applied to Particle */
         public:
-            void getVelocityForDrag(Vector& vel) {
-                velocity = vel;
-            };
-
-            void updateForce(Vector& forceStorage) override {
+            void updateForce(Particle *particle) override {
+                velocity = particle->getVelocity();
                 velocity.normalize();
                 frictionForce.addScaledVector(velocity, -1);
                 frictionForce *= frictionCoefficient;
 
-                forceStorage += frictionForce;
+                particle->addForce(frictionForce);
             }
     };
 }
