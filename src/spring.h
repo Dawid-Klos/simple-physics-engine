@@ -6,40 +6,47 @@
 #define SIMPLE_PHYSICS_ENGINE_SPRING_H
 
 #include "engine/particle.h"
+#include "engine/force_generator_abstract.h"
 
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/CircleShape.hpp>
+using namespace engine;
 
-/** Represents a line object */
-class Spring : engine::Particle {
+
+/**
+ * Represents a spring object that can simulate spring forces.
+ * */
+class Spring {
     private:
         sf::Vertex line[2];
         sf::CircleShape springMass;
-        engine::real restLength;
-        engine::SpringForce springForce;
+        Particle springParticle;
+        GravityForce gravityForce;
+        SpringForce springForce;
+        DragForce dragForce;
 
     public:
         /** Default constructor/destructor */
-        explicit Spring(engine::real springLength);
+        explicit Spring(real springLength);
         ~Spring();
 
-        /** Create needed forces for current object */
-        void initSpringForce();
+        /** Calculate forces that apply to Spring */
+        void calculateForces();
 
         /** Functions to render the circle by calling SFML window */
         void draw(sf::RenderWindow &window);
 
         /** Function that handles the update of position */
-        void update(engine::real delta, sf::Window &window);
+        void update(real delta, sf::Window &window);
 
-        void move(engine::Vector acc);
+        void move(Vector acc);
 
         void extendSpring();
 
         /** Get particle acceleration, velocity and position */
-        engine::Vector getCurrentAcceleration();
-        engine::Vector getCurrentVelocity();
-        engine::Vector getCurrentPosition();
+        Vector getCurrentAcceleration();
+        Vector getCurrentVelocity();
+        Vector getCurrentPosition();
 };
 
 

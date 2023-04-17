@@ -43,11 +43,11 @@ int main() {
     // Objects
 //    Ball lightBall = Ball(25.0f);
 //    Ball heavyBall = Ball(50.0f);
-    Spring spring = Spring(120.0f);
+    Spring spring = Spring(100.0f);
 
     while (window.isOpen()) {
         // hacky solution to slow rendering
-        delta = clock.restart().asSeconds() + 0.025f;
+        delta = clock.restart().asSeconds() + 0.035f;
         // delta = clock.restart().asSeconds();
 
         // Handle events
