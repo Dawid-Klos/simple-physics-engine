@@ -19,6 +19,8 @@ using namespace engine;
 class Spring {
     private:
         sf::Vertex line[2];
+        sf::Vertex point[1];
+
         sf::CircleShape springMass;
         Particle springParticle;
         GravityForce gravityForce;
@@ -39,8 +41,10 @@ class Spring {
         /** Function that handles the update of position */
         void update(real delta, sf::Window &window);
 
+        /** Moves the spring based on the acceleration applied */
         void move(Vector acc);
 
+        /** Extends the Spring by constant value */
         void extendSpring();
 
         /** Get particle acceleration, velocity and position */

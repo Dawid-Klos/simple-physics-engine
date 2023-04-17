@@ -8,29 +8,36 @@ Ball::Ball(engine::real rad) {
     /** Initialise variables */
     radius = rad;
 
-    /** Set the Ball randomly in the scene */
+    /** Set the Ball "randomly" in the scene */
     srand(static_cast <unsigned> (time(0)));
     auto x = static_cast <float> (rand() % 700);
-    x += engine::real(1.555) * rad;
+    x += engine::real(1.555) * radius;
     engine::real y = 150.0f;
     circleShape.setRadius(radius);
     circleShape.setFillColor(sf::Color{169, 151, 223});
     circleShape.setPosition(x, y);
 
     /** Initialise Particle variables */
-    this->setMass(engine::real(1.2) * rad);
-    this->setDamping(0.95f);
-    this->setVelocity(0.0f, 5.0f, 0.0f);
-    this->setAcceleration(0.0f, -5.0f, 0.0f);
-    this->setPosition(x, y, 0.0f);
+    ballParticle.setMass(engine::real(0.2) * rad);
+    ballParticle.setDamping(0.95f);
+    ballParticle.setVelocity(0.0f, radius * 1.5f, 0.0f);
+    ballParticle.setAcceleration(0.0f, -5.0f, 0.0f);
+    ballParticle.setPosition(x, y, 0.0f);
 }
 
 Ball::~Ball() = default;
 
 void Ball::update(engine::real delta, sf::Window &window) {
+    // Apply forces to the Ball
+    calculateForces();
 
-    this->integrate(delta);
-    engine::Vector newPosition = this->getPosition();
+    if (ballParticle.getPosition().y < 80.0f) {
+        ballParticle.setAcceleration(0.0f, radius * 2.0f, 0.0f);
+    }
+
+    // Perform integration
+    ballParticle.integrate(delta);
+    engine::Vector newPosition = ballParticle.getPosition();
 
 //    if (newPosition.x < 0.0f) {
 //        newPosition.x = 0.0f;
@@ -54,22 +61,27 @@ void Ball::draw(sf::RenderWindow &window) {
 }
 
 void Ball::move(engine::Vector acc) {
-    this->setAcceleration(acc);
+    ballParticle.setAcceleration(acc);
 }
 
 void Ball::jump() {
     engine::Vector jumpAcc = {0.0f, 100.0f, 0.0f};
-    this->setAcceleration(jumpAcc);
+    ballParticle.setAcceleration(jumpAcc);
 }
 engine::Vector Ball::getCurrentAcceleration() {
-    return this->getAcceleration();
+    return ballParticle.getAcceleration();
 }
 
 engine::Vector Ball::getCurrentVelocity() {
-    return this->getVelocity();
+    return ballParticle.getVelocity();
 }
 
 engine::Vector Ball::getCurrentPosition() {
-    return this->getPosition();
+    return ballParticle.getPosition();
+}
+
+void Ball::calculateForces() {
+    gravityForce.updateForce(&ballParticle);
+    dragForce.updateForce(&ballParticle);
 }
 

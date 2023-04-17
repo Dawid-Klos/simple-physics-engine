@@ -8,10 +8,12 @@ Spring::Spring(real springLength) {
     /** Set spring line position */
     line[0] = sf::Vector2f(400.0f, 0.0f);
     line[1] = sf::Vector2f(400.0f, 600.0f - springLength);
+    point[0] = sf::Vector2f(400.0f, 600.0f - springLength);
 
     /** Set line color */
     line[0].color = sf::Color(48,54,47);
     line[1].color = sf::Color(48,54,47);
+    point[0].color = sf::Color(218, 116, 34);
 
     /** Set spring mass */
     springMass.setRadius(springLength / 6);
@@ -26,12 +28,16 @@ Spring::Spring(real springLength) {
     springParticle.setMass(real(0.01) * springLength);
     springParticle.setDamping(0.99f);
     springParticle.setPosition(400.0f, 600.0f - springLength, 0.0f);
+
+    springParticle.setVelocity(0.0f, 0.0f, 0.0f);
+    springParticle.setAcceleration(0.0f, 0.0f, 0.0f);
 }
 
 Spring::~Spring() = default;
 
 void Spring::draw(sf::RenderWindow &window) {
     window.draw(line, 2, sf::Lines);
+    window.draw(point, 1, sf::Points);
     window.draw(springMass);
 }
 
@@ -39,12 +45,15 @@ void Spring::update(real delta, sf::Window &window) {
     // Apply forces acting on the object
     calculateForces();
 
+    // Perform integration
     springParticle.integrate(delta);
     Vector newPosition = springParticle.getPosition();
 
-    // fix conventional coordinates system into screen coordinates system
+    // Set the line end position the same as the mass position
     line[1].position.x = newPosition.x;
     line[1].position.y = real(window.getPosition().y) - newPosition.y;
+
+    // Fix conventional coordinates system into screen coordinates system
     springMass.setPosition(newPosition.x, real(window.getPosition().y) - newPosition.y);
 }
 
@@ -55,7 +64,7 @@ void Spring::calculateForces() {
 }
 
 void Spring::extendSpring() {
-    Vector someForce = {0.0f, -25.0f, 0.0f};
+    Vector someForce = {0.0f, (-springParticle.getSpringRestLength() * 0.5f), 0.0f};
     springParticle.setAcceleration(someForce);
 }
 

@@ -37,13 +37,12 @@ int main() {
     // Clock and text
     sf::Clock clock;
     engine::real delta;
-    engine::real lastTime = 0.0f;
     std::ostringstream ss;
 
     // Objects
-//    Ball lightBall = Ball(25.0f);
-//    Ball heavyBall = Ball(50.0f);
-    Spring spring = Spring(100.0f);
+    Ball lightBall = Ball(25.0f);
+    Ball heavyBall = Ball(50.0f);
+    Spring spring = Spring(200.0f);
 
     while (window.isOpen()) {
         // hacky solution to slow rendering
@@ -60,15 +59,15 @@ int main() {
                     break;
                 case sf::Event::KeyPressed:
                     if (event.key.code == sf::Keyboard::Left) {
-//                        lightBall.move(Vector(-15.0f, 0.0f, 0.0f));
+                        lightBall.move(Vector(-15.0f, 0.0f, 0.0f));
                         spring.move(Vector(-45.0f, 0.0f, 0.0f));
                     } else if (event.key.code == sf::Keyboard::Right) {
-//                        lightBall.move(Vector(15.0f, 0.0f, 0.0f));
+                        lightBall.move(Vector(15.0f, 0.0f, 0.0f));
                         spring.move(Vector(45.0f, 0.0f, 0.0f));
                     } else if (event.key.code == sf::Keyboard::Escape) {
                         window.close();
                     } else if (event.key.code == sf::Keyboard::Space) {
-//                        lightBall.jump();
+                        lightBall.jump();
                         spring.extendSpring();
                     }
                     break;
@@ -86,18 +85,19 @@ int main() {
         ss << "Acc = x: " << acceleration.x << "  y: " << acceleration.y << std::endl;
         ss << "Vel = x: " << velocity.x << "  y: " << velocity.y << std::endl;
         ss << "Pos = x: " << position.x << "  y: " << position.y << std::endl;
+        ss << "MousePos = x: " << sf::Mouse::getPosition(window).x << "  y: " << sf::Mouse::getPosition(window).y << std::endl;
 
         // Update particle position
-//        lightBall.update(delta, window);
-//        heavyBall.update(delta, window);
+        lightBall.update(delta, window);
+        heavyBall.update(delta, window);
         spring.update(delta, window);
 
         // Clear the window
         window.clear(sf::Color(255, 251, 219));
 
         // Draw the ball
-//        lightBall.draw(window);
-//        heavyBall.draw(window);
+        lightBall.draw(window);
+        heavyBall.draw(window);
         spring.draw(window);
 
         // Draw the text
