@@ -35,16 +35,18 @@ namespace engine {
      * */
     class DragForce : public ForceGeneratorAbstract {
         private:
-            real dragCoefficient = 0.0002f; /** Constant value used to calculate drag */
+            real dragCoefficient; /** Constant value used to calculate drag */
             Vector velocity; /** Used to store the velocity of Particle for calculations */
-            Vector drag; /** Used to store the drag value that is applied to Particle after calculation */
         public:
+            explicit DragForce(real dragConstant) : dragCoefficient(dragConstant) {};
+
             void updateForce(Particle *particle) override {
                 velocity = particle->getVelocity();
                 real squaredSpeed = velocity.getSquaredMagnitude();
                 velocity.normalize();
-                velocity *= -1;
-                drag.addScaledVector(velocity, dragCoefficient * squaredSpeed);
+                velocity *= -dragCoefficient;
+                Vector drag;
+                drag.addScaledVector(velocity, squaredSpeed);
 
                 particle->addForce(drag);
             }
@@ -56,18 +58,20 @@ namespace engine {
     class SpringForce : public ForceGeneratorAbstract {
         private:
             real k = 0.1f; /** Constant value needed to calculate spring force */
-            real restLength; /** Length of the spring */
-            Vector origin; /** Spring origin position */
-            Vector otherEnd; /** Spring other end position location */
+            real restLength{}; /** Length of the spring */
+            Vector origin{}; /** Spring origin position */
 
         public:
+            void initSpringParameters(real restLen, Vector anchor) {
+                restLength = restLen;
+                origin = anchor;
+            };
+
             void updateForce(Particle *particle) override {
-                restLength = particle->getSpringRestLength();
-                otherEnd = particle->getPosition();
-                origin = particle->getSpringOriginPosition();
 
                 // subtract the start and end of the spring
-                Vector spring = otherEnd - origin;
+                Vector currentEndPos = particle->getPosition();
+                Vector spring = currentEndPos - origin;
 
                 // get direction of the force by getting magnitude
                 real currentLength = spring.getMagnitude();
