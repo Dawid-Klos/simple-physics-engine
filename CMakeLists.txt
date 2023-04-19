@@ -17,9 +17,12 @@ set(
         ${ENGINE_HEADERS}/engine/vector.h
         ${ENGINE_HEADERS}/engine/precision.h
         ${ENGINE_HEADERS}/engine/force_generator_abstract.h
+        ${ENGINE_HEADERS}/engine/collision_detector.h
+        ${ENGINE_HEADERS}/engine/collision_resolver.h
         ${ENGINE_SOURCE}/particle.cpp
+        ${ENGINE_SOURCE}/collision_detector.cpp
+        ${ENGINE_SOURCE}/collision_resolver.cpp
         ${ENGINE_SOURCE}/main.cpp
-        ${ENGINE_SOURCE}/demo_spring.cpp
         ${ENGINE_SOURCE}/ball.h
         ${ENGINE_SOURCE}/ball.cpp
         ${ENGINE_SOURCE}/spring.h

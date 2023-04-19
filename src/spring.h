@@ -19,17 +19,17 @@ using namespace engine;
 class Spring {
     private:
         sf::Vertex line[2];
-        sf::Vertex point[1];
 
         sf::CircleShape springMass;
         Particle springParticle;
+        real springLength;
         GravityForce gravityForce;
         SpringForce springForce;
-        DragForce dragForce;
+        DragForce dragForce = DragForce(0.05f);
 
     public:
         /** Default constructor/destructor */
-        explicit Spring(real springLength);
+        explicit Spring(real len);
         ~Spring();
 
         /** Calculate forces that apply to Spring */

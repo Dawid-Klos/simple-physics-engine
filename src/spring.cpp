@@ -4,16 +4,19 @@
 
 #include "spring.h"
 
-Spring::Spring(real springLength) {
-    /** Set spring line position */
-    line[0] = sf::Vector2f(400.0f, 0.0f);
+Spring::Spring(real len) {
+    /** Set spring line position - line[0] anchor - line[1] end */
+    line[0] = sf::Vector2f(400.0f, 600.0f);
     line[1] = sf::Vector2f(400.0f, 600.0f - springLength);
-    point[0] = sf::Vector2f(400.0f, 600.0f - springLength);
+
+    /** Init variables */
+    springLength = len;
+    Vector anchorPosition = {line[0].position.x, line[0].position.y, 0.0f};
+    springForce.initSpringParameters(springLength, anchorPosition);
 
     /** Set line color */
     line[0].color = sf::Color(48,54,47);
     line[1].color = sf::Color(48,54,47);
-    point[0].color = sf::Color(218, 116, 34);
 
     /** Set spring mass */
     springMass.setRadius(springLength / 6);
@@ -22,22 +25,15 @@ Spring::Spring(real springLength) {
     springMass.setPosition(400.0f, 600.0f - springLength);
 
     /** Initialise Particle variables */
-    Vector originPosition = {line[0].position.x, line[0].position.y, 0.0f};
-    springParticle.setSpringOriginPosition(originPosition);
-    springParticle.setSpringRestLength(springLength);
     springParticle.setMass(real(0.01) * springLength);
     springParticle.setDamping(0.99f);
     springParticle.setPosition(400.0f, 600.0f - springLength, 0.0f);
-
-    springParticle.setVelocity(0.0f, 0.0f, 0.0f);
-    springParticle.setAcceleration(0.0f, 0.0f, 0.0f);
 }
 
 Spring::~Spring() = default;
 
 void Spring::draw(sf::RenderWindow &window) {
     window.draw(line, 2, sf::Lines);
-    window.draw(point, 1, sf::Points);
     window.draw(springMass);
 }
 
@@ -51,21 +47,20 @@ void Spring::update(real delta, sf::Window &window) {
 
     // Set the line end position the same as the mass position
     line[1].position.x = newPosition.x;
-    line[1].position.y = real(window.getPosition().y) - newPosition.y;
+    line[1].position.y = newPosition.y;
 
-    // Fix conventional coordinates system into screen coordinates system
-    springMass.setPosition(newPosition.x, real(window.getPosition().y) - newPosition.y);
+    springMass.setPosition(newPosition.x, newPosition.y);
 }
 
 void Spring::calculateForces() {
     gravityForce.updateForce(&springParticle);
-    dragForce.updateForce(&springParticle);
+    // dragForce.updateForce(&springParticle);
     springForce.updateForce(&springParticle);
 }
 
 void Spring::extendSpring() {
-    Vector someForce = {0.0f, (-springParticle.getSpringRestLength() * 0.5f), 0.0f};
-    springParticle.setAcceleration(someForce);
+    // Vector someForce = {0.0f, (-springParticle.getSpringRestLength() * 0.5f), 0.0f};
+//    springParticle.setAcceleration(someForce);
 }
 
 void Spring::move(Vector acc) {
