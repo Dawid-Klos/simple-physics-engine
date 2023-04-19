@@ -90,19 +90,7 @@ void Particle::addForce(Vector force) {
     Particle::forceStorage += force;
 }
 
-void Particle::setSpringOriginPosition(Vector pos) {
-    Particle::springOriginPosition = pos;
-}
-
-Vector Particle::getSpringOriginPosition() const {
-    return springOriginPosition;
-}
-
-void Particle::setSpringRestLength(real len) {
-    Particle::springRestLength = len;
-}
-
-real Particle::getSpringRestLength() const {
-    return springRestLength;
+real Particle::getMass() const {
+    return invertedMass;
 }
 

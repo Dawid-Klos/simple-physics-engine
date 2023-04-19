@@ -20,8 +20,7 @@ namespace engine {
         real invertedMass; /** Holds the inverted mass of the particle. */
         real damping; /** Holds the amount of damping applied to particle. */
         Vector forceStorage; /** Holds the accumulated forces */
-        Vector springOriginPosition; /** Holds the origin position of the Spring type particle */
-        real springRestLength; /** Holds the rest length of the Spring type particle */
+
     public:
         /** Return position of given Particle */
         [[nodiscard]] Vector getPosition() const;
@@ -44,22 +43,13 @@ namespace engine {
         /** Get acceleration for given Particle */
         [[nodiscard]] Vector getAcceleration() const;
 
-        /** Get the spring origin position for given Particle */
-        [[nodiscard]] Vector getSpringOriginPosition() const;
-
-        /** Set the spring origin position for given Particle */
-        void setSpringOriginPosition(Vector pos);
-
-        /** Set the spring rest length for given Particle */
-        void setSpringRestLength(real len);
-
-        /** Get the spring rest length for given Particle */
-        [[nodiscard]] real getSpringRestLength() const;
-
         /** Set the damping value for given Particle */
         void setDamping(real value);
 
-        /** Set particle mass for given Particle */
+        /** Get mass for given Particle */
+        real getMass() const;
+
+        /** Set mass for given Particle. The value is stored as 1/mass */
         void setMass(real mass);
 
         /** Perform integration by using the Euler method */
