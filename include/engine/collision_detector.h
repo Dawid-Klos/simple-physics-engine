@@ -7,6 +7,7 @@
 
 #include <engine/vector.h>
 #include <vector>
+
 #include "ball.h"
 #include "collision_resolver.h"
 
@@ -21,13 +22,12 @@ namespace engine {
         vector<Ball*> balls;
         CollisionResolver& collisionResolver;
         static bool ballsOverlap(Ball& ball1, Ball& ball2);
-        unsigned int collisions = 0;
+
     public:
         explicit CollisionDetector(CollisionResolver& resolver) : collisionResolver(resolver) {}
 
         void addBall(Ball* ball);
         void detectCollisions();
-        void checkForCollision(Ball& ball, Ball& ball2);
     };
 }
 

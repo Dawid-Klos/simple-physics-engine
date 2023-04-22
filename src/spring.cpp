@@ -4,10 +4,10 @@
 
 #include "spring.h"
 
-Spring::Spring(real len) {
+Spring::Spring(real len, real windowHeight) {
     /** Set spring line position - line[0] anchor - line[1] end */
-    line[0] = sf::Vector2f(400.0f, 600.0f);
-    line[1] = sf::Vector2f(400.0f, 600.0f - springLength);
+    line[0] = sf::Vector2f(400.0f, windowHeight);
+    line[1] = sf::Vector2f(400.0f, windowHeight - springLength);
 
     /** Init variables */
     springLength = len;
@@ -54,7 +54,7 @@ void Spring::update(real delta, sf::Window &window) {
 
 void Spring::calculateForces() {
     gravityForce.updateForce(&springParticle);
-    // dragForce.updateForce(&springParticle);
+    dragForce.updateForce(&springParticle);
     springForce.updateForce(&springParticle);
 }
 

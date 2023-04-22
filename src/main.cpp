@@ -1,18 +1,20 @@
 #include <engine/vector.h>
+#include <engine/collision_resolver.h>
+#include <engine/collision_detector.h>
 #include <ball.h>
-#include <iostream>
-#include <sstream>
+#include "spring.h"
 
 #include <SFML/Graphics.hpp>
-#include "spring.h"
-#include "engine/collision_resolver.h"
-#include "engine/collision_detector.h"
+
+#include <iostream>
+#include <sstream>
 
 using namespace engine;
 
 const float WINDOW_WIDTH = 800.f;
 const float WINDOW_HEIGHT = 600.f;
 
+// Temp global variables
 sf::Text myText;
 sf::Font myFont;
 
@@ -40,8 +42,8 @@ int main() {
     view.setSize(WINDOW_WIDTH, -WINDOW_HEIGHT);
     window.setView(view);
 
-    // fps limit
-    unsigned int fps = 80;
+    // FPS limit
+    unsigned int fps = 100;
     window.setFramerateLimit(fps);
 
     // Clock and text
@@ -53,21 +55,25 @@ int main() {
     CollisionResolver collisionResolver;
     CollisionDetector detector = CollisionDetector(collisionResolver);
     vector<Ball*> myBalls;
+    unsigned int ballsTimer = 0;
 
-    // World objects
-    for (unsigned int i = 1; i < 20; i++) {
-        Ball* ball = new Ball(10.0f + real(i), real(5.0 * i), real(100.0 / i));
-        myBalls.push_back(ball);
-        detector.addBall(ball);
-    }
 
-    Spring spring = Spring(100.0f);
+    Spring spring = Spring(50.0f, WINDOW_HEIGHT);
 
     while (window.isOpen()) {
         delta = clock.restart().asSeconds() + 0.035f;
 
         // Handle events
         sf::Event event;
+
+        // World objects
+        if (ballsTimer < 10) {
+            Ball* ball = new Ball(850.0f * delta, 5000.0f * delta, 5500.0f * delta);
+            myBalls.push_back(ball);
+            detector.addBall(ball);
+
+            ballsTimer += 1;
+        }
 
         for (auto* ball : myBalls) {
             ball->changeColor(sf::Color{169, 151, 223});
@@ -96,10 +102,12 @@ int main() {
                     break;
             }
         }
+        // Temp solution for screen collisions
         for (auto* ball : myBalls) {
             ball->resolveScreenCollision(WINDOW_WIDTH, WINDOW_HEIGHT);
         }
 
+        // Print information on screen about the Spring
         Vector acceleration = spring.getCurrentAcceleration();
         Vector velocity =  spring.getCurrentVelocity();
         Vector position =  spring.getCurrentPosition();

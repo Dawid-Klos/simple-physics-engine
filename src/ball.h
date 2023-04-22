@@ -23,7 +23,7 @@ class Ball {
         real radius; /** Stores the radius of the Ball */
         Particle ballParticle; /** Stored the Particle object for physics calculation */
         GravityForce gravityForce; /** Used for adding gravity to the Ball */
-        DragForce dragForce = DragForce(0.001f); /** Used for adding drag force to the Ball */
+        DragForce dragForce = DragForce(0.0009f); /** Used for adding drag force to the Ball */
 
     public:
         /** Default constructor and destructor */
@@ -52,7 +52,7 @@ class Ball {
         /** Change the ball color */
         void changeColor(sf::Color color);
 
-        /** Get particle acceleration, velocity and position */
+        /** TEMP only / Get particle acceleration, velocity and position */
         Vector getCurrentAcceleration();
         Vector getCurrentVelocity();
         Vector getCurrentPosition();

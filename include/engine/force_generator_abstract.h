@@ -58,7 +58,7 @@ namespace engine {
     class SpringForce : public ForceGeneratorAbstract {
         private:
             real k = 0.1f; /** Constant value needed to calculate spring force */
-            real restLength{}; /** Length of the spring */
+            real restLength{}; /** Length of the spring in rest */
             Vector origin{}; /** Spring origin position */
 
         public:

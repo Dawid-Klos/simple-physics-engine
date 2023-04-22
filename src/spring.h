@@ -25,11 +25,11 @@ class Spring {
         real springLength;
         GravityForce gravityForce;
         SpringForce springForce;
-        DragForce dragForce = DragForce(0.05f);
+        DragForce dragForce = DragForce(0.0002f);
 
     public:
         /** Default constructor/destructor */
-        explicit Spring(real len);
+        explicit Spring(real len, real windowHeight);
         ~Spring();
 
         /** Calculate forces that apply to Spring */

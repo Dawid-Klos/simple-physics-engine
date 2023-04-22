@@ -3,6 +3,7 @@
 //
 
 #include <engine/particle.h>
+#include <cassert>
 
 using namespace engine;
 
@@ -59,8 +60,13 @@ void Particle::getPosition(Vector *pos) const {
 }
 
 void Particle::integrate(real delta) {
+    /**
+     * Code adapted from Millington, 2010
+     */
     // Ensure we don't perform integration on objects with infinite mass
-    if (invertedMass <= 0.0f || delta <= 0.0f) return;
+    if (invertedMass <= 0.0f) return;
+
+    assert(delta > 0.0f);
 
     // Update position
     position.addScaledVector(velocity, delta);
@@ -79,6 +85,9 @@ void Particle::integrate(real delta) {
 
     // Clear the forces after calculations
     clearForceStorage();
+    /**
+     * End of adapted code
+     */
     setAcceleration(Vector(0.0f, 0.0f, 0.0f));
 }
 

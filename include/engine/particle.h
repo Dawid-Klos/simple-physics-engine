@@ -47,7 +47,7 @@ namespace engine {
         void setDamping(real value);
 
         /** Get mass for given Particle */
-        real getMass() const;
+        [[nodiscard]] real getMass() const;
 
         /** Set mass for given Particle. The value is stored as 1/mass */
         void setMass(real mass);

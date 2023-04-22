@@ -30,12 +30,12 @@ namespace engine {
         }
 
         /** Returns the magnitude of the stored vector */
-        real getMagnitude() const {
+        [[nodiscard]] real getMagnitude() const {
             return real_sqrt(x*x+y*y+z*z);
         }
 
         /** Returns the squared magnitude of the stored vector */
-        real getSquaredMagnitude() const {
+        [[nodiscard]] real getSquaredMagnitude() const {
             return x*x+y*y+z*z;
         }
 
@@ -98,14 +98,14 @@ namespace engine {
          * Calculates and returns the scalar product of stored vector
          * with the given vector.
          */
-        real getScalarProduct(const Vector &vector) const {
+        [[nodiscard]] real getScalarProduct(const Vector &vector) const {
             return x * vector.x + y * vector.y + z * vector.z;
         }
 
         /**
         * Returns a component product of the stored vector with the given vector
         */
-        Vector getComponentProduct(const Vector &vector) const {
+        [[nodiscard]] Vector getComponentProduct(const Vector &vector) const {
             return {x * vector.x, y * vector.y, z * vector.z};
         }
 
