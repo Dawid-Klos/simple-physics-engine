@@ -23,10 +23,14 @@ set(
         ${ENGINE_SOURCE}/collision_detector.cpp
         ${ENGINE_SOURCE}/collision_resolver.cpp
         ${ENGINE_SOURCE}/main.cpp
-        ${ENGINE_SOURCE}/ball.h
-        ${ENGINE_SOURCE}/ball.cpp
-        ${ENGINE_SOURCE}/spring.h
-        ${ENGINE_SOURCE}/spring.cpp)
+        ${ENGINE_SOURCE}/game_demo/ball.h
+        ${ENGINE_SOURCE}/game_demo/ball.cpp
+        ${ENGINE_SOURCE}/game_demo/spring.h
+        ${ENGINE_SOURCE}/game_demo/spring.cpp
+        ${ENGINE_SOURCE}/game_demo/simulation_renderer.h
+        ${ENGINE_SOURCE}/game_demo/simulation_renderer.cpp
+        ${ENGINE_SOURCE}/game_demo/world.h
+        ${ENGINE_SOURCE}/game_demo/world.cpp)
 
 add_executable(simple_physics_engine ${SOURCE_FILES})
 target_link_libraries(simple_physics_engine sfml-system sfml-window sfml-graphics)

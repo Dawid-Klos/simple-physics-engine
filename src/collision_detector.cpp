@@ -2,7 +2,7 @@
 // Created by dave on 17.04.23.
 //
 #include "engine/collision_detector.h"
-#include "ball.h"
+#include "game_demo/ball.h"
 using namespace engine;
 
 void CollisionDetector::addBall(Ball* ball) {

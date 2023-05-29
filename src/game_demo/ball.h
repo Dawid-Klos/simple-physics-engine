@@ -5,7 +5,7 @@
 #ifndef SIMPLE_PHYSICS_ENGINE_BALL_H
 #define SIMPLE_PHYSICS_ENGINE_BALL_H
 
-#include <engine/particle.h>
+#include "engine/particle.h"
 
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>

@@ -8,7 +8,7 @@
 #include <engine/vector.h>
 #include <vector>
 
-#include "ball.h"
+#include "game_demo/ball.h"
 #include "collision_resolver.h"
 
 using namespace std;

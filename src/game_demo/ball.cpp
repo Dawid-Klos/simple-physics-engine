@@ -77,7 +77,7 @@ Particle* Ball::getParticle() {
     return &ballParticle;
 }
 
-void Ball::resolveScreenCollision(float WINDOW_WIDTH, float WINDOW_HEIGHT) {
+void Ball::resolveScreenCollision(real WINDOW_WIDTH, real WINDOW_HEIGHT) {
     // Get the position and radius of the ball
     Vector position = ballParticle.getPosition();
     Vector velocity = ballParticle.getVelocity();
