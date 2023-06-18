@@ -5,16 +5,14 @@
 #include <iostream>
 #include "world.h"
 
-void World::createBalls() {
-    real delta = renderer->getDelta();
+void World::createBall() {
+    if (ballsTimer > 1000) return;
 
-    if (ballsTimer < 100) {
-        Ball* ball = new Ball(100.0f * delta, 20.0f * float(ballsTimer), 5.0f * float(ballsTimer));
-        myBalls.push_back(ball);
-        renderer->addObjectToDetector(ball);
-        ballsTimer += 1;
-        std::cout << "Balls: " << myBalls.size() << std::endl;
-    }
+    real delta = renderer->getDelta();
+    Ball* ball = new Ball(50.f * delta, 500.0f * delta, 600.0f);
+    myBalls.push_back(ball);
+    renderer->addObjectToDetector(ball);
+    ballsTimer += 1;
 }
 
 void World::createSpringSystem(real WINDOW_HEIGHT) {
@@ -37,6 +35,7 @@ void World::update() {
     renderer->drawText(ss.str());
     ss.str(std::string());
 
+    renderer->updateEvents(myBalls, spring);
     renderer->update(myBalls, spring);
     renderer->render(myBalls, spring);
 }

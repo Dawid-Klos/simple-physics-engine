@@ -1,3 +1,4 @@
+#include <iostream>
 #include "game_demo/world.h"
 
 #define WINDOW_WIDTH 800.0f
@@ -11,8 +12,15 @@ int main() {
     World world(*renderer);
     world.createSpringSystem(WINDOW_HEIGHT);
 
+    sf::Clock ballsTimer = sf::Clock();
+
     while (renderer->running()) {
-        world.createBalls();
+
+        // Create a new ball every 1 seconds
+        if (ballsTimer.getElapsedTime().asSeconds() > 0.05f) {
+            ballsTimer.restart();
+            world.createBall();
+        }
 
         // Update particle position
         world.update();

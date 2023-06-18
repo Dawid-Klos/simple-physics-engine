@@ -17,24 +17,24 @@ using namespace engine;
 
 class World {
     private:
-    /** Stores pointers to the Ball objects */
-    vector<Ball*> myBalls;
-    unsigned int ballsTimer = 0;
+        /** Stores pointers to the Ball objects */
+        vector<Ball*> myBalls;
+        unsigned int ballsTimer = 0;
 
-    /** Spring object */
-    Spring spring = Spring(0.0f, 0.0f);
+        /** Spring object */
+        Spring spring = Spring(0.0f, 0.0f);
 
-    /** Stream for displaying text on the screen */
-    std::ostringstream ss;
+        /** Stream for displaying text on the screen */
+        std::ostringstream ss;
 
-    /** Instance of SimulationRenderer used to draw to window */
-    SimulationRenderer* renderer;
+        /** Instance of SimulationRenderer used to draw to window */
+        SimulationRenderer* renderer;
 
     public:
         explicit World(SimulationRenderer &_renderer) : renderer(&_renderer) {};
 
-        /** Create balls */
-        void createBalls();
+        /** Create a new Ball object */
+        void createBall();
 
         /** Crate spring system */
         void createSpringSystem(real WINDOW_HEIGHT);
@@ -44,7 +44,6 @@ class World {
 
         /** Update the world */
         void update();
-
 };
 
 
