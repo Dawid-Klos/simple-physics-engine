@@ -15,11 +15,11 @@ Ball::Ball(real rad, real posX, real posY) {
     circleShape.setPosition(posX, posY);
 
     /** Set the Particle object properties for physics calculations */
-    ballParticle.setMass(real(0.1) * rad);
-    ballParticle.setDamping(0.98f);
-    ballParticle.setVelocity(145.0f, 245.0f, 0.0f);
-    ballParticle.setAcceleration(-10.0f, 0.0f, 0.0f);
+    ballParticle.setMass(real(0.1f) * rad);
+    ballParticle.setDamping(0.95f);
     ballParticle.setPosition(posX, posY, 0.0f);
+    ballParticle.setVelocity(150.0f, 25.0f, 0.0f);
+    ballParticle.setAcceleration(20.0f, 0.0f, 0.0f);
 }
 
 Ball::~Ball() = default;
@@ -99,7 +99,7 @@ void Ball::resolveScreenCollision(real WINDOW_WIDTH, real WINDOW_HEIGHT) {
 
     // Check for collision with the top wall
     if (position.y - radius < 0) {
-        if (velocity.y < 1.0f) {
+        if (velocity.y < 10.0f) {
             ballParticle.setVelocity(velocity.x, 0.0f, velocity.z);
         } else {
             ballParticle.setVelocity(Vector(velocity.x, static_cast<real>(fabs(velocity.y)) * 0.6f, velocity.z));
@@ -111,4 +111,15 @@ void Ball::resolveScreenCollision(real WINDOW_WIDTH, real WINDOW_HEIGHT) {
     if (position.y - radius > WINDOW_HEIGHT) {
         ballParticle.setVelocity(Vector(velocity.x, static_cast<real>(-fabs(velocity.y)) * 0.6f, velocity.z));
     }
+}
+
+Ball::BoundingBox Ball::getBoundingBox() const {
+    return boundingBox;
+}
+
+void Ball::updateBoundingBox() {
+    boundingBox.xMin = ballParticle.getPosition().x - radius;
+    boundingBox.xMax = ballParticle.getPosition().x + radius;
+    boundingBox.yMin = ballParticle.getPosition().y - radius;
+    boundingBox.yMax = ballParticle.getPosition().y + radius;
 }

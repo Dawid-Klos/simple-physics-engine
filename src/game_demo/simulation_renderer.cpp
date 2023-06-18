@@ -17,9 +17,9 @@ SimulationRenderer::SimulationRenderer(real width, real height) {
     window = new sf::RenderWindow(sf::VideoMode((unsigned int)WINDOW_WIDTH, (unsigned int)WINDOW_HEIGHT), "Physics Simulation", sf::Style::Default, settings);
 
     // Set FPS limit
-    unsigned int fps = 80;
+    unsigned int fps = 60;
     window->setFramerateLimit(fps);
-    window->setVerticalSyncEnabled(true);
+    // window->setVerticalSyncEnabled(true);
 
     // Set up window View - reverse window height coordinates
     sf::View view = window->getDefaultView();
@@ -49,7 +49,7 @@ bool SimulationRenderer::running() const {
     return window->isOpen();
 }
 
-void SimulationRenderer::updateEvents() {
+void SimulationRenderer::updateEvents(vector<Ball*>& balls, Spring &spring) {
     while (window->pollEvent(event)) {
         switch (event.type) {
             case sf::Event::Closed:
@@ -58,18 +58,19 @@ void SimulationRenderer::updateEvents() {
                 break;
             case sf::Event::KeyPressed:
                 if (event.key.code == sf::Keyboard::Left) {
-//                    lightBall->move(Vector(-15.0f, 0.0f, 0.0f));
-//                    spring.move(Vector(-45.0f, 0.0f, 0.0f));
+                    spring.move(Vector(-45.0f, 0.0f, 0.0f));
                 } else if (event.key.code == sf::Keyboard::Right) {
-//                    lightBall->move(Vector(15.0f, 0.0f, 0.0f));
-//                    spring.move(Vector(45.0f, 0.0f, 0.0f));
+                    spring.move(Vector(45.0f, 0.0f, 0.0f));
                 } else if (event.key.code == sf::Keyboard::Escape) {
                     window->close();
                 } else if (event.key.code == sf::Keyboard::Space) {
-//                    lightBall->jump();
-//                    spring.extendSpring();
+                    spring.extendSpring();
                 }
                 break;
+            case sf::Event::MouseButtonPressed:
+                if (event.mouseButton.button == sf::Mouse::Left) {
+
+                }
             default:
                 break;
         }
@@ -81,7 +82,7 @@ void SimulationRenderer::update(const vector<Ball*>& myBalls, Spring& spring) {
     delta = clock.restart().asSeconds() + 0.035f;
 
     // Update pool events
-    this->updateEvents();
+//    updateEvents();
 
     // Reset the color of the balls after collisions resolved
     for (auto* ball : myBalls) {
@@ -91,7 +92,6 @@ void SimulationRenderer::update(const vector<Ball*>& myBalls, Spring& spring) {
     // Collision detection
     collisionDetector.detectCollisions();
     collisionResolver.resolve(delta);
-    collisionResolver.removeResolvedCollisions();
 
     // Update particle position
     for (auto* ball : myBalls) {
@@ -121,6 +121,10 @@ void SimulationRenderer::render(const vector<Ball*>& myBalls, Spring& spring) {
 
     // Display new frame
     window->display();
+}
+
+sf::RenderWindow* SimulationRenderer::getWindow() const {
+    return window;
 }
 
 real SimulationRenderer::getDelta() const {

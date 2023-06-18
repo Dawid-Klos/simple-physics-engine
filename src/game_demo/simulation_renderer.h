@@ -35,7 +35,7 @@ private:
     sf::Clock clock;
     real delta = 0.0f;
 
-    /** Physics systems */
+    /** Collision detection system */
     CollisionResolver collisionResolver;
     CollisionDetector collisionDetector = CollisionDetector(collisionResolver);
 
@@ -44,14 +44,14 @@ public:
     SimulationRenderer(real width, real height);
     virtual ~SimulationRenderer();
 
-    /** Check if the window is open */
+    /** Check if the window is open and return a boolean */
     bool running() const;
 
-    /** Add objects to the simulation */
+    /** Add objects to the collision detector system */
     void addObjectToDetector(Ball* ball);
 
     /** Update the events */
-    void updateEvents();
+    void updateEvents(vector<Ball*>& balls, Spring &spring);
 
     /** Update the simulation */
     void update(const vector<Ball*>& balls, Spring &spring);
@@ -64,6 +64,9 @@ public:
 
     /** Return delta */
     real getDelta() const;
+
+    /** Return a pointer to the window */
+    sf::RenderWindow *getWindow() const;
 };
 
 

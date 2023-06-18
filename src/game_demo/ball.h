@@ -24,6 +24,13 @@ class Ball {
         Particle ballParticle; /** Stored the Particle object for physics calculation */
         GravityForce gravityForce; /** Used for adding gravity to the Ball */
         DragForce dragForce = DragForce(0.0009f); /** Used for adding drag force to the Ball */
+        struct BoundingBox {
+            float xMin;
+            float xMax;
+            float yMin;
+            float yMax;
+        };
+        BoundingBox boundingBox{}; /** Stores the bounding box of the Ball */
 
     public:
         /** Default constructor and destructor */
@@ -38,6 +45,12 @@ class Ball {
 
         /** Calculate forces that apply to the Ball */
         void calculateForces();
+
+        /** Update the bounding box of the Ball */
+        void updateBoundingBox();
+
+        /** Return the bounding box of the ball */
+        BoundingBox getBoundingBox() const;
 
         /** Return pointer to the ball Particle */
         Particle* getParticle();
