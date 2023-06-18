@@ -8,17 +8,27 @@
 #include <vector>
 #include "particle.h"
 using namespace std;
+
 namespace engine {
 
+    /** Collision resolver responsible for resolving collisions between objects */
     class CollisionResolver {
         private:
-            vector<Particle*> collidingParticles;
-            real contactCoefficient = 0.8f;
-            Vector contactDirection;
+            vector<Particle*> collidingParticles; /** Stores all colliding particles */
+            real contactCoefficient = 0.65f; /** Coefficient of restitution */
+            Vector contactDirection; /** Direction of contact */
 
         public:
+            /** Add a collision between two objects into the vector */
             void addCollision(Particle *object1, Particle *object2);
+
+            /** Resolve a collision between two objects */
+            void resolveCollision(Particle* object1, Particle* object2);
+
+            /** Resolve collisions between all Particles */
             void resolve(real delta);
+
+            /** Remove resolved collisions from the vector */
             void removeResolvedCollisions();
     };
 }

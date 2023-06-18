@@ -13,8 +13,24 @@ void CollisionResolver::addCollision(Particle *object1, Particle *object2) {
 void CollisionResolver::resolve(real delta) {
 
     if (collidingParticles.size() < 2) return;
-    Particle* object1 = collidingParticles[0];
-    Particle* object2 = collidingParticles[1];
+
+    // Resolve collisions for all particles in the colliding Particles vector
+    for (int i = 0; i < collidingParticles.size(); i += 2) {
+        resolveCollision(collidingParticles[i], collidingParticles[i + 1]);
+    }
+
+    removeResolvedCollisions();
+}
+
+void CollisionResolver::removeResolvedCollisions() {
+    std::cout << "Removing resolved collisions - " << collidingParticles.size() << std::endl;
+
+    for (auto it = collidingParticles.begin(); it != collidingParticles.end();) {
+        it = collidingParticles.erase(it);
+    }
+}
+
+void CollisionResolver::resolveCollision(Particle* object1, Particle* object2) {
 
     // Calculate the contact direction
     contactDirection = object2->getPosition() - object1->getPosition();
@@ -24,7 +40,7 @@ void CollisionResolver::resolve(real delta) {
     Vector velocityDifference = object1->getVelocity() - object2->getVelocity();
     real separatingVelocity = velocityDifference.getScalarProduct(contactDirection);
 
-    // Check if needs to be resolve, return if not
+    // Check if it needs to be resolved, return if not
     if (separatingVelocity > 0.0f) { return; }
 
     real separatingVelocityWithCoefficient = real(-1) * separatingVelocity * contactCoefficient;
@@ -33,7 +49,7 @@ void CollisionResolver::resolve(real delta) {
     real sumOfInvertedMasses = object1->getMass() + object2->getMass();
 
     // Ensure we are not resolving collision for objects with infinite mass
-    if (sumOfInvertedMasses < 0.0f) { return; }
+    if (sumOfInvertedMasses <= 0.0f) { return; }
 
     Vector resultingImpulse = contactDirection * (differenceInVel / sumOfInvertedMasses);
 
@@ -45,10 +61,3 @@ void CollisionResolver::resolve(real delta) {
     Vector object2Impulse = object2->getVelocity() + resultingImpulse * object2->getMass() * real(-1);
     object2->setVelocity(object2Impulse);
 }
-
-void CollisionResolver::removeResolvedCollisions() {
-    for (auto it = collidingParticles.begin(); it != collidingParticles.end();) {
-        it = collidingParticles.erase(it);
-    }
-}
-
