@@ -6,10 +6,10 @@
 #include "world.h"
 
 void World::createBall() {
-    if (ballsTimer > 5) return;
+    if (ballsTimer > 100) return;
 
     real delta = renderer->getDelta();
-    Ball* ball = new Ball(15.f, 500.0f * delta, 500.0f);
+    Ball* ball = new Ball(10.f, 0.0f, 500.0f);
     myBalls.push_back(ball);
     renderer->addObjectToDetector(ball);
     ballsTimer += 1;

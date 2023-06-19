@@ -29,7 +29,7 @@ private:
 
     /** Stores the SFML RenderWindow object */
     sf::RenderWindow* window;
-    sf::Event event;
+    sf::Event event{};
 
     /** SFML object used to measure time between frames */
     sf::Clock clock;
