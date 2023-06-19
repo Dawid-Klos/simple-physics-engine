@@ -15,7 +15,7 @@ namespace engine {
     class CollisionResolver {
         private:
             vector<Particle*> collidingParticles; /** Stores all colliding particles */
-            real contactCoefficient = 0.65f; /** Coefficient of restitution */
+            real contactCoefficient = 0.85f; /** Coefficient of restitution */
             Vector contactDirection; /** Direction of contact */
 
         public:

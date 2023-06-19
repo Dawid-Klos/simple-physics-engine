@@ -17,7 +17,7 @@ SimulationRenderer::SimulationRenderer(real width, real height) {
     window = new sf::RenderWindow(sf::VideoMode((unsigned int)WINDOW_WIDTH, (unsigned int)WINDOW_HEIGHT), "Physics Simulation", sf::Style::Default, settings);
 
     // Set FPS limit
-    unsigned int fps = 60;
+    unsigned int fps = 80;
     window->setFramerateLimit(fps);
     // window->setVerticalSyncEnabled(true);
 
