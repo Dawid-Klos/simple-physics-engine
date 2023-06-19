@@ -27,18 +27,18 @@ namespace engine {
         void getPosition(Vector *pos) const;
 
         /** Set position for given Particle */
-        void setPosition(real x, real y, real z);
+        void setPosition(real x, real y);
 
         /** Set velocity for given Particle */
         void setVelocity(const Vector &velocity);
-        void setVelocity(real x, real y, real z);
+        void setVelocity(real x, real y);
 
         /** Get velocity for given Particle */
         [[nodiscard]] Vector getVelocity() const;
 
         /** Set acceleration for given Particle */
         void setAcceleration(const Vector &acc);
-        void setAcceleration(real x, real y, real z);
+        void setAcceleration(real x, real y);
 
         /** Get acceleration for given Particle */
         [[nodiscard]] Vector getAcceleration() const;

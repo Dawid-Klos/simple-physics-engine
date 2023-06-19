@@ -58,9 +58,9 @@ void SimulationRenderer::updateEvents(vector<Ball*>& balls, Spring &spring) {
                 break;
             case sf::Event::KeyPressed:
                 if (event.key.code == sf::Keyboard::Left) {
-                    spring.move(Vector(-45.0f, 0.0f, 0.0f));
+                    spring.move(Vector(-45.0f, 0.0f));
                 } else if (event.key.code == sf::Keyboard::Right) {
-                    spring.move(Vector(45.0f, 0.0f, 0.0f));
+                    spring.move(Vector(45.0f, 0.0f));
                 } else if (event.key.code == sf::Keyboard::Escape) {
                     window->close();
                 } else if (event.key.code == sf::Keyboard::Space) {

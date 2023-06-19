@@ -11,7 +11,7 @@ Spring::Spring(real len, real windowHeight) {
 
     /** Init variables */
     springLength = len;
-    Vector anchorPosition = {line[0].position.x, line[0].position.y, 0.0f};
+    Vector anchorPosition = {line[0].position.x, line[0].position.y};
     springForce.initSpringParameters(springLength, anchorPosition);
 
     /** Set line color */
@@ -27,7 +27,7 @@ Spring::Spring(real len, real windowHeight) {
     /** Initialise Particle variables */
     springParticle.setMass(real(0.01) * springLength);
     springParticle.setDamping(0.99f);
-    springParticle.setPosition(400.0f, 600.0f - springLength, 0.0f);
+    springParticle.setPosition(400.0f, 600.0f - springLength);
 }
 
 Spring::~Spring() = default;

@@ -17,9 +17,9 @@ Ball::Ball(real rad, real posX, real posY) {
     /** Set the Particle object properties for physics calculations */
     ballParticle.setMass(real(0.1f) * rad);
     ballParticle.setDamping(0.95f);
-    ballParticle.setPosition(posX, posY, 0.0f);
-    ballParticle.setVelocity(150.0f, 25.0f, 0.0f);
-    ballParticle.setAcceleration(20.0f, 0.0f, 0.0f);
+    ballParticle.setPosition(posX, posY);
+    ballParticle.setVelocity(150.0f, 25.0f);
+    ballParticle.setAcceleration(20.0f, 0.0f);
 }
 
 Ball::~Ball() = default;
@@ -45,9 +45,10 @@ void Ball::move(Vector acc) {
 }
 
 void Ball::jump() {
-    Vector jumpAcc = {0.0f, 100.0f, 0.0f};
+    Vector jumpAcc = {0.0f, 100.0f};
     ballParticle.setAcceleration(jumpAcc);
 }
+
 Vector Ball::getCurrentAcceleration() {
     return ballParticle.getAcceleration();
 }
@@ -86,30 +87,30 @@ void Ball::resolveScreenCollision(real WINDOW_WIDTH, real WINDOW_HEIGHT) {
     // Check for collision with the left wall
     if (position.x - radius < 0) {
         if (velocity.x < 0.5f) {
-            ballParticle.setVelocity(0.0f, velocity.y, velocity.z);
+            ballParticle.setVelocity(0.0f, velocity.y);
         } else {
-            ballParticle.setVelocity(Vector(static_cast<real>(fabs(velocity.x)) * 0.6f, velocity.y, velocity.z));
+            ballParticle.setVelocity(Vector(static_cast<real>(fabs(velocity.x)) * 0.6f, velocity.y));
         }
     }
 
     // Check for collision with the right wall
     if (position.x + radius > WINDOW_WIDTH) {
-        ballParticle.setVelocity(Vector(static_cast<real>(-fabs(velocity.x)) * 0.6f, velocity.y, velocity.z));
+        ballParticle.setVelocity(Vector(static_cast<real>(-fabs(velocity.x)) * 0.6f, velocity.y));
     }
 
     // Check for collision with the top wall
     if (position.y - radius < 0) {
         if (velocity.y < 10.0f) {
-            ballParticle.setVelocity(velocity.x, 0.0f, velocity.z);
+            ballParticle.setVelocity(velocity.x, 0.0f);
         } else {
-            ballParticle.setVelocity(Vector(velocity.x, static_cast<real>(fabs(velocity.y)) * 0.6f, velocity.z));
+            ballParticle.setVelocity(Vector(velocity.x, static_cast<real>(fabs(velocity.y)) * 0.6f));
         }
-        ballParticle.setVelocity(Vector(velocity.x, static_cast<real>(fabs(velocity.y)), velocity.z));
+        ballParticle.setVelocity(Vector(velocity.x, static_cast<real>(fabs(velocity.y))));
     }
 
     // Check for collision with the bottom wall
     if (position.y - radius > WINDOW_HEIGHT) {
-        ballParticle.setVelocity(Vector(velocity.x, static_cast<real>(-fabs(velocity.y)) * 0.6f, velocity.z));
+        ballParticle.setVelocity(Vector(velocity.x, static_cast<real>(-fabs(velocity.y)) * 0.6f));
     }
 }
 

@@ -23,7 +23,7 @@ namespace engine {
      * */
     class GravityForce : public ForceGeneratorAbstract {
         private:
-            Vector gravity = Vector{0.0f, -25.0f, 0.0f};
+            Vector gravity = Vector{0.0f, -25.0f};
         public:
             void updateForce(Particle *particle) override {
                 particle->addForce(gravity);

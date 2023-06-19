@@ -19,24 +19,22 @@ void Particle::setVelocity(const Vector &vel) {
     Particle::velocity = vel;
 }
 
-void Particle::setVelocity(real x, real y, real z) {
+void Particle::setVelocity(real x, real y) {
     Particle::velocity.x = x;
     Particle::velocity.y = y;
-    Particle::velocity.z = z;
 }
 
 void Particle::setAcceleration(const Vector &acc) {
     Particle::acceleration = acc;
 }
 
-void Particle::setAcceleration(real x, real y, real z) {
+void Particle::setAcceleration(real x, real y) {
     Particle::acceleration.x = x;
     Particle::acceleration.y = y;
-    Particle::acceleration.z = z;
 }
 
-void Particle::setPosition(engine::real x, engine::real y, engine::real z) {
-    Particle::position = Vector(x, y, z);
+void Particle::setPosition(engine::real x, engine::real y) {
+    Particle::position = Vector(x, y);
 }
 
 void Particle::setDamping(real value) {
@@ -88,11 +86,11 @@ void Particle::integrate(real delta) {
     /**
      * End of adapted code
      */
-    setAcceleration(Vector(0.0f, 0.0f, 0.0f));
+    setAcceleration(Vector(0.0f, 0.0f));
 }
 
 void Particle::clearForceStorage() {
-    Particle::forceStorage = Vector(0.0f, 0.0f, 0.0f);
+    Particle::forceStorage = Vector(0.0f, 0.0f);
 }
 
 void Particle::addForce(Vector force) {
