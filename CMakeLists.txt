@@ -2,10 +2,11 @@ cmake_minimum_required(VERSION 3.24)
 project(simple_physics_engine)
 
 set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(ENGINE_HEADERS ./include)
 set(ENGINE_SOURCE ./src)
-
+set(TESTS ./tests)
 set(SFML_DIR ./home/dave/SFML-2.5.1/include/SFML)
 
 include_directories(${ENGINE_HEADERS})
@@ -34,3 +35,6 @@ set(
 
 add_executable(simple_physics_engine ${SOURCE_FILES})
 target_link_libraries(simple_physics_engine sfml-system sfml-window sfml-graphics)
+
+## Google tests
+add_subdirectory(tests)
