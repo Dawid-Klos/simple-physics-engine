@@ -53,8 +53,16 @@ Vector Particle::getPosition() const {
     return position;
 }
 
-void Particle::getPosition(Vector *pos) const {
-    *pos = Particle::position;
+real Particle::getMass() const {
+    return invertedMass;
+}
+
+void Particle::clearForceStorage() {
+    Particle::forceStorage = Vector(0.0f, 0.0f);
+}
+
+void Particle::addForce(Vector force) {
+    Particle::forceStorage += force;
 }
 
 void Particle::integrate(real delta) {
@@ -63,7 +71,6 @@ void Particle::integrate(real delta) {
      */
     // Ensure we don't perform integration on objects with infinite mass
     if (invertedMass <= 0.0f) return;
-
     assert(delta > 0.0f);
 
     // Update position
@@ -86,18 +93,6 @@ void Particle::integrate(real delta) {
     /**
      * End of adapted code
      */
+
     setAcceleration(Vector(0.0f, 0.0f));
 }
-
-void Particle::clearForceStorage() {
-    Particle::forceStorage = Vector(0.0f, 0.0f);
-}
-
-void Particle::addForce(Vector force) {
-    Particle::forceStorage += force;
-}
-
-real Particle::getMass() const {
-    return invertedMass;
-}
-

@@ -43,19 +43,18 @@ void CollisionResolver::resolveCollision(Particle* object1, Particle* object2) {
     // Check if it needs to be resolved, return if not
     if (separatingVelocity > 0.0f) { return; }
 
-    real separatingVelocityWithCoefficient = real(-1) * separatingVelocity * contactCoefficient;
+    real separatingVelocityWithCoefficient = real(-1.f) * separatingVelocity * contactCoefficient;
     real differenceInVel = separatingVelocityWithCoefficient - separatingVelocity;
 
-    real sumOfInvertedMasses = object1->getMass() + object2->getMass();
-
     // Ensure we are not resolving collision for objects with infinite mass
+    real sumOfInvertedMasses = object1->getMass() + object2->getMass();
     if (sumOfInvertedMasses <= 0.0f) { return; }
 
     Vector resultingImpulse = contactDirection * (differenceInVel / sumOfInvertedMasses);
 
     // Apply impulse directly to the velocity for ParticleOne
-    Vector particleOneImpulse = object1->getVelocity() + resultingImpulse * object1->getMass();
-    object1->setVelocity(particleOneImpulse);
+    Vector object1Impulse = object1->getVelocity() + resultingImpulse * object1->getMass();
+    object1->setVelocity(object1Impulse);
 
     // Apply impulse directly to the velocity for ParticleTwo
     Vector object2Impulse = object2->getVelocity() + resultingImpulse * object2->getMass() * real(-1);

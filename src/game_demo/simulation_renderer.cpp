@@ -19,7 +19,7 @@ SimulationRenderer::SimulationRenderer(real width, real height) {
     // Set FPS limit
     unsigned int fps = 80;
     window->setFramerateLimit(fps);
-    // window->setVerticalSyncEnabled(true);
+    window->setVerticalSyncEnabled(true);
 
     // Set up window View - reverse window height coordinates
     sf::View view = window->getDefaultView();

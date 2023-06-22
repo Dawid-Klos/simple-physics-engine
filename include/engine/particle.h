@@ -14,17 +14,16 @@ namespace engine {
     */
     class Particle {
     private:
-        Vector position; /** Hold the position of the particle. */
-        Vector velocity; /** Holds the velocity of the particle. */
-        Vector acceleration; /** Holds the acceleration of the particle. */
-        real invertedMass; /** Holds the inverted mass of the particle. */
-        real damping; /** Holds the amount of damping applied to particle. */
+        Vector position; /** Hold the position of a particle. */
+        Vector velocity; /** Holds the velocity of a particle. */
+        Vector acceleration; /** Holds the acceleration of a particle. */
+        real invertedMass{}; /** Holds the inverted mass of a particle. */
+        real damping{}; /** Holds the amount of damping applied to a particle. */
         Vector forceStorage; /** Holds the accumulated forces */
 
     public:
         /** Return position of given Particle */
         [[nodiscard]] Vector getPosition() const;
-        void getPosition(Vector *pos) const;
 
         /** Set position for given Particle */
         void setPosition(real x, real y);

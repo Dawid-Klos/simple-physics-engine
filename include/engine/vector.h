@@ -9,16 +9,16 @@
 #include "precision.h"
 
 namespace engine {
-    /** Represents a vector in three dimensions - x, y, z. */
+    /** Represents a vector in two dimensions - x, y. */
     class Vector {
     public:
         real x; /** Holds the value of x axis */
         real y; /** Holds the value of y axis */
 
-        /** The default constructor creates a new vector */
+        /** The default constructor creates a new vector with x and y coordinates */
         Vector() : x(0), y(0) {}
 
-        /** The explicit constructor creates a vector with the given values */
+        /** The explicit constructor creates a vector with the given values for x and y */
         Vector(const real x, const real y) : x(x), y(y) {}
 
         /** Inverts all the values of the stored vector */
@@ -37,15 +37,21 @@ namespace engine {
             return x*x+y*y;
         }
 
-        /** Perform a normalization on a vector */
+        /** Performs a normalization on a vector */
         void normalize() {
             real magnitude = getMagnitude();
 
-            /* Avoid dividing by zero */
-            if(magnitude > 0) {
-                (*this).x /= magnitude;
-                (*this).y /= magnitude;
+            // Avoid dividing by zero
+            if(magnitude > 0.0f) {
+                x /= magnitude;
+                y /= magnitude;
             }
+        }
+
+        /** Divides the stored vector by the given scalar */
+        void operator/=(const real value) {
+            x /= value;
+            y /= value;
         }
 
         /** Multiplies the stored vector by the given scalar */
@@ -54,7 +60,7 @@ namespace engine {
             y *= value;
         }
 
-        /** Return a copy of the stored vector, scaled by a given value */
+        /** Returns a copy of the stored vector, scaled by a given value */
         Vector operator*(const real value) const {
             return Vector{x*value, y*value};
         }
