@@ -27,6 +27,7 @@ namespace engine {
 
         /** Set position for given Particle */
         void setPosition(real x, real y);
+        void setPosition(const Vector &pos);
 
         /** Set velocity for given Particle */
         void setVelocity(const Vector &velocity);

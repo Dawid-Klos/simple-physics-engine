@@ -37,6 +37,10 @@ void Particle::setPosition(engine::real x, engine::real y) {
     Particle::position = Vector(x, y);
 }
 
+void Particle::setPosition(const Vector &pos) {
+    Particle::position = pos;
+}
+
 void Particle::setDamping(real value) {
     Particle::damping = value;
 }
