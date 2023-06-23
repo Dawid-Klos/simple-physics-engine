@@ -6,36 +6,25 @@
 using namespace engine;
 
 void CollisionResolver::addCollision(Particle *object1, Particle *object2) {
-    collidingParticles.push_back(object1);
-    collidingParticles.push_back(object2);
+    Collision new_collision = {object1, object2};
+    collisions.push_back(new_collision);
 }
 
 void CollisionResolver::resolve(real delta) {
 
-    if (collidingParticles.size() < 2) return;
+    if (collisions.size() < 2) return;
 
-    // Resolve collisions for all particles in the colliding Particles vector
-    for (int i = 0; i < collidingParticles.size(); i += 2) {
-        resolveCollision(collidingParticles[i], collidingParticles[i + 1]);
+    for (auto & collision : collisions) {
+        resolveCollision(collision.particle1, collision.particle2);
     }
 
     removeResolvedCollisions();
 }
 
-//void CollisionResolver::removeResolvedCollisions() {
-//    std::cout << "Removing resolved collisions - " << collidingParticles.size() << std::endl;
-//
-//    for (auto it = collidingParticles.begin(); it != collidingParticles.end();) {
-//        it = collidingParticles.erase(it);
-//    }
-//}
-
-//test
 void CollisionResolver::removeResolvedCollisions() {
-    std::cout << "Removing resolved collisions - " << collidingParticles.size() << std::endl;
-    collidingParticles.clear();
+    std::cout << "Removing resolved collisions - " << collisions.size() << std::endl;
+    collisions.clear();
 }
-
 
 void CollisionResolver::resolveCollision(Particle* object1, Particle* object2) {
 
