@@ -99,7 +99,7 @@ void Ball::resolveScreenCollision(real WINDOW_WIDTH, real WINDOW_HEIGHT) {
 
     // Check for collision with the bottom wall - floor
     if (position.y - radius < 0) {
-        if (velocity.y < 0.0f & velocity.y > - 0.5f) {
+        if (velocity.y < 0.0f && velocity.y > - 0.5f) {
             ballParticle.setVelocity(Vector(velocity.x, 0.0f));
         } else {
             ballParticle.setVelocity(Vector(velocity.x, static_cast<real>(fabs(velocity.y)) * 0.6f));
