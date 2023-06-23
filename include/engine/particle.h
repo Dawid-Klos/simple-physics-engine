@@ -49,6 +49,10 @@ namespace engine {
         /** Get mass for given Particle */
         [[nodiscard]] real getMass() const;
 
+
+        [[nodiscard]] real getInvertedMass() const;
+
+
         /** Set mass for given Particle. The value is stored as 1/mass */
         void setMass(real mass);
 
