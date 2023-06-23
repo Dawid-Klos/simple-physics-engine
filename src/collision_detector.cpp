@@ -73,7 +73,6 @@ void CollisionDetector::detectCollisions() {
         for (int pair : overlappingPairsMap[i]) {
             // Do narrow phase collision detection between balls i and other
             if (ballsOverlap(*balls[i], *balls[pair])) {
-//                std::cout << "Collision detected between " << i << " and " << pair << endl;
                 balls[i]->changeColor(sf::Color(255, 0, 0));
                 balls[pair]->changeColor(sf::Color(255, 0, 0));
                 collisionResolver.addCollision(balls[i]->getParticle(), balls[pair]->getParticle());

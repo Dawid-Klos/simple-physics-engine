@@ -22,13 +22,20 @@ void CollisionResolver::resolve(real delta) {
     removeResolvedCollisions();
 }
 
+//void CollisionResolver::removeResolvedCollisions() {
+//    std::cout << "Removing resolved collisions - " << collidingParticles.size() << std::endl;
+//
+//    for (auto it = collidingParticles.begin(); it != collidingParticles.end();) {
+//        it = collidingParticles.erase(it);
+//    }
+//}
+
+//test
 void CollisionResolver::removeResolvedCollisions() {
     std::cout << "Removing resolved collisions - " << collidingParticles.size() << std::endl;
-
-    for (auto it = collidingParticles.begin(); it != collidingParticles.end();) {
-        it = collidingParticles.erase(it);
-    }
+    collidingParticles.clear();
 }
+
 
 void CollisionResolver::resolveCollision(Particle* object1, Particle* object2) {
 

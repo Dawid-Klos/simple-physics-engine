@@ -2,6 +2,10 @@
 // Created by dave on 17.04.23.
 //
 
+#ifndef TEST_FRIENDS
+#define TEST_FRIENDS
+#endif
+
 #ifndef SIMPLE_PHYSICS_ENGINE_COLLISIONDETECTOR_H
 #define SIMPLE_PHYSICS_ENGINE_COLLISIONDETECTOR_H
 
@@ -18,6 +22,7 @@ namespace engine {
      * Collision detector responsible for detecting objects that intersects with each other.
      */
     class CollisionDetector {
+        TEST_FRIENDS;
     private:
         vector<Ball*> balls;
 
