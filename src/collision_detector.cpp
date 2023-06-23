@@ -24,7 +24,7 @@ bool CollisionDetector::ballsOverlap(Ball &ball1, Ball &ball2)  {
     real distanceMagnitude = distance.getMagnitude();
 
     // add small threshold to radius sum to reduce false collisions
-    return distanceMagnitude < radiusSum;
+    return distanceMagnitude < radiusSum + 0.0001f;
 }
 
 void CollisionDetector::detectCollisions() {
@@ -43,14 +43,15 @@ void CollisionDetector::detectCollisions() {
     // Step 3: Update sorted lists each frame
     for (int i = 0; i < balls.size(); i++) {
         Ball* ball = balls[i];
-        intervals[0][i].min = ball->getBoundingBox().xMin;
-        intervals[0][i].max = ball->getBoundingBox().xMax;
-        intervals[1][i].min = ball->getBoundingBox().yMin;
-        intervals[1][i].max = ball->getBoundingBox().yMax;
+        intervals[0][i].min = ball->getBoundingBox().xMin * 0.85f;
+        intervals[0][i].max = ball->getBoundingBox().xMax * 0.85f;
+        intervals[1][i].min = ball->getBoundingBox().yMin * 0.85f;
+        intervals[1][i].max = ball->getBoundingBox().yMax * 0.85f;
     }
 
+
     // Step 4: Check for overlaps along all axes
-    unordered_map<int, vector<int>> overlappingPairsMap(balls.size());
+    unordered_map<int, vector<int>> overlappingPairsMap(intervals.size());
 
     for (int i = 0; i < 2; i++) {
         for (int j = 0; j < intervals[i].size(); j++) {

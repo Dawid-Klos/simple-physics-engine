@@ -32,8 +32,8 @@ namespace engine {
 
         struct Interval {
             int objectIndex;
-            float min;
-            float max;
+            real min;
+            real max;
         };
 
         std::vector<std::vector<Interval>> intervals;
