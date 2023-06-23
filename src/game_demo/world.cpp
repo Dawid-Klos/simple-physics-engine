@@ -6,7 +6,7 @@
 #include "world.h"
 
 void World::createBall() {
-    if (ballsTimer > 10) return;
+    if (ballsTimer > 30) return;
 
     real delta = renderer->getDelta();
 
