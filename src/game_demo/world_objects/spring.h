@@ -42,7 +42,7 @@ class Spring : public GameObject {
         void draw(sf::RenderWindow &window) override;
 
         /** Function that handles the update of position */
-        void update(real delta, sf::Window &window);
+        void update(real delta) override;
 
         /** Moves the spring based on the acceleration applied */
         void move(Vector acc);

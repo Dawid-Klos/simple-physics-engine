@@ -8,11 +8,12 @@
 #include "vector.h"
 
 namespace engine {
-    /**
-    * A particle is the simplest object that can be simulated in the
-    * physics system.
-    */
-    class Particle {
+
+/**
+* A particle is the simplest object that can be simulated in the
+* physics system.
+*/
+class Particle {
     private:
         Vector position; /** Hold the position of a particle. */
         Vector velocity; /** Holds the velocity of a particle. */

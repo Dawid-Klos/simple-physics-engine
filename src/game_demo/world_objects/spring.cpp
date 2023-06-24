@@ -38,7 +38,7 @@ void Spring::draw(sf::RenderWindow &window) {
     window.draw(springMassShape);
 }
 
-void Spring::update(real delta, sf::Window &window) {
+void Spring::update(real delta) {
     // Apply forces acting on the object
     calculateForces();
 
