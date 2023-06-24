@@ -25,17 +25,13 @@ namespace engine {
         TEST_FRIENDS;
     private:
         vector<Ball*> balls;
-
         CollisionResolver& collisionResolver;
-
-        static bool ballsOverlap(Ball& ball1, Ball& ball2);
 
         struct Interval {
             int objectIndex;
             real min;
             real max;
         };
-
         std::vector<std::vector<Interval>> intervals;
 
     public:
@@ -52,6 +48,8 @@ namespace engine {
 
         /** Detect collisions between balls */
         void detectCollisions();
+
+        static bool ballsOverlap(Ball& ball1, Ball& ball2);
     };
 }
 
