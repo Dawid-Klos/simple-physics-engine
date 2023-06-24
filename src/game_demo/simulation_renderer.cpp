@@ -89,7 +89,7 @@ void SimulationRenderer::update(const vector<Ball*>& myBalls, Spring& spring) {
 
     // Update particle position
     for (auto* ball : myBalls) {
-        ball->update(delta, *window);
+        ball->update(delta);
     }
     spring.update(delta, *window);
 

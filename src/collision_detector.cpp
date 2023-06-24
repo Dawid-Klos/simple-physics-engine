@@ -3,8 +3,6 @@
 //
 #include <iostream>
 #include "engine/collision_detector.h"
-#include "game_demo/world_objects/ball.h"
-
 
 using namespace engine;
 
@@ -54,7 +52,6 @@ void CollisionDetector::createIntervals() {
 }
 
 void CollisionDetector::detectCollisions() {
-
     // Step 1: Create intervals for each ball
     createIntervals();
 
