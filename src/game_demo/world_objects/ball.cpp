@@ -7,7 +7,7 @@ Ball::Ball(real rad, real posX, real posY) {
     /** Initialise variables */
     radius = rad;
 
-    /** Set the Ball shape object properties and position in the scene */
+    /** Set the Ball shape object properties and position in the simulation */
     circleShape.setRadius(radius);
     circleShape.setOrigin(radius, radius);
     circleShape.setFillColor(sf::Color{169, 151, 223});
@@ -23,7 +23,7 @@ Ball::Ball(real rad, real posX, real posY) {
 
 Ball::~Ball() = default;
 
-void Ball::update(real delta, sf::Window &window) {
+void Ball::update(real delta) {
     // Apply forces to the Ball
     calculateForces();
 
@@ -39,30 +39,24 @@ void Ball::draw(sf::RenderWindow &window) {
     window.draw(circleShape);
 }
 
-void Ball::move(Vector acc) {
-    ballParticle.setAcceleration(acc);
+Ball::BoundingBox Ball::getBoundingBox() const {
+    return boundingBox;
 }
 
-void Ball::jump() {
-    Vector jumpAcc = {0.0f, 100.0f};
-    ballParticle.setAcceleration(jumpAcc);
-}
-
-Vector Ball::getCurrentAcceleration() {
-    return ballParticle.getAcceleration();
-}
-
-Vector Ball::getCurrentVelocity() {
-    return ballParticle.getVelocity();
-}
-
-Vector Ball::getCurrentPosition() {
-    return ballParticle.getPosition();
+void Ball::updateBoundingBox() {
+    boundingBox.xMin = ballParticle.getPosition().x - radius;
+    boundingBox.xMax = ballParticle.getPosition().x + radius;
+    boundingBox.yMin = ballParticle.getPosition().y - radius;
+    boundingBox.yMax = ballParticle.getPosition().y + radius;
 }
 
 void Ball::calculateForces() {
-   gravityForce.updateForce(&ballParticle);
-   dragForce.updateForce(&ballParticle);
+    gravityForce.updateForce(&ballParticle);
+    dragForce.updateForce(&ballParticle);
+}
+
+void Ball::move(Vector acc) {
+    ballParticle.setAcceleration(acc);
 }
 
 real Ball::getRadius() const {
@@ -110,15 +104,4 @@ void Ball::resolveScreenCollision(real WINDOW_WIDTH, real WINDOW_HEIGHT) {
     if (position.y - radius > WINDOW_HEIGHT) {
          ballParticle.setVelocity(Vector(velocity.x, static_cast<real>(-fabs(velocity.y)) * 0.6f));
     }
-}
-
-Ball::BoundingBox Ball::getBoundingBox() const {
-    return boundingBox;
-}
-
-void Ball::updateBoundingBox() {
-    boundingBox.xMin = ballParticle.getPosition().x - radius;
-    boundingBox.xMax = ballParticle.getPosition().x + radius;
-    boundingBox.yMin = ballParticle.getPosition().y - radius;
-    boundingBox.yMax = ballParticle.getPosition().y + radius;
 }

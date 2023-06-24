@@ -10,14 +10,15 @@
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include "engine/force_generator_abstract.h"
+#include "game_object.h"
 
 using namespace engine;
 
 /**
- * Represents a single Ball shape object.
- * Inherits from the Particle class to allow for applying physics.
+ * Represents a single Ball shape object. Inherits from Game object base class.
+ * Stores an instance of the Particle class to allow for applying physics.
  */
-class Ball {
+class Ball : public GameObject {
     private:
         sf::CircleShape circleShape; /** Stores a circle object from the SFML library */
         real radius; /** Stores the radius of the Ball */
@@ -37,11 +38,11 @@ class Ball {
         explicit Ball(real radius, real posX, real posY);
         ~Ball();
 
-        /** Functions to render the circle by calling SFML window */
-        void draw(sf::RenderWindow &window);
+        /** Draw this object by calling SFML window */
+        void draw(sf::RenderWindow &window) override;
 
-        /** Function that handles the update of position */
-        void update(real delta, sf::Window &window);
+        /** Update this object position by calling integrate function from Particle class */
+        void update(real delta) override;
 
         /** Calculate forces that apply to the Ball */
         void calculateForces();
@@ -60,15 +61,9 @@ class Ball {
 
         /** Functions called to move the ball */
         void move(Vector);
-        void jump();
 
         /** Change the ball color */
         void changeColor(sf::Color color);
-
-        /** TEMP only / Get particle acceleration, velocity and position */
-        Vector getCurrentAcceleration();
-        Vector getCurrentVelocity();
-        Vector getCurrentPosition();
 
         void resolveScreenCollision(float WINDOW_WIDTH, float WINDOW_HEIGHT);
 };
