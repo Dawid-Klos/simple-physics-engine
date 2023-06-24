@@ -22,9 +22,10 @@ class Ball : public GameObject {
     private:
         sf::CircleShape circleShape; /** Stores a circle object from the SFML library */
         real radius; /** Stores the radius of the Ball */
-        Particle ballParticle; /** Stored the Particle object for physics calculation */
-        GravityForce gravityForce; /** Used for adding gravity to the Ball */
-        DragForce dragForce = DragForce(0.0009f); /** Used for adding drag force to the Ball */
+        Particle ballParticle; /** Stores an instance of Particle class for physics calculation */
+        GravityForce gravityForce; /** Interface applying gravity to the Ball */
+        DragForce dragForce = DragForce(0.0009f); /** Interface applying drag force to the Ball */
+
         struct BoundingBox {
             float xMin;
             float xMax;

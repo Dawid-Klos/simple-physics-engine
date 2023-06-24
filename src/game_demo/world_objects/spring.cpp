@@ -4,37 +4,38 @@
 
 #include "spring.h"
 
-Spring::Spring(real len, real windowHeight) {
+Spring::Spring(real len, Vector anchorPos) {
     /** Set spring line position - line[0] anchor - line[1] end */
-    line[0] = sf::Vector2f(400.0f, windowHeight);
-    line[1] = sf::Vector2f(400.0f, windowHeight - springLength);
+    line[0] = sf::Vector2f(anchorPos.x, anchorPos.y);
+    line[1] = sf::Vector2f(anchorPos.x, anchorPos.y - springLength);
 
-    /** Init variables */
+    /** Store spring length in rest */
     springLength = len;
-    Vector anchorPosition = {line[0].position.x, line[0].position.y};
-    springForce.initSpringParameters(springLength, anchorPosition);
+
+    /** Initialize spring force system */
+    springForce.initSpringParameters(springLength, anchorPos);
 
     /** Set line color */
     line[0].color = sf::Color(48,54,47);
     line[1].color = sf::Color(48,54,47);
 
-    /** Set spring mass */
-    springMass.setRadius(springLength / 6);
-    springMass.setFillColor(sf::Color(218, 116, 34));
-    springMass.setOrigin(springLength / 6, springLength / 6);
-    springMass.setPosition(400.0f, 600.0f - springLength);
+    /** Set spring mass - SFML shape object properties */
+    springMassShape.setRadius(springLength / 6);
+    springMassShape.setFillColor(sf::Color(218, 116, 34));
+    springMassShape.setOrigin(springLength / 6, springLength / 6);
+    springMassShape.setPosition(anchorPos.x, anchorPos.y - springLength);
 
     /** Initialise Particle variables */
     springParticle.setMass(real(0.01) * springLength);
     springParticle.setDamping(0.99f);
-    springParticle.setPosition(400.0f, 600.0f - springLength);
+    springParticle.setPosition(anchorPos.x, anchorPos.y - springLength);
 }
 
 Spring::~Spring() = default;
 
 void Spring::draw(sf::RenderWindow &window) {
     window.draw(line, 2, sf::Lines);
-    window.draw(springMass);
+    window.draw(springMassShape);
 }
 
 void Spring::update(real delta, sf::Window &window) {
@@ -49,7 +50,7 @@ void Spring::update(real delta, sf::Window &window) {
     line[1].position.x = newPosition.x;
     line[1].position.y = newPosition.y;
 
-    springMass.setPosition(newPosition.x, newPosition.y);
+    springMassShape.setPosition(newPosition.x, newPosition.y);
 }
 
 void Spring::calculateForces() {
