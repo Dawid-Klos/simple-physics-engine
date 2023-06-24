@@ -6,14 +6,13 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(ENGINE_HEADERS ./include)
 set(ENGINE_SOURCE ./src)
-set(TESTS ./tests)
 set(SFML_DIR ./home/dave/SFML-2.5.1/include/SFML)
 
 include_directories(${ENGINE_HEADERS})
 include_directories(${ENGINE_SOURCE})
 
 set(
-        SOURCE_FILES
+        ENGINE_FILES
         ${ENGINE_HEADERS}/engine/particle.h
         ${ENGINE_HEADERS}/engine/vector.h
         ${ENGINE_HEADERS}/engine/precision.h
@@ -23,18 +22,14 @@ set(
         ${ENGINE_SOURCE}/particle.cpp
         ${ENGINE_SOURCE}/collision_detector.cpp
         ${ENGINE_SOURCE}/collision_resolver.cpp
-        ${ENGINE_SOURCE}/main.cpp
-        ${ENGINE_SOURCE}/game_demo/ball.h
-        ${ENGINE_SOURCE}/game_demo/ball.cpp
-        ${ENGINE_SOURCE}/game_demo/spring.h
-        ${ENGINE_SOURCE}/game_demo/spring.cpp
-        ${ENGINE_SOURCE}/game_demo/simulation_renderer.h
-        ${ENGINE_SOURCE}/game_demo/simulation_renderer.cpp
-        ${ENGINE_SOURCE}/game_demo/world.h
-        ${ENGINE_SOURCE}/game_demo/world.cpp)
+        ${ENGINE_SOURCE}/main.cpp)
 
-add_executable(simple_physics_engine ${SOURCE_FILES})
-target_link_libraries(simple_physics_engine sfml-system sfml-window sfml-graphics)
 
 ## Google tests
 add_subdirectory(tests)
+
+## World demo
+add_subdirectory(src/game_demo)
+
+add_executable(simple_physics_engine ${GAME_DEMO} ${ENGINE_FILES})
+target_link_libraries(simple_physics_engine sfml-system sfml-window sfml-graphics)

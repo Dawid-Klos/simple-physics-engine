@@ -12,7 +12,7 @@
 #include <engine/vector.h>
 #include <vector>
 
-#include "game_demo/ball.h"
+#include "game_demo/world_objects/ball.h"
 #include "collision_resolver.h"
 
 using namespace std;

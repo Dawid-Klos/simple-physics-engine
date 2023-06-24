@@ -13,7 +13,7 @@
 #include "engine/precision.h"
 #include "engine/collision_resolver.h"
 #include "engine/collision_detector.h"
-#include "spring.h"
+#include "game_demo/world_objects/spring.h"
 
 using namespace engine;
 

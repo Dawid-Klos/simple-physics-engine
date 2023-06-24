@@ -10,7 +10,7 @@
 
 #include "engine/precision.h"
 
-#include "spring.h"
+#include "game_demo/world_objects/spring.h"
 #include "simulation_renderer.h"
 
 using namespace engine;

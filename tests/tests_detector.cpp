@@ -14,7 +14,7 @@
 #include <engine/collision_detector.h>
 #include "../src/collision_detector.cpp"
 #include "../src/collision_resolver.cpp"
-#include "../src/game_demo/ball.cpp"
+#include "game_demo/world_objects/ball.cpp"
 
 namespace engine {
     CollisionDetector initDetector() {

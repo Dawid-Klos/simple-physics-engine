@@ -3,7 +3,7 @@
 //
 #include <iostream>
 #include "engine/collision_detector.h"
-#include "game_demo/ball.h"
+#include "game_demo/world_objects/ball.h"
 
 
 using namespace engine;
