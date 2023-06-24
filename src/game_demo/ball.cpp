@@ -14,10 +14,10 @@ Ball::Ball(real rad, real posX, real posY) {
     circleShape.setPosition(posX, posY);
 
     /** Set the Particle object properties for physics calculations */
-    ballParticle.setMass(real(0.1f) * rad);
-    ballParticle.setDamping(0.9f);
+    ballParticle.setMass(real(0.15f) * rad);
+    ballParticle.setDamping(0.95f);
     ballParticle.setPosition(posX, posY);
-    ballParticle.setVelocity(150.0f, 25.0f);
+    ballParticle.setVelocity(60.0f, 50.0f);
     ballParticle.setAcceleration(20.0f, 0.0f);
 }
 
@@ -84,7 +84,7 @@ void Ball::resolveScreenCollision(real WINDOW_WIDTH, real WINDOW_HEIGHT) {
 
     // TODO: Implement more sophisticated way of detecting screen boundaries collisions
     // Check for collision with the left wall
-    if (position.x + radius < 0) {
+    if (position.x + radius < 0.0f) {
         if (velocity.x < 0.5f) {
             ballParticle.setVelocity(0.0f, velocity.y);
         } else {
@@ -98,7 +98,7 @@ void Ball::resolveScreenCollision(real WINDOW_WIDTH, real WINDOW_HEIGHT) {
     }
 
     // Check for collision with the bottom wall - floor
-    if (position.y - radius < 0) {
+    if (position.y - radius < 0.0f) {
         if (velocity.y < 0.0f && velocity.y > - 0.5f) {
             ballParticle.setVelocity(Vector(velocity.x, 0.0f));
         } else {

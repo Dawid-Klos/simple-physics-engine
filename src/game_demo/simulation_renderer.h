@@ -51,7 +51,7 @@ public:
     void addObjectToDetector(Ball* ball);
 
     /** Update the events */
-    void updateEvents(vector<Ball*>& balls, Spring &spring);
+    void updateEvents(Spring &spring);
 
     /** Update the simulation */
     void update(const vector<Ball*>& balls, Spring &spring);

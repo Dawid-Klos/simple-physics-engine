@@ -17,9 +17,9 @@ SimulationRenderer::SimulationRenderer(real width, real height) {
     window = new sf::RenderWindow(sf::VideoMode((unsigned int)WINDOW_WIDTH, (unsigned int)WINDOW_HEIGHT), "Physics Simulation", sf::Style::Default, settings);
 
     // Set FPS limit
-    unsigned int fps = 80;
-    window->setFramerateLimit(fps);
-    window->setVerticalSyncEnabled(true);
+//    unsigned int fps = 80;
+//    window->setFramerateLimit(fps);
+//    window->setVerticalSyncEnabled(true);
 
     // Set up window View - reverse window height coordinates
     sf::View view = window->getDefaultView();
@@ -49,12 +49,11 @@ bool SimulationRenderer::running() const {
     return window->isOpen();
 }
 
-void SimulationRenderer::updateEvents(vector<Ball*>& balls, Spring &spring) {
+void SimulationRenderer::updateEvents(Spring &spring) {
     while (window->pollEvent(event)) {
         switch (event.type) {
             case sf::Event::Closed:
                 window->close();
-
                 break;
             case sf::Event::KeyPressed:
                 if (event.key.code == sf::Keyboard::Left) {
@@ -67,10 +66,6 @@ void SimulationRenderer::updateEvents(vector<Ball*>& balls, Spring &spring) {
                     spring.extendSpring();
                 }
                 break;
-            case sf::Event::MouseButtonPressed:
-                if (event.mouseButton.button == sf::Mouse::Left) {
-
-                }
             default:
                 break;
         }
@@ -79,10 +74,10 @@ void SimulationRenderer::updateEvents(vector<Ball*>& balls, Spring &spring) {
 
 void SimulationRenderer::update(const vector<Ball*>& myBalls, Spring& spring) {
     // Update delta time
-    delta = clock.restart().asSeconds() + 0.035f;
+    delta = clock.restart().asSeconds() * 5.0f;
 
     // Update pool events
-//    updateEvents();
+     updateEvents(spring);
 
     // Reset the color of the balls after collisions resolved
     for (auto* ball : myBalls) {
@@ -91,7 +86,6 @@ void SimulationRenderer::update(const vector<Ball*>& myBalls, Spring& spring) {
 
     // Collision detection
     collisionDetector.detectCollisions();
-    collisionResolver.resolve(delta);
 
     // Update particle position
     for (auto* ball : myBalls) {

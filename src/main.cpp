@@ -1,4 +1,3 @@
-#include <iostream>
 #include "game_demo/world.h"
 #include "game_demo/simulation_renderer.h"
 

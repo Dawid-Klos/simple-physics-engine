@@ -6,11 +6,9 @@
 #include "world.h"
 
 void World::createBall() {
-    if (ballsTimer > 30) return;
+    if (ballsTimer > 100) return;
 
-    real delta = renderer->getDelta();
-
-    Ball* ball = new Ball(300.f * delta, 0.0f, 500.0f);
+    Ball* ball = new Ball(10.f, 0.0f, 500.0f);
     myBalls.push_back(ball);
     renderer->addObjectToDetector(ball);
     ballsTimer += 1;
@@ -25,6 +23,7 @@ void World::updateSpringSystemInfo() {
     Vector acceleration = spring.getCurrentAcceleration();
     Vector velocity =  spring.getCurrentVelocity();
     Vector position =  spring.getCurrentPosition();
+
     ss << "Acc = x: " << acceleration.x << "  y: " << acceleration.y << std::endl;
     ss << "Vel = x: " << velocity.x << "  y: " << velocity.y << std::endl;
     ss << "Pos = x: " << position.x << "  y: " << position.y << std::endl;
@@ -36,7 +35,7 @@ void World::update() {
     renderer->drawText(ss.str());
     ss.str(std::string());
 
-    renderer->updateEvents(myBalls, spring);
+    renderer->updateEvents(spring);
     renderer->update(myBalls, spring);
     renderer->render(myBalls, spring);
 }
