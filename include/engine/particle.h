@@ -47,9 +47,6 @@ class Particle {
         /** Set the damping value for given Particle */
         void setDamping(real value);
 
-        /** Get mass for given Particle */
-        [[nodiscard]] real getMass() const;
-
         /** Get inverted mass for given Particle */
         [[nodiscard]] real getInvertedMass() const;
 

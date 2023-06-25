@@ -57,10 +57,6 @@ Vector Particle::getPosition() const {
     return position;
 }
 
-real Particle::getMass() const {
-    return invertedMass / invertedMass;;
-}
-
 real Particle::getInvertedMass() const {
     return invertedMass;
 }
