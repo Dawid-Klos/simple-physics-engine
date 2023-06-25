@@ -5,10 +5,10 @@
 #ifndef SIMPLE_PHYSICS_ENGINE_BALL_H
 #define SIMPLE_PHYSICS_ENGINE_BALL_H
 
-#include "engine/particle.h"
-
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
+
+#include "engine/particle.h"
 #include "engine/force_generator_abstract.h"
 #include "game_object.h"
 

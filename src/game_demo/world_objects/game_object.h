@@ -6,6 +6,9 @@
 #define SIMPLE_PHYSICS_ENGINE_GAME_OBJECT_H
 
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <engine/vector.h>
+
+using namespace engine;
 
 struct BoundingBox {
     float xMin;

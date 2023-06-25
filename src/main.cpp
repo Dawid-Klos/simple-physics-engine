@@ -10,7 +10,8 @@ int main() {
     auto* renderer = new SimulationRenderer(WINDOW_WIDTH, WINDOW_HEIGHT);
 
     World world(*renderer);
-    world.createSpringSystem(WINDOW_HEIGHT);
+//    world.createSpringSystem(WINDOW_HEIGHT);
+    world.setScreenBoundaries(WINDOW_WIDTH, WINDOW_HEIGHT);
 
     sf::Clock ballsTimer = sf::Clock();
 

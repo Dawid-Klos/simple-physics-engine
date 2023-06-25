@@ -5,6 +5,24 @@
 #include <iostream>
 #include "world.h"
 
+void World::setScreenBoundaries(real window_width, real window_height) {
+    // Screen - left wall
+    screen.leftWall = new Wall(10.0f, window_height, 0.0f, 0.0f, sf::Color::Black);
+    worldObjects.push_back(screen.leftWall);
+
+    // Screen - right wall
+    screen.rightWall = new Wall(10.0f, window_height, window_width - 10.0f, 0.0f, sf::Color::Black);
+    worldObjects.push_back(screen.rightWall);
+
+    // Screen - bottom wall
+    screen.bottomWall = new Wall(window_width, 10.0f, 0.0f, 0.0f, sf::Color::Red);
+    worldObjects.push_back(screen.bottomWall);
+
+    // Screen - top wall
+    screen.topWall = new Wall(window_width, 10.0f, 0.0f, window_height - 10.0f, sf::Color::Green);
+    worldObjects.push_back(screen.topWall);
+}
+
 void World::createBall() {
     if (ballsTimer > 2) return;
 

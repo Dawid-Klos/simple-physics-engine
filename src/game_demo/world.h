@@ -12,11 +12,22 @@
 
 #include "game_demo/world_objects/spring.h"
 #include "simulation_renderer.h"
+#include "wall.h"
 
 using namespace engine;
 
 class World {
     private:
+        /** Screen boundaries */
+        struct ScreenBoundaries {
+            Wall* leftWall;
+            Wall* rightWall;
+            Wall* bottomWall;
+            Wall* topWall;
+        };
+
+        ScreenBoundaries screen{};
+
         /** Stores pointers to the Ball objects */
         std::vector<GameObject*> worldObjects;
         unsigned int ballsTimer = 0;
@@ -35,6 +46,9 @@ class World {
 
         /** Create a new Ball object */
         void createBall();
+
+        /** Set screen boundaries - walls */
+        void setScreenBoundaries(real window_width, real window_height);
 
         /** Crate spring system */
         void createSpringSystem(real WINDOW_HEIGHT);
