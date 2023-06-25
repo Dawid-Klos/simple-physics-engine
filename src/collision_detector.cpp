@@ -10,21 +10,6 @@ void CollisionDetector::addObject(GameObject* gameObject) {
     gameObjects.push_back(gameObject);
 }
 
-bool CollisionDetector::objectsOverlap(GameObject &gameObject1, GameObject &gameObject2) {
-    // Check if gameObject1 or gameObject2 are instance of ball or spring
-    // If so, use their bounding boxes
-
-
-
-//    real radiusSum = gameObject1.getRadius() + ball2.getRadius();
-//    Vector distance = ball2.getParticle().getPosition() - ball1.getParticle().getPosition();
-//    real distanceMagnitude = distance.getMagnitude();
-//
-//    // add small threshold to radius sum to reduce false collisions
-//    return distanceMagnitude < radiusSum + 0.001f;
-    return true;
-}
-
 void CollisionDetector::createIntervals() {
     // Prepare intervals vector
     intervals.clear();
@@ -92,9 +77,7 @@ void CollisionDetector::detectCollisions() {
     for (int i = 0; i < gameObjects.size(); i++) {
         for (int pair : overlappingPairsMap[i]) {
             // Do narrow phase collision detection between balls i and other
-            if (objectsOverlap(*gameObjects[i], *gameObjects[pair])) {
-//                gameObjects[i]->changeColor(sf::Color(255, 0, 0));
-//                gameObjects[pair]->changeColor(sf::Color(255, 0, 0));
+            if (gameObjects[i]->collideWith(gameObjects[pair])) {
                 collisionResolver.addCollision(gameObjects[i], gameObjects[pair]);
             }
         }

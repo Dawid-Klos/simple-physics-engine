@@ -23,11 +23,16 @@ public:
     virtual ~GameObject() = default;
     virtual void update(float delta) = 0;
     virtual void draw(sf::RenderWindow& window) = 0;
-    virtual engine::Particle& getParticle() = 0; /** Getter for accessing Particle instance */
 
-    BoundingBox boundingBox{}; /** Stores the bounding box of a game object */
+    /** Getter for accessing Particle instance */
+    virtual engine::Particle& getParticle() = 0;
+
+    /** Check if this object collides with another object */
+    virtual bool collideWith(GameObject* other) = 0;
+
+    /** Stores the bounding box of a game object */
+    BoundingBox boundingBox{};
     virtual BoundingBox getBoundingBox() = 0;
 };
-
 
 #endif //SIMPLE_PHYSICS_ENGINE_GAME_OBJECT_H

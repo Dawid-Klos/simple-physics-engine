@@ -107,3 +107,17 @@ void Ball::resolveScreenCollision(real WINDOW_WIDTH, real WINDOW_HEIGHT) {
          ballParticle.setVelocity(Vector(velocity.x, static_cast<real>(-fabs(velocity.y)) * 0.6f));
     }
 }
+
+bool Ball::collideWith(GameObject *other) {
+    return collideWith(this);
+}
+
+bool Ball::collideWith(Ball* other) {
+    real radiusSum = getRadius() + other->getRadius();
+    Vector distance = ballParticle.getPosition() - other->getParticle().getPosition();
+    real distanceMagnitude = distance.getMagnitude();
+
+    // add small threshold to radius sum to reduce false collisions
+    return distanceMagnitude < radiusSum + 0.001f;
+}
+

@@ -6,7 +6,7 @@
 #include "world.h"
 
 void World::createBall() {
-    if (ballsTimer > 100) return;
+    if (ballsTimer > 2) return;
 
     GameObject* ball = new Ball(10.f, 0.0f, 500.0f);
     worldObjects.push_back(ball);

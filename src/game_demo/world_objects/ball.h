@@ -38,6 +38,10 @@ class Ball : public virtual GameObject {
         /** Update this object position by calling integrate function from Particle class */
         void update(real delta) override;
 
+        /** Check if a ball collides with another object */
+        bool collideWith(GameObject* other) override;
+        bool collideWith(Ball* other);
+
         /** Calculate forces that apply to the Ball */
         void calculateForces();
 

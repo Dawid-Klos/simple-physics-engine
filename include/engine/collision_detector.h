@@ -46,8 +46,6 @@ namespace engine {
 
         /** Detect collisions between balls */
         void detectCollisions();
-
-        static bool objectsOverlap(GameObject& gameObject1, GameObject& gameObject2);
     };
 }
 
