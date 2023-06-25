@@ -21,7 +21,6 @@ Ball::Ball(real rad, real posX, real posY) {
     ballParticle.setAcceleration(20.0f, 0.0f);
 }
 
-Ball::~Ball() = default;
 
 void Ball::update(real delta) {
     // Apply forces to the Ball
@@ -33,13 +32,16 @@ void Ball::update(real delta) {
     // Set new position after integrating
     Vector newPosition = ballParticle.getPosition();
     circleShape.setPosition(newPosition.x, newPosition.y);
+
+    // Update ball bounding box with new position
+    updateBoundingBox();
 }
 
 void Ball::draw(sf::RenderWindow &window) {
     window.draw(circleShape);
 }
 
-Ball::BoundingBox Ball::getBoundingBox() const {
+BoundingBox Ball::getBoundingBox() {
     return boundingBox;
 }
 
@@ -67,8 +69,8 @@ void Ball::changeColor(sf::Color color) {
     circleShape.setFillColor(color);
 }
 
-Particle* Ball::getParticle() {
-    return &ballParticle;
+Particle& Ball::getParticle() {
+    return ballParticle;
 }
 
 void Ball::resolveScreenCollision(real WINDOW_WIDTH, real WINDOW_HEIGHT) {

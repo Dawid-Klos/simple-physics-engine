@@ -18,7 +18,7 @@ using namespace engine;
  * Represents a spring object that can simulate spring forces.
  * Stores an instance of the Particle class to allow for applying physics.
  * */
-class Spring : public GameObject {
+class Spring : public virtual GameObject {
     private:
         sf::Vertex line[2]; /** SFML object represents a line connecting anchor and spring mass */
         sf::CircleShape springMassShape; /** Stores a circle object from the SFML library to represent Spring mass */
@@ -33,7 +33,6 @@ class Spring : public GameObject {
     public:
         /** Default constructor/destructor */
         explicit Spring(real len, Vector anchorPos);
-        ~Spring();
 
         /** Calculate forces that apply to the Spring object */
         void calculateForces();

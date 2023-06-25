@@ -18,16 +18,16 @@ using namespace engine;
 class World {
     private:
         /** Stores pointers to the Ball objects */
-        vector<Ball*> myBalls;
+        std::vector<GameObject*> worldObjects;
         unsigned int ballsTimer = 0;
-
-        /** Spring object */
-        Spring spring = Spring(0.0f, 0.0f);
+//
+//        /** Spring object */
+//        Spring spring = Spring(120.0f, {400.0f, 800.0f});
 
         /** Stream for displaying text on the screen */
         std::ostringstream ss;
 
-        /** Instance of SimulationRenderer used to draw to window */
+        /** Instance of SimulationRenderer used to draw objects in simulation */
         SimulationRenderer* renderer;
 
     public:

@@ -24,7 +24,8 @@ namespace engine {
     class CollisionDetector {
         TEST_FRIENDS;
     private:
-        vector<Ball*> balls;
+        /** Stores pointers to all objects that occur in the simulation */
+        std::vector<GameObject*> gameObjects;
         CollisionResolver& collisionResolver;
 
         struct Interval {
@@ -37,19 +38,16 @@ namespace engine {
     public:
         explicit CollisionDetector(CollisionResolver& resolver) : collisionResolver(resolver) {}
 
-        /** Add a ball object to the collision detector */
-        void addBall(Ball* ball);
+        /** Add a object to the collision detector */
+        void addObject(GameObject* gameObject);
 
-        /** Create intervals for each ball */
+        /** Create intervals for each object */
         void createIntervals();
-
-        /** Update bounding boxes of all balls */
-        void updateBoundingBoxes();
 
         /** Detect collisions between balls */
         void detectCollisions();
 
-        static bool ballsOverlap(Ball& ball1, Ball& ball2);
+        static bool objectsOverlap(GameObject& gameObject1, GameObject& gameObject2);
     };
 }
 

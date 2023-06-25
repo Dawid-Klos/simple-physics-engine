@@ -18,7 +18,7 @@ using namespace engine;
  * Represents a single Ball shape object. Inherits from Game object base class.
  * Stores an instance of the Particle class to allow for applying physics.
  */
-class Ball : public GameObject {
+class Ball : public virtual GameObject {
     private:
         sf::CircleShape circleShape; /** Stores a circle object from the SFML library */
         real radius; /** Stores the radius of the Ball */
@@ -26,18 +26,11 @@ class Ball : public GameObject {
         GravityForce gravityForce; /** Interface applying gravity to the Ball */
         DragForce dragForce = DragForce(0.0009f); /** Interface applying drag force to the Ball */
 
-        struct BoundingBox {
-            float xMin;
-            float xMax;
-            float yMin;
-            float yMax;
-        };
-        BoundingBox boundingBox{}; /** Stores the bounding box of the Ball */
+        void updateBoundingBox(); /** Update the bounding box of the Ball */
 
     public:
         /** Default constructor and destructor */
         explicit Ball(real radius, real posX, real posY);
-        ~Ball();
 
         /** Draw this object by calling SFML window */
         void draw(sf::RenderWindow &window) override;
@@ -48,14 +41,11 @@ class Ball : public GameObject {
         /** Calculate forces that apply to the Ball */
         void calculateForces();
 
-        /** Update the bounding box of the Ball */
-        void updateBoundingBox();
-
         /** Return the bounding box of the ball */
-        BoundingBox getBoundingBox() const;
+        BoundingBox getBoundingBox() override;
 
         /** Return pointer to the ball Particle */
-        Particle* getParticle();
+        Particle& getParticle() override;
 
         /** Get particle radius */
         real getRadius() const;

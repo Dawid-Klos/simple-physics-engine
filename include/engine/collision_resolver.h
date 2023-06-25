@@ -21,47 +21,30 @@ namespace engine {
         TEST_FRIENDS;
         private:
             struct Collision {
-                Particle* particle1;
-                Particle* particle2;
+                GameObject* object1;
+                GameObject* object2;
             };
-            struct BallCollision {
-                Ball* ball1;
-                Ball* ball2;
-            };
-            vector<Particle*> collidingParticles; /** Stores all colliding particles */
             vector<Collision> collisions; /** Stores all collisions between two particles */
-            vector<BallCollision> ballCollisions; /** Stores all collisions between two particles */
             real contactCoefficient = 0.95f; /** Coefficient of restitution */
             Vector contactDirection; /** Direction of contact */
 
         public:
             /** Add a collision between two objects into the vector */
-            void addCollision(Particle *object1, Particle *object2);
+            void addCollision(GameObject* object1, GameObject* object2);
 
             /** Resolve a collision between two objects */
-            void resolveCollision(Particle* object1, Particle* object2);
+            void resolveCollision(GameObject* object1, GameObject*  object2);
 
             /** Resolve collisions between all Particles */
-            void resolve(real delta);
+            void resolve();
 
             /** Remove resolved collisions from the vector */
             void removeResolvedCollisions();
 
 
-            /** Add a collision between two objects into the vector */
-            void addBallCollision(Ball* ball1, Ball* ball2);
-
-            /** Resolve a collision between two objects */
-            void resolveBallCollision(Ball* ball1, Ball* ball2);
-
-            /** Resolve collisions between all Particles */
-            void resolveBall();
-
-            /** Remove resolved collisions from the vector */
-            void removeBallResolvedCollisions();
 
             /** Resolve intersection of two particles */
-            static void resolveIntersection(Ball* ball1, Ball* ball2);
+            static void resolveIntersection(GameObject* object1, GameObject*  object2);
     };
 }
 

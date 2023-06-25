@@ -16,11 +16,6 @@ SimulationRenderer::SimulationRenderer(real width, real height) {
 
     window = new sf::RenderWindow(sf::VideoMode((unsigned int)WINDOW_WIDTH, (unsigned int)WINDOW_HEIGHT), "Physics Simulation", sf::Style::Default, settings);
 
-    // Set FPS limit
-//    unsigned int fps = 80;
-//    window->setFramerateLimit(fps);
-//    window->setVerticalSyncEnabled(true);
-
     // Set up window View - reverse window height coordinates
     sf::View view = window->getDefaultView();
     view.setSize(WINDOW_WIDTH, -WINDOW_HEIGHT);
@@ -31,8 +26,8 @@ SimulationRenderer::~SimulationRenderer() {
     delete this->window;
 }
 
-void SimulationRenderer::addObjectToDetector(Ball* ball) {
-    collisionDetector.addBall(ball);
+void SimulationRenderer::addObjectToDetector(GameObject* gameObject) {
+    collisionDetector.addObject(gameObject);
 }
 
 void SimulationRenderer::drawText(const sf::String &str) {
@@ -72,43 +67,41 @@ void SimulationRenderer::updateEvents(Spring &spring) {
     }
 }
 
-void SimulationRenderer::update(const vector<Ball*>& myBalls, Spring& spring) {
+void SimulationRenderer::update(const vector<GameObject*>& myObjects) {
     // Update delta time
     delta = clock.restart().asSeconds() * 5.0f;
 
     // Update pool events
-     updateEvents(spring);
+//     updateEvents(spring);
 
     // Reset the color of the balls after collisions resolved
-    for (auto* ball : myBalls) {
-        ball->changeColor(sf::Color{169, 151, 223});
+    for (auto* object : myObjects) {
+//        object->changeColor(sf::Color{169, 151, 223});
     }
 
     // Collision detection
     collisionDetector.detectCollisions();
 
     // Update particle position
-    for (auto* ball : myBalls) {
-        ball->update(delta);
+    for (auto* object : myObjects) {
+        object->update(delta);
     }
-    spring.update(delta, *window);
 
 
     // Temp solution for screen collisions
-    for (auto* ball : myBalls) {
-        ball->resolveScreenCollision(WINDOW_WIDTH, WINDOW_HEIGHT);
-    }
+//    for (auto* object : myObjects) {
+//        ball->resolveScreenCollision(WINDOW_WIDTH, WINDOW_HEIGHT);
+//    }
 }
 
-void SimulationRenderer::render(const vector<Ball*>& myBalls, Spring& spring) {
+void SimulationRenderer::render(const vector<GameObject*>& myObjects) {
     // Clear the window
     window->clear(sf::Color(255, 251, 219));
 
     // Draw the objects
-    for (auto* ball : myBalls) {
-        ball->draw(*window);
+    for (auto* object : myObjects) {
+        object->draw(*window);
     }
-    spring.draw(*window);
 
     // Draw text
     window->draw(myText);

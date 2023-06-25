@@ -8,25 +8,26 @@
 void World::createBall() {
     if (ballsTimer > 100) return;
 
-    Ball* ball = new Ball(10.f, 0.0f, 500.0f);
-    myBalls.push_back(ball);
+    GameObject* ball = new Ball(10.f, 0.0f, 500.0f);
+    worldObjects.push_back(ball);
+
     renderer->addObjectToDetector(ball);
     ballsTimer += 1;
 }
 
 void World::createSpringSystem(real WINDOW_HEIGHT) {
-    spring = Spring(50.0f, WINDOW_HEIGHT);
+//    spring = Spring(50.0f, WINDOW_HEIGHT);
 }
 
 void World::updateSpringSystemInfo() {
     // Print information on screen about the Spring
-    Vector acceleration = spring.getCurrentAcceleration();
-    Vector velocity =  spring.getCurrentVelocity();
-    Vector position =  spring.getCurrentPosition();
-
-    ss << "Acc = x: " << acceleration.x << "  y: " << acceleration.y << std::endl;
-    ss << "Vel = x: " << velocity.x << "  y: " << velocity.y << std::endl;
-    ss << "Pos = x: " << position.x << "  y: " << position.y << std::endl;
+//    Vector acceleration = spring.getCurrentAcceleration();
+//    Vector velocity =  spring.getCurrentVelocity();
+//    Vector position =  spring.getCurrentPosition();
+//
+//    ss << "Acc = x: " << acceleration.x << "  y: " << acceleration.y << std::endl;
+//    ss << "Vel = x: " << velocity.x << "  y: " << velocity.y << std::endl;
+//    ss << "Pos = x: " << position.x << "  y: " << position.y << std::endl;
 }
 
 void World::update() {
@@ -35,7 +36,7 @@ void World::update() {
     renderer->drawText(ss.str());
     ss.str(std::string());
 
-    renderer->updateEvents(spring);
-    renderer->update(myBalls, spring);
-    renderer->render(myBalls, spring);
+//    renderer->updateEvents(spring);
+    renderer->update(worldObjects);
+    renderer->render(worldObjects);
 }

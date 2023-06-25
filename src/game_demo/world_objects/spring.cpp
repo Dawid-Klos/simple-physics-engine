@@ -26,12 +26,10 @@ Spring::Spring(real len, Vector anchorPos) {
     springMassShape.setPosition(anchorPos.x, anchorPos.y - springLength);
 
     /** Initialise Particle variables */
-    springParticle.setMass(real(0.01) * springLength);
-    springParticle.setDamping(0.99f);
+    springParticle.setMass(real(0.015) * springLength);
+    springParticle.setDamping(0.95f);
     springParticle.setPosition(anchorPos.x, anchorPos.y - springLength);
 }
-
-Spring::~Spring() = default;
 
 void Spring::draw(sf::RenderWindow &window) {
     window.draw(line, 2, sf::Lines);

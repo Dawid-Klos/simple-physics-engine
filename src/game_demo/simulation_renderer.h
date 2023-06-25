@@ -48,16 +48,16 @@ public:
     bool running() const;
 
     /** Add objects to the collision detector system */
-    void addObjectToDetector(Ball* ball);
+    void addObjectToDetector(GameObject* gameObject);
 
     /** Update the events */
     void updateEvents(Spring &spring);
 
     /** Update the simulation */
-    void update(const vector<Ball*>& balls, Spring &spring);
+    void update(const vector<GameObject*>& myObjects);
 
     /** Render the simulation */
-    void render(const vector<Ball*>& myBalls, Spring& spring);
+    void render(const vector<GameObject*>& myObjects);
 
     /** Draw text on the screen */
     void drawText(const sf::String &str);
