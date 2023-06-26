@@ -7,8 +7,16 @@
 
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <engine/vector.h>
+class Wall;
+class Ball;
 
 using namespace engine;
+
+enum ObjectType {
+    BALL,
+    SPRING,
+    WALL
+};
 
 struct BoundingBox {
     float xMin;
@@ -23,19 +31,16 @@ class GameObject {
      * Additionally, keep bounding box properties for collision detection purposes.
      */
 public:
+    ObjectType objectType{};
+
     virtual ~GameObject() = default;
     virtual void update(float delta) = 0;
     virtual void draw(sf::RenderWindow& window) = 0;
 
     /** Getter for accessing Particle instance */
-    virtual engine::Particle& getParticle() = 0;
+    virtual Particle* getParticle() = 0;
 
-    /** Check if this object collides with another object */
-    virtual bool collideWith(GameObject* other) = 0;
-
-    /** Stores the bounding box of a game object */
-    BoundingBox boundingBox{};
-    virtual BoundingBox getBoundingBox() = 0;
+    [[nodiscard]] virtual BoundingBox getBoundingBox() const = 0;
 };
 
 #endif //SIMPLE_PHYSICS_ENGINE_GAME_OBJECT_H

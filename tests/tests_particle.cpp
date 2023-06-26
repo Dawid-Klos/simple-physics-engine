@@ -116,6 +116,17 @@ TEST(ParticleTest, SetMass) {
     real mass = particle.getMass();
 
     // we are storing inverted mass
+    ASSERT_EQ(mass, real(10.0f));
+}
+
+// get inverted mass
+TEST(ParticleTest, GetInvertedMass) {
+    Particle particle = Particle();
+    particle.setMass(real(10.0f));
+
+    real mass = particle.getInvertedMass();
+
+    // we are storing inverted mass
     ASSERT_EQ(mass, real(0.1f));
 }
 

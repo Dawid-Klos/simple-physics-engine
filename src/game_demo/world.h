@@ -20,10 +20,10 @@ class World {
     private:
         /** Screen boundaries */
         struct ScreenBoundaries {
-            Wall* leftWall;
-            Wall* rightWall;
-            Wall* bottomWall;
-            Wall* topWall;
+            GameObject* leftWall;
+            GameObject* rightWall;
+            GameObject* bottomWall;
+            GameObject* topWall;
         };
 
         ScreenBoundaries screen{};

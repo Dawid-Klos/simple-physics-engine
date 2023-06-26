@@ -11,6 +11,7 @@
 #include "engine/particle.h"
 #include "engine/force_generator_abstract.h"
 #include "game_object.h"
+#include "wall.h"
 
 using namespace engine;
 
@@ -18,19 +19,20 @@ using namespace engine;
  * Represents a single Ball shape object. Inherits from Game object base class.
  * Stores an instance of the Particle class to allow for applying physics.
  */
-class Ball : public virtual GameObject {
+class Ball : public virtual GameObject, public Particle {
     private:
         sf::CircleShape circleShape; /** Stores a circle object from the SFML library */
         real radius; /** Stores the radius of the Ball */
-        Particle ballParticle; /** Stores an instance of Particle class for physics calculation */
         GravityForce gravityForce; /** Interface applying gravity to the Ball */
         DragForce dragForce = DragForce(0.0009f); /** Interface applying drag force to the Ball */
 
+        BoundingBox boundingBox{}; /** Stores the bounding box of a game object */
         void updateBoundingBox(); /** Update the bounding box of the Ball */
 
     public:
         /** Default constructor and destructor */
         explicit Ball(real radius, real posX, real posY);
+        ~Ball() override = default;
 
         /** Draw this object by calling SFML window */
         void draw(sf::RenderWindow &window) override;
@@ -38,29 +40,19 @@ class Ball : public virtual GameObject {
         /** Update this object position by calling integrate function from Particle class */
         void update(real delta) override;
 
-        /** Check if a ball collides with another object */
-        bool collideWith(GameObject* other) override;
-        bool collideWith(Ball* other);
+        /** Getter for accessing Particle instance */
+        Particle* getParticle() override;
 
         /** Calculate forces that apply to the Ball */
         void calculateForces();
 
-        /** Return the bounding box of the ball */
-        BoundingBox getBoundingBox() override;
-
-        /** Return pointer to the ball Particle */
-        Particle& getParticle() override;
+        [[nodiscard]] BoundingBox getBoundingBox() const override;
 
         /** Get particle radius */
         real getRadius() const;
 
-        /** Functions called to move the ball */
-        void move(Vector);
-
         /** Change the ball color */
         void changeColor(sf::Color color);
-
-        void resolveScreenCollision(float WINDOW_WIDTH, float WINDOW_HEIGHT);
 };
 
 #endif //SIMPLE_PHYSICS_ENGINE_BALL_H

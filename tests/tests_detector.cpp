@@ -15,6 +15,7 @@
 #include "../src/collision_detector.cpp"
 #include "../src/collision_resolver.cpp"
 #include "game_demo/world_objects/ball.cpp"
+#include "game_demo/world_objects/wall.cpp"
 
 namespace engine {
     CollisionDetector initDetector() {
@@ -31,16 +32,16 @@ namespace engine {
         CollisionDetector collisionDetector = initDetector();
 
         collisionDetector.detectCollisions();
-        EXPECT_EQ(collisionDetector.balls.size(), 0);
+        EXPECT_EQ(collisionDetector.gameObjects.size(), 0);
     }
 
     TEST(DetectorTests, OneObject) {
         CollisionDetector collisionDetector = initDetector();
-        Ball* ball = new Ball(10, 0, 0);
-        collisionDetector.addBall(ball);
+        GameObject* ball = new Ball(10, 0, 0);
+        collisionDetector.addObject(ball);
 
         collisionDetector.detectCollisions();
-        EXPECT_EQ(collisionDetector.balls.size(), 1);
+        EXPECT_EQ(collisionDetector.gameObjects.size(), 1);
     }
 
     TEST(DetectorTests, MultipleObjects) {
@@ -49,11 +50,11 @@ namespace engine {
         // create multiple balls
         for (int i = 0; i < 10; i++) {
             Ball* ball = new Ball(10, real(i+1), real(i+2));
-            collisionDetector.detector.addBall(ball);
+            collisionDetector.detector.addObject(ball);
         }
 
         collisionDetector.detector.detectCollisions();
-        EXPECT_EQ(collisionDetector.detector.balls.size(), 10);
+        EXPECT_EQ(collisionDetector.detector.gameObjects.size(), 10);
     }
 }
 

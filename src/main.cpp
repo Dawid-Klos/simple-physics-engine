@@ -16,15 +16,14 @@ int main() {
     sf::Clock ballsTimer = sf::Clock();
 
     while (renderer->running()) {
-
         // Create a new ball every 1 seconds
-        if (ballsTimer.getElapsedTime().asSeconds() > 0.15f) {
+        if (ballsTimer.getElapsedTime().asSeconds() > 0.5f) {
             ballsTimer.restart();
             world.createBall();
         }
 
-        // Update particle position
         world.update();
     }
+
     return 0;
 }

@@ -22,13 +22,13 @@ namespace engine {
 
         // create multiple balls
         for (int i = 0; i < 10; i++) {
-            Ball* ball = new Ball(10, real(i+1), real(i+2));
-            collisionDetector.detector.addBall(ball);
+            GameObject* ball = new Ball(10, real(i+1), real(i+2));
+            collisionDetector.detector.addObject(ball);
         }
 
         collisionDetector.detector.detectCollisions();
-        collisionDetector.collisionResolver.resolve(real(0.12f));
-        EXPECT_EQ(collisionDetector.collisionResolver.collidingParticles.size(), 0);
+        collisionDetector.collisionResolver.resolve();
+        EXPECT_EQ(collisionDetector.collisionResolver.collisions.size(), 0);
     }
 
     TEST(ResolverTests, AbortResolveIfOneObject) {
@@ -36,12 +36,12 @@ namespace engine {
 
         // create multiple balls
         for (int i = 0; i < 2; i++) {
-            Ball* ball = new Ball(10, real(i+1), real(i+2));
-            collisionDetector.detector.addBall(ball);
+            GameObject* ball = new Ball(10, real(i+1), real(i+2));
+            collisionDetector.detector.addObject(ball);
         }
 
         collisionDetector.detector.detectCollisions();
-        collisionDetector.collisionResolver.resolve(real(0.12f));
-        EXPECT_EQ(collisionDetector.collisionResolver.collidingParticles.size(), 0);
+        collisionDetector.collisionResolver.resolve();
+        EXPECT_EQ(collisionDetector.collisionResolver.collisions.size(), 0);
     }
 }

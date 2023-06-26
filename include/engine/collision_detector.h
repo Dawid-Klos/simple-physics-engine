@@ -11,8 +11,8 @@
 
 #include <engine/vector.h>
 #include <vector>
+#include <unordered_map>
 
-#include "game_demo/world_objects/ball.h"
 #include "collision_resolver.h"
 
 using namespace std;
@@ -43,6 +43,9 @@ namespace engine {
 
         /** Create intervals for each object */
         void createIntervals();
+
+        /** Use bounding boxes to determine narrow collision intervals */
+        static bool objectsCollides(GameObject* collider, GameObject* otherCollider);
 
         /** Detect collisions between balls */
         void detectCollisions();

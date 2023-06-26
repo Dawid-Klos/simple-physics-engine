@@ -5,13 +5,15 @@
 #include "wall.h"
 
 Wall::Wall(real width, real height, real posX, real posY, sf::Color color) {
+    // Init basic properties
+    objectType = WALL;
+    wallWidth = width;
+    wallHeight = height;
+
     // Init shape properties
     shape.setFillColor(color);
     shape.setPosition(posX, posY);
     shape.setSize(sf::Vector2f(width, height));
-
-    wallWidth = width;
-    wallHeight = height;
 
     // Set bounding box based on width, height, posX and posY
     boundingBox.xMin = posX;
@@ -19,12 +21,12 @@ Wall::Wall(real width, real height, real posX, real posY, sf::Color color) {
     boundingBox.yMin = posY;
     boundingBox.yMax = posY + wallHeight;
 
-    /** Set the Particle object properties for physics calculations */
-    wallParticle.setPosition(posX, posY);
-    wallParticle.setMass(0.0f);
-    wallParticle.setDamping(0.0f);
-    wallParticle.setVelocity(0.0f, 0.0f);
-    wallParticle.setAcceleration(0.0f, 0.0f);
+    // Set the Particle object properties for physics calculations
+    this->setPosition(posX, posY);
+    this->setMass(0.0f);
+    this->setDamping(0.99f);
+    this->setVelocity(0.0f, 0.0f);
+    this->setAcceleration(0.0f, 0.0f);
 }
 
 void Wall::draw(sf::RenderWindow &window) {
@@ -33,45 +35,36 @@ void Wall::draw(sf::RenderWindow &window) {
 
 void Wall::update(real delta) {
     // Perform integration
-    //wallParticle.integrate(delta);
+    integrate(delta);
 
     // Set new position after integrating
-    //Vector newPosition = wallParticle.getPosition();
-//    shape.setPosition(wallParticle.getPosition().x, wallParticle.getPosition().y);
+    shape.setPosition(getPosition().x, getPosition().y);
+
+    // Update bounding box
+    updateBoundingBox();
 }
 
-BoundingBox Wall::getBoundingBox() {
+real Wall::getWidth() const {
+    return wallWidth;
+}
+
+real Wall::getHeight() const {
+    return wallHeight;
+}
+
+BoundingBox Wall::getBoundingBox() const {
     return boundingBox;
 }
 
-Particle &Wall::getParticle() {
-    return wallParticle;
+Particle* Wall::getParticle() {
+    return this;
 }
 
-bool Wall::collideWith(GameObject *other) {
-    return collideWith(this);
-}
-
-bool Wall::collideWith(Ball *other) {
-    // Ball properties
-    real ballX = other->getParticle().getPosition().x;
-    real ballY = other->getParticle().getPosition().y;
-    real radius = other->getRadius();
-
-    // Calculate the closest point between ball and rectangle
-    real closestPointX = std::clamp(ballX, wallParticle.getPosition().x, wallWidth);
-    real closestPointY = std::clamp(ballY, wallParticle.getPosition().y, wallHeight);
-
-    // Calculate the distance between the closest point and the circle's center
-    real distance = std::sqrt(real_pow(ballX - closestPointX, 2) +
-                               real_pow(ballY - closestPointY, 2));
-
-    // Check if the distance is less than or equal to the circle's radius
-    return distance <= radius;
-}
-
-bool Wall::collideWith(Wall *other) {
-    return false;
+void Wall::updateBoundingBox() {
+    boundingBox.xMin = getPosition().x;
+    boundingBox.xMax = getPosition().x + wallWidth;
+    boundingBox.yMin = getPosition().y;
+    boundingBox.yMax = getPosition().y + wallHeight;
 }
 
 Wall::Wall() = default;

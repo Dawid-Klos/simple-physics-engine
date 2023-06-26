@@ -9,38 +9,39 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 
 #include "engine/particle.h"
-#include "ball.h"
 #include "game_object.h"
+#include "ball.h"
 
 using namespace engine;
 
-class Wall : public GameObject {
+class Wall : public GameObject, public Particle {
     private:
-    sf::RectangleShape shape;
-    Particle wallParticle; /** Stores an instance of Particle class for physics calculation */
-    real wallWidth; /** Stores width of the wall */
-    real wallHeight; /** Stores height of the wall */
+        sf::RectangleShape shape; /** Stores a rectangle object from the SFML library */
+        BoundingBox boundingBox{}; /** Stores the bounding box of a game object */
+        void updateBoundingBox(); /** Update the bounding box of the Ball */
+
+        real wallWidth; /** Stores width of the wall */
+        real wallHeight; /** Stores height of the wall */
 
     public:
-    Wall();
-    Wall(real width, real height, real posX, real posY, sf::Color color);
+        Wall();
+        Wall(real width, real height, real posX, real posY, sf::Color color);
 
-    /** Draw this object by calling SFML window */
-    void draw(sf::RenderWindow &window) override;
+        /** Draw this object by calling SFML window */
+        void draw(sf::RenderWindow &window) override;
 
-    /** Update this object position by calling integrate function from Particle class */
-    void update(real delta) override;
+        /** Update this object position by calling integrate function from Particle class */
+        void update(real delta) override;
 
-    /** Return the bounding box of the ball */
-    BoundingBox getBoundingBox() override;
+        /** Getter for accessing Particle instance */
+        Particle* getParticle() override;
 
-    /** Return pointer to the ball Particle */
-    Particle& getParticle() override;
+        [[nodiscard]] BoundingBox getBoundingBox() const override;
+        /** Return the wall width */
+        real getWidth() const;
 
-    /** Check if a wall collides with another object */
-    bool collideWith(GameObject* other) override;
-    bool collideWith(Ball* other);
-    static bool collideWith(Wall* other);
+        /** Return the wall height */
+        real getHeight() const;
 };
 
 

@@ -4,7 +4,8 @@
 #include "ball.h"
 
 Ball::Ball(real rad, real posX, real posY) {
-    /** Initialise variables */
+    // Init basic properties
+    objectType = BALL;
     radius = rad;
 
     /** Set the Ball shape object properties and position in the simulation */
@@ -14,11 +15,11 @@ Ball::Ball(real rad, real posX, real posY) {
     circleShape.setPosition(posX, posY);
 
     /** Set the Particle object properties for physics calculations */
-    ballParticle.setMass(real(0.15f) * rad);
-    ballParticle.setDamping(0.95f);
-    ballParticle.setPosition(posX, posY);
-    ballParticle.setVelocity(60.0f, 50.0f);
-    ballParticle.setAcceleration(20.0f, 0.0f);
+    setMass(real(0.15f) * rad);
+    setDamping(0.95f);
+    setPosition(posX, posY);
+    setVelocity(60.0f, 50.0f);
+    setAcceleration(20.0f, 0.0f);
 }
 
 
@@ -27,10 +28,10 @@ void Ball::update(real delta) {
     calculateForces();
 
     // Perform integration
-    ballParticle.integrate(delta);
+    integrate(delta);
 
     // Set new position after integrating
-    Vector newPosition = ballParticle.getPosition();
+    Vector newPosition = getPosition();
     circleShape.setPosition(newPosition.x, newPosition.y);
 
     // Update ball bounding box with new position
@@ -41,24 +42,16 @@ void Ball::draw(sf::RenderWindow &window) {
     window.draw(circleShape);
 }
 
-BoundingBox Ball::getBoundingBox() {
-    return boundingBox;
-}
-
 void Ball::updateBoundingBox() {
-    boundingBox.xMin = ballParticle.getPosition().x - radius;
-    boundingBox.xMax = ballParticle.getPosition().x + radius;
-    boundingBox.yMin = ballParticle.getPosition().y - radius;
-    boundingBox.yMax = ballParticle.getPosition().y + radius;
+    boundingBox.xMin = getPosition().x - radius;
+    boundingBox.xMax = getPosition().x + radius;
+    boundingBox.yMin = getPosition().y - radius;
+    boundingBox.yMax = getPosition().y + radius;
 }
 
 void Ball::calculateForces() {
-    gravityForce.updateForce(&ballParticle);
-    dragForce.updateForce(&ballParticle);
-}
-
-void Ball::move(Vector acc) {
-    ballParticle.setAcceleration(acc);
+    gravityForce.updateForce(this);
+    dragForce.updateForce(this);
 }
 
 real Ball::getRadius() const {
@@ -69,55 +62,10 @@ void Ball::changeColor(sf::Color color) {
     circleShape.setFillColor(color);
 }
 
-Particle& Ball::getParticle() {
-    return ballParticle;
+BoundingBox Ball::getBoundingBox() const {
+    return boundingBox;
 }
 
-void Ball::resolveScreenCollision(real WINDOW_WIDTH, real WINDOW_HEIGHT) {
-    // Get the position and radius of the ball
-    Vector position = ballParticle.getPosition();
-    Vector velocity = ballParticle.getVelocity();
-
-    // TODO: Implement more sophisticated way of detecting screen boundaries collisions
-    // Check for collision with the left wall
-    if (position.x + radius < 0.0f) {
-        if (velocity.x < 0.5f) {
-            ballParticle.setVelocity(0.0f, velocity.y);
-        } else {
-            ballParticle.setVelocity(Vector(static_cast<real>(fabs(velocity.x)) * 0.1f, velocity.y));
-        }
-    }
-
-    // Check for collision with the right wall
-    if (position.x + radius > WINDOW_WIDTH) {
-        ballParticle.setVelocity(Vector(static_cast<real>(-fabs(velocity.x)) * 0.1f, velocity.y));
-    }
-
-    // Check for collision with the bottom wall - floor
-    if (position.y - radius < 0.0f) {
-        if (velocity.y < 0.0f && velocity.y > - 0.5f) {
-            ballParticle.setVelocity(Vector(velocity.x, 0.0f));
-        } else {
-            ballParticle.setVelocity(Vector(velocity.x, static_cast<real>(fabs(velocity.y)) * 0.6f));
-        }
-    }
-
-    // Check for collision with the top wall
-    if (position.y - radius > WINDOW_HEIGHT) {
-         ballParticle.setVelocity(Vector(velocity.x, static_cast<real>(-fabs(velocity.y)) * 0.6f));
-    }
+Particle* Ball::getParticle() {
+    return this;
 }
-
-bool Ball::collideWith(GameObject *other) {
-    return collideWith(this);
-}
-
-bool Ball::collideWith(Ball* other) {
-    real radiusSum = getRadius() + other->getRadius();
-    Vector distance = ballParticle.getPosition() - other->getParticle().getPosition();
-    real distanceMagnitude = distance.getMagnitude();
-
-    // add small threshold to radius sum to reduce false collisions
-    return distanceMagnitude < radiusSum + 0.001f;
-}
-

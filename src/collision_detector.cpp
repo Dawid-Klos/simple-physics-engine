@@ -17,18 +17,16 @@ void CollisionDetector::createIntervals() {
 
     // Define bounding volumes and create intervals
     for (int i = 0; i < gameObjects.size(); i++) {
-        GameObject* gameObject = gameObjects[i];
-
         Interval intervalX{};
         intervalX.objectIndex = i;
-        intervalX.min = gameObject->getBoundingBox().xMin;
-        intervalX.max = gameObject->getBoundingBox().xMax;
+        intervalX.min = gameObjects[i]->getBoundingBox().xMin;
+        intervalX.max = gameObjects[i]->getBoundingBox().xMax;
         intervals[0].push_back(intervalX);
 
         Interval intervalY{};
         intervalY.objectIndex = i;
-        intervalY.min = gameObject->getBoundingBox().yMin;
-        intervalY.max = gameObject->getBoundingBox().yMax;
+        intervalY.min = gameObjects[i]->getBoundingBox().yMin;
+        intervalY.max = gameObjects[i]->getBoundingBox().yMax;
         intervals[1].push_back(intervalY);
     }
 }
@@ -47,11 +45,10 @@ void CollisionDetector::detectCollisions() {
 
     // Step 3: Update sorted lists each frame
     for (int i = 0; i < gameObjects.size(); i++) {
-        GameObject* gameObject = gameObjects[i];
-        intervals[0][i].min = gameObject->getBoundingBox().xMin * 0.85f;
-        intervals[0][i].max = gameObject->getBoundingBox().xMax * 0.85f;
-        intervals[1][i].min = gameObject->getBoundingBox().yMin * 0.85f;
-        intervals[1][i].max = gameObject->getBoundingBox().yMax * 0.85f;
+        intervals[0][i].min = gameObjects[i]->getBoundingBox().xMin * 0.85f;
+        intervals[0][i].max = gameObjects[i]->getBoundingBox().xMax * 0.85f;
+        intervals[1][i].min = gameObjects[i]->getBoundingBox().yMin * 0.85f;
+        intervals[1][i].max = gameObjects[i]->getBoundingBox().yMax * 0.85f;
     }
 
     // Step 4: Check for overlaps along all axes
@@ -67,6 +64,12 @@ void CollisionDetector::detectCollisions() {
                     break; // intervals sorted, no more overlaps possible
                 }
 
+                // Skip collision detection between walls
+                if (gameObjects[interval.objectIndex]->objectType == WALL &&
+                    gameObjects[other.objectIndex]->objectType == WALL) {
+                    continue;
+                }
+
                 overlappingPairsMap[interval.objectIndex].push_back(other.objectIndex);
                 overlappingPairsMap[other.objectIndex].push_back(interval.objectIndex);
             }
@@ -76,8 +79,9 @@ void CollisionDetector::detectCollisions() {
     // Do more precise collision detection for overlapping pairs
     for (int i = 0; i < gameObjects.size(); i++) {
         for (int pair : overlappingPairsMap[i]) {
-            // Do narrow phase collision detection between balls i and other
-            if (gameObjects[i]->collideWith(gameObjects[pair])) {
+
+            // Do narrow phase collision detection between game objects
+            if (objectsCollides(gameObjects[i], gameObjects[pair])) {
                 collisionResolver.addCollision(gameObjects[i], gameObjects[pair]);
             }
         }
@@ -85,3 +89,17 @@ void CollisionDetector::detectCollisions() {
 
     collisionResolver.resolve();
 }
+
+bool CollisionDetector::objectsCollides(GameObject *collider, GameObject *otherCollider) {
+
+    // Use bounding boxes to determine narrow collision detection
+    if (collider->getBoundingBox().xMin < otherCollider->getBoundingBox().xMax &&
+        collider->getBoundingBox().xMax > otherCollider->getBoundingBox().xMin &&
+        collider->getBoundingBox().yMin < otherCollider->getBoundingBox().yMax &&
+        collider->getBoundingBox().yMax > otherCollider->getBoundingBox().yMin) {
+        return true;
+    }
+
+    return false;
+}
+
