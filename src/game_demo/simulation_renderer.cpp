@@ -14,7 +14,12 @@ SimulationRenderer::SimulationRenderer(real width, real height) {
     sf::ContextSettings settings;
     settings.antialiasingLevel = 8;
 
+    // Initialize new window object
     window = new sf::RenderWindow(sf::VideoMode((unsigned int)WINDOW_WIDTH, (unsigned int)WINDOW_HEIGHT), "Physics Simulation", sf::Style::Default, settings);
+
+    // Set FPS limit
+    unsigned int fps = 100;
+    window->setFramerateLimit(fps);
 
     // Set up window View - reverse window height coordinates
     sf::View view = window->getDefaultView();
@@ -44,7 +49,7 @@ bool SimulationRenderer::running() const {
     return window->isOpen();
 }
 
-void SimulationRenderer::updateEvents(Spring &spring) {
+void SimulationRenderer::updateEvents(const vector<GameObject*>& myObjects) {
     while (window->pollEvent(event)) {
         switch (event.type) {
             case sf::Event::Closed:
@@ -52,13 +57,13 @@ void SimulationRenderer::updateEvents(Spring &spring) {
                 break;
             case sf::Event::KeyPressed:
                 if (event.key.code == sf::Keyboard::Left) {
-                    spring.move(Vector(-45.0f, 0.0f));
+
                 } else if (event.key.code == sf::Keyboard::Right) {
-                    spring.move(Vector(45.0f, 0.0f));
+
                 } else if (event.key.code == sf::Keyboard::Escape) {
                     window->close();
                 } else if (event.key.code == sf::Keyboard::Space) {
-                    spring.extendSpring();
+
                 }
                 break;
             default:
@@ -72,12 +77,12 @@ void SimulationRenderer::update(const vector<GameObject*>& myObjects) {
     delta = clock.restart().asSeconds() * 5.0f;
 
     // Update pool events
-//     updateEvents(spring);
+     updateEvents(myObjects);
 
     // Reset the color of the balls after collisions resolved
-    for (auto* object : myObjects) {
+//    for (auto* object : myObjects) {
 //        object->changeColor(sf::Color{169, 151, 223});
-    }
+//    }
 
     // Collision detection
     collisionDetector.detectCollisions();
@@ -86,12 +91,6 @@ void SimulationRenderer::update(const vector<GameObject*>& myObjects) {
     for (auto* object : myObjects) {
         object->update(delta);
     }
-
-
-    // Temp solution for screen collisions
-//    for (auto* object : myObjects) {
-//        ball->resolveScreenCollision(WINDOW_WIDTH, WINDOW_HEIGHT);
-//    }
 }
 
 void SimulationRenderer::render(const vector<GameObject*>& myObjects) {
@@ -108,12 +107,4 @@ void SimulationRenderer::render(const vector<GameObject*>& myObjects) {
 
     // Display new frame
     window->display();
-}
-
-sf::RenderWindow* SimulationRenderer::getWindow() const {
-    return window;
-}
-
-real SimulationRenderer::getDelta() const {
-    return delta;
 }

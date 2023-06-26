@@ -51,7 +51,7 @@ public:
     void addObjectToDetector(GameObject* gameObject);
 
     /** Update the events */
-    void updateEvents(Spring &spring);
+    void updateEvents(const vector<GameObject*>& myObjects);
 
     /** Update the simulation */
     void update(const vector<GameObject*>& myObjects);
@@ -61,12 +61,6 @@ public:
 
     /** Draw text on the screen */
     void drawText(const sf::String &str);
-
-    /** Return delta */
-    real getDelta() const;
-
-    /** Return a pointer to the window */
-    sf::RenderWindow *getWindow() const;
 };
 
 
