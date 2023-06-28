@@ -1,6 +1,7 @@
 //
 // Created by dave on 28.03.23.
 //
+#include <iostream>
 #include "ball.h"
 
 Ball::Ball(real rad, real posX, real posY) {
@@ -16,12 +17,11 @@ Ball::Ball(real rad, real posX, real posY) {
 
     /** Set the Particle object properties for physics calculations */
     setMass(real(0.15f) * rad);
-    setDamping(0.95f);
+    setDamping(0.98f);
     setPosition(posX, posY);
-    setVelocity(60.0f, 50.0f);
+    setVelocity(5.0f * radius, 50.0f);
     setAcceleration(20.0f, 0.0f);
 }
-
 
 void Ball::update(real delta) {
     // Apply forces to the Ball

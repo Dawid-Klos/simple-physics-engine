@@ -33,7 +33,7 @@ class World {
         unsigned int ballsTimer = 0;
 //
 //        /** Spring object */
-//        Spring spring = Spring(120.0f, {400.0f, 800.0f});
+        Spring* spring;
 
         /** Stream for displaying text on the screen */
         std::ostringstream ss;
@@ -51,7 +51,7 @@ class World {
         void setScreenBoundaries(real window_width, real window_height);
 
         /** Crate spring system */
-        void createSpringSystem(real WINDOW_HEIGHT);
+        void createSpringSystem(real WINDOW_WIDTH, real WINDOW_HEIGHT);
 
         /** Draw spring system information on the screen */
         void updateSpringSystemInfo();

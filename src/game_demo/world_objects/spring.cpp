@@ -14,6 +14,7 @@ Spring::Spring(real len, Vector anchorPos) {
 
     /** Initialize spring force system */
     springForce.initSpringParameters(springLength, anchorPos);
+    objectType = SPRING;
 
     /** Set line color */
     line[0].color = sf::Color(48,54,47);
@@ -26,9 +27,10 @@ Spring::Spring(real len, Vector anchorPos) {
     springMassShape.setPosition(anchorPos.x, anchorPos.y - springLength);
 
     /** Initialise Particle variables */
-    springParticle.setMass(real(0.015) * springLength);
-    springParticle.setDamping(0.95f);
-    springParticle.setPosition(anchorPos.x, anchorPos.y - springLength);
+    setMass(real(0.015) * springLength);
+    setDamping(0.90f);
+    setVelocity(10.0f, -100.0f);
+    setPosition(anchorPos.x, anchorPos.y - springLength);
 }
 
 void Spring::draw(sf::RenderWindow &window) {
@@ -41,20 +43,22 @@ void Spring::update(real delta) {
     calculateForces();
 
     // Perform integration
-    springParticle.integrate(delta);
-    Vector newPosition = springParticle.getPosition();
+    integrate(delta);
+    Vector newPosition = getPosition();
 
     // Set the line end position the same as the mass position
     line[1].position.x = newPosition.x;
     line[1].position.y = newPosition.y;
 
     springMassShape.setPosition(newPosition.x, newPosition.y);
+
+    updateBoundingBox();
 }
 
 void Spring::calculateForces() {
-    gravityForce.updateForce(&springParticle);
-    dragForce.updateForce(&springParticle);
-    springForce.updateForce(&springParticle);
+    gravityForce.updateForce(this);
+    dragForce.updateForce(this);
+    springForce.updateForce(this);
 }
 
 void Spring::extendSpring() {
@@ -63,17 +67,32 @@ void Spring::extendSpring() {
 }
 
 void Spring::move(Vector acc) {
-    springParticle.setAcceleration(acc);
+    setAcceleration(acc);
 }
 
 Vector Spring::getCurrentAcceleration() {
-    return springParticle.getAcceleration();
+    return getAcceleration();
 }
 
 Vector Spring::getCurrentVelocity() {
-    return springParticle.getVelocity();
+    return getVelocity();
 }
 
 Vector Spring::getCurrentPosition() {
-    return springParticle.getPosition();
+    return getPosition();
+}
+
+Particle *Spring::getParticle() {
+    return this;
+}
+
+BoundingBox Spring::getBoundingBox() const {
+    return boundingBox;
+}
+
+void Spring::updateBoundingBox() {
+    boundingBox.xMin = getPosition().x;
+    boundingBox.xMax = getPosition().x + springLength / 3;
+    boundingBox.yMin = getPosition().y - springLength / 6;
+    boundingBox.yMax = getPosition().y + springLength / 6;
 }

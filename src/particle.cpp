@@ -9,10 +9,14 @@ using namespace engine;
 
 void Particle::setMass(real mass) {
     // Ensure mass not equal to 0
-    if(mass <= 0.0f) { return; }
+    if(mass < 0.0f) { return; }
 
     // invertedMass used for acceleration calculation
-    Particle::invertedMass = real(1.0f)/mass;
+    if (mass == 0.0f) {
+        Particle::invertedMass = 0.0f;
+    } else {
+        Particle::invertedMass = real(1.0f)/mass;
+    }
 }
 
 void Particle::setVelocity(const Vector &vel) {

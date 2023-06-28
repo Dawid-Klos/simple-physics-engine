@@ -18,7 +18,6 @@ class Wall : public GameObject, public Particle {
     private:
         sf::RectangleShape shape; /** Stores a rectangle object from the SFML library */
         BoundingBox boundingBox{}; /** Stores the bounding box of a game object */
-        void updateBoundingBox(); /** Update the bounding box of the Ball */
 
         real wallWidth; /** Stores width of the wall */
         real wallHeight; /** Stores height of the wall */

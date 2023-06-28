@@ -15,6 +15,7 @@ using namespace engine;
 enum ObjectType {
     BALL,
     SPRING,
+    FLOOR,
     WALL
 };
 

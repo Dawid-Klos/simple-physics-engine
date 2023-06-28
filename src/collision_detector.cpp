@@ -13,7 +13,7 @@ void CollisionDetector::addObject(GameObject* gameObject) {
 void CollisionDetector::createIntervals() {
     // Prepare intervals vector
     intervals.clear();
-    intervals.resize(2);
+    intervals.resize(gameObjects.size() * 2);
 
     // Define bounding volumes and create intervals
     for (int i = 0; i < gameObjects.size(); i++) {
@@ -45,10 +45,10 @@ void CollisionDetector::detectCollisions() {
 
     // Step 3: Update sorted lists each frame
     for (int i = 0; i < gameObjects.size(); i++) {
-        intervals[0][i].min = gameObjects[i]->getBoundingBox().xMin * 0.85f;
-        intervals[0][i].max = gameObjects[i]->getBoundingBox().xMax * 0.85f;
-        intervals[1][i].min = gameObjects[i]->getBoundingBox().yMin * 0.85f;
-        intervals[1][i].max = gameObjects[i]->getBoundingBox().yMax * 0.85f;
+        intervals[0][i].min = gameObjects[i]->getBoundingBox().xMin * 0.95f;
+        intervals[0][i].max = gameObjects[i]->getBoundingBox().xMax * 0.95f;
+        intervals[1][i].min = gameObjects[i]->getBoundingBox().yMin * 0.95f;
+        intervals[1][i].max = gameObjects[i]->getBoundingBox().yMax * 0.95f;
     }
 
     // Step 4: Check for overlaps along all axes
@@ -65,33 +65,42 @@ void CollisionDetector::detectCollisions() {
                 }
 
                 // Skip collision detection between walls
-                if (gameObjects[interval.objectIndex]->objectType == WALL &&
-                    gameObjects[other.objectIndex]->objectType == WALL) {
+                if ((gameObjects[interval.objectIndex]->objectType == WALL &&
+                     gameObjects[other.objectIndex]->objectType == WALL) ||
+                    (gameObjects[interval.objectIndex]->objectType == WALL &&
+                     gameObjects[other.objectIndex]->objectType == FLOOR) ||
+                    (gameObjects[interval.objectIndex]->objectType == FLOOR &&
+                     gameObjects[other.objectIndex]->objectType == WALL) ||
+                    (gameObjects[interval.objectIndex]->objectType == FLOOR &&
+                     gameObjects[other.objectIndex]->objectType == FLOOR)
+                        )
+                {
                     continue;
                 }
 
-                overlappingPairsMap[interval.objectIndex].push_back(other.objectIndex);
-                overlappingPairsMap[other.objectIndex].push_back(interval.objectIndex);
+                if (objectsCollides(gameObjects[interval.objectIndex], gameObjects[other.objectIndex])) {
+                    overlappingPairsMap[interval.objectIndex].push_back(other.objectIndex);
+                     overlappingPairsMap[other.objectIndex].push_back(interval.objectIndex);
+                }
             }
         }
     }
-
-    // Do more precise collision detection for overlapping pairs
+    int collisionCount = 0;
+    // Step 5: Do more precise collision detection for overlapping pairs
     for (int i = 0; i < gameObjects.size(); i++) {
         for (int pair : overlappingPairsMap[i]) {
-
             // Do narrow phase collision detection between game objects
             if (objectsCollides(gameObjects[i], gameObjects[pair])) {
+                // print object types that collide for debugging
+//                std::cout << "Collision!i: " << collisionCount << " Object: " << gameObjects[i] << " and " << gameObjects[pair] << std::endl;
                 collisionResolver.addCollision(gameObjects[i], gameObjects[pair]);
+                collisionCount += 1;
             }
         }
     }
-
-    collisionResolver.resolve();
 }
 
 bool CollisionDetector::objectsCollides(GameObject *collider, GameObject *otherCollider) {
-
     // Use bounding boxes to determine narrow collision detection
     if (collider->getBoundingBox().xMin < otherCollider->getBoundingBox().xMax &&
         collider->getBoundingBox().xMax > otherCollider->getBoundingBox().xMin &&
@@ -99,7 +108,6 @@ bool CollisionDetector::objectsCollides(GameObject *collider, GameObject *otherC
         collider->getBoundingBox().yMax > otherCollider->getBoundingBox().yMin) {
         return true;
     }
-
     return false;
 }
 

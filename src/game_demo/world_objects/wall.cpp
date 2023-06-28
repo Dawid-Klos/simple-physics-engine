@@ -34,14 +34,7 @@ void Wall::draw(sf::RenderWindow &window) {
 }
 
 void Wall::update(real delta) {
-    // Perform integration
-    integrate(delta);
-
-    // Set new position after integrating
-    shape.setPosition(getPosition().x, getPosition().y);
-
-    // Update bounding box
-    updateBoundingBox();
+    // Static object, no update needed
 }
 
 real Wall::getWidth() const {
@@ -58,13 +51,6 @@ BoundingBox Wall::getBoundingBox() const {
 
 Particle* Wall::getParticle() {
     return this;
-}
-
-void Wall::updateBoundingBox() {
-    boundingBox.xMin = getPosition().x;
-    boundingBox.xMax = getPosition().x + wallWidth;
-    boundingBox.yMin = getPosition().y;
-    boundingBox.yMax = getPosition().y + wallHeight;
 }
 
 Wall::Wall() = default;

@@ -84,13 +84,27 @@ void SimulationRenderer::update(const vector<GameObject*>& myObjects) {
 //        object->changeColor(sf::Color{169, 151, 223});
 //    }
 
-    // Collision detection
-    collisionDetector.detectCollisions();
+    real dt_sub = delta / 4.0f;
 
-    // Update particle position
-    for (auto* object : myObjects) {
-        object->update(delta);
+    for (int i = 0; i < 4; i++) {
+        // Collision detection
+        collisionDetector.detectCollisions();
+        collisionResolver.resolve();
+
+        // Update particle position
+        for (auto* object : myObjects) {
+            object->update(dt_sub);
+        }
     }
+
+//    // Collision detection
+//    collisionDetector.detectCollisions();
+//    collisionResolver.resolve();
+//
+//    // Update particle position
+//    for (auto* object : myObjects) {
+//        object->update(delta);
+//    }
 }
 
 void SimulationRenderer::render(const vector<GameObject*>& myObjects) {
