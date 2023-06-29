@@ -28,26 +28,28 @@ namespace engine {
             Vector contactDirection; /** Direction of contact */
 
         public:
-            /** Add a collision between two objects into the vector */
+            /** Add a new collision between two objects into the Collisions vector */
             void addCollision(GameObject* object1, GameObject* object2);
-
-            /** Resolve a collision between two objects */
-            void resolveCollision(GameObject* object1, GameObject*  object2);
-
-            /** Resolve collisions with a wall */
-            void resolveWallCollision(GameObject* collider, GameObject* wall) const;
-
-            /** Resolve collisions with a floor */
-            void resolveFloorCollision(GameObject* collider, GameObject* floor) const;
-
-            /** Resolve intersection */
-            void resolveIntersection(GameObject* gameObject1, GameObject* gameObject2) const;
 
             /** Resolve collisions between all Particles */
             void resolve();
 
             /** Remove resolved collisions from the vector */
             void removeResolvedCollisions();
+
+            /** Resolve a collision between two objects */
+            void resolveCollision(GameObject* object1, GameObject*  object2);
+
+            /** Resolve intersection between two objects */
+            void resolveIntersection(GameObject* gameObject1, GameObject* gameObject2) const;
+
+            /** Resolve collision with a wall */
+            void resolveWallCollision(GameObject* collider) const;
+
+            /** Resolve collision with a floor */
+            void resolveFloorCollision(GameObject* collider) const;
+
+
     };
 }
 

@@ -18,7 +18,7 @@ SimulationRenderer::SimulationRenderer(real width, real height) {
     window = new sf::RenderWindow(sf::VideoMode((unsigned int)WINDOW_WIDTH, (unsigned int)WINDOW_HEIGHT), "Physics Simulation", sf::Style::Default, settings);
 
     // Set FPS limit
-    unsigned int fps = 100;
+    unsigned int fps = 80;
     window->setFramerateLimit(fps);
 
     // Set up window View - reverse window height coordinates
@@ -80,13 +80,13 @@ void SimulationRenderer::update(const vector<GameObject*>& myObjects) {
      updateEvents(myObjects);
 
     // Reset the color of the balls after collisions resolved
-//    for (auto* object : myObjects) {
-//        object->changeColor(sf::Color{169, 151, 223});
-//    }
+    for (auto* object : myObjects) {
+        object->changeColor(sf::Color{169, 151, 223});
+    }
 
-    real dt_sub = delta / 4.0f;
+    real dt_sub = delta / 8.0f;
 
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 8; i++) {
         // Collision detection
         collisionDetector.detectCollisions();
         collisionResolver.resolve();
@@ -96,15 +96,6 @@ void SimulationRenderer::update(const vector<GameObject*>& myObjects) {
             object->update(dt_sub);
         }
     }
-
-//    // Collision detection
-//    collisionDetector.detectCollisions();
-//    collisionResolver.resolve();
-//
-//    // Update particle position
-//    for (auto* object : myObjects) {
-//        object->update(delta);
-//    }
 }
 
 void SimulationRenderer::render(const vector<GameObject*>& myObjects) {

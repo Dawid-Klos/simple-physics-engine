@@ -36,6 +36,10 @@ class Wall : public GameObject, public Particle {
         Particle* getParticle() override;
 
         [[nodiscard]] BoundingBox getBoundingBox() const override;
+
+        /** Change the color of the object */
+        void changeColor(sf::Color color) override;
+
         /** Return the wall width */
         real getWidth() const;
 

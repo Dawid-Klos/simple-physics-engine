@@ -53,4 +53,8 @@ Particle* Wall::getParticle() {
     return this;
 }
 
+void Wall::changeColor(sf::Color color) {
+    shape.setFillColor(color);
+}
+
 Wall::Wall() = default;

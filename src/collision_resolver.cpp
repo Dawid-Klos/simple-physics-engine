@@ -14,26 +14,29 @@ void CollisionResolver::resolve() {
 
     if (collisions.size() < 2) return;
 
-    for (auto & collision : collisions) {
+    for (auto& collision : collisions) {
         if (collision.object1->objectType == WALL) {
-            resolveWallCollision(collision.object2, collision.object1);
+            resolveWallCollision(collision.object2);
             continue;
         }
 
         if (collision.object2->objectType == WALL) {
-            resolveWallCollision(collision.object1, collision.object2);
+            resolveWallCollision(collision.object1);
             continue;
         }
 
         if(collision.object1->objectType == FLOOR) {
-            resolveFloorCollision(collision.object2, collision.object1);
+            resolveFloorCollision(collision.object2);
+//            resolveIntersection(collision.object1, collision.object2);
             continue;
         }
 
         if(collision.object2->objectType == FLOOR) {
-            resolveFloorCollision(collision.object1, collision.object2);
+            resolveFloorCollision(collision.object1);
+//            resolveIntersection(collision.object1, collision.object2);
             continue;
         }
+
         // If not wall or floor collision, resolve normal collision
         resolveCollision(collision.object1, collision.object2);
     }
@@ -78,17 +81,20 @@ void CollisionResolver::resolveCollision(GameObject* gameObject1, GameObject* ga
     // Apply impulse directly to the velocity for ParticleTwo
     Vector object2Impulse = otherCollider->getVelocity() + resultingImpulse * otherCollider->getInvertedMass() * real(-1);
     otherCollider->setVelocity(object2Impulse);
+
+    // Resolve intersection
+//    resolveIntersection(gameObject1, gameObject2);
 }
 
 
-void CollisionResolver::resolveWallCollision(GameObject *collider, GameObject* wall) const {
+void CollisionResolver::resolveWallCollision(GameObject *collider) const {
     Particle* wallCollider = collider->getParticle();
     Vector contactNormal;
 
     if (wallCollider->getPosition().x < 100.0f) {
         contactNormal = Vector(wallCollider->getPosition().x * -0.9f, wallCollider->getPosition().y) - wallCollider->getPosition();
     } else {
-        contactNormal = Vector(wallCollider->getPosition().x * 1.2f, wallCollider->getPosition().y) - wallCollider->getPosition();
+        contactNormal = Vector(wallCollider->getPosition().x * 1.1f, wallCollider->getPosition().y) - wallCollider->getPosition();
     }
 
     contactNormal.normalize();
@@ -111,34 +117,34 @@ void CollisionResolver::resolveWallCollision(GameObject *collider, GameObject* w
     wallCollider->setVelocity(wallColliderImpulse);
 }
 
-void CollisionResolver::resolveFloorCollision(GameObject *collider, GameObject* floor) const {
+void CollisionResolver::resolveFloorCollision(GameObject *collider) const {
     Particle* floorCollider = collider->getParticle();
 
     // Calculate Fn - Normal force
     Vector gravity = {0.0f, -25.0f};
     real inverseMass = floorCollider->getInvertedMass();
-    Vector normalForce = gravity * inverseMass * -0.5f;
+    Vector normalForce = gravity * inverseMass * -1.0f;
 
     // Calculate the velocity after collision (bounce or restitution)
     Vector colliderVelocity = floorCollider->getVelocity();
 
     if(colliderVelocity.y >= 0.0f) { return; }
+
     // Apply the normal force to the collider object
-    floorCollider->setAcceleration(normalForce);
+    floorCollider->addForce(normalForce);
 
     // Update the velocity of the collider object
-    Vector newVelocity = colliderVelocity + colliderVelocity * -contactCoefficient + normalForce;
-    floorCollider->setVelocity(newVelocity.x, newVelocity.y);
+    Vector newVelocity = colliderVelocity + colliderVelocity * -contactCoefficient * 2.0f;
+    floorCollider->setVelocity(-newVelocity.x, newVelocity.y);
 }
 
 void CollisionResolver::resolveIntersection(GameObject *gameObject1, GameObject *gameObject2) const {
-//
     // Calculate intersection depth based on the bounding boxes
     real intersectionDepthX = fmin(gameObject1->getBoundingBox().xMax, gameObject2->getBoundingBox().xMax) - fmax(gameObject1->getBoundingBox().xMin, gameObject2->getBoundingBox().xMin);
     real intersectionDepthY = fmin(gameObject1->getBoundingBox().yMax, gameObject2->getBoundingBox().yMax) - fmax(gameObject1->getBoundingBox().yMin, gameObject2->getBoundingBox().yMin);
 
     // Calculate the total intersection depth
-    real totalIntersectionDepth = (intersectionDepthX + intersectionDepthY) / 2;
+    real totalIntersectionDepth = (intersectionDepthX + intersectionDepthY) * 0.5f;
 
     // If the objects are not intersecting, the intersection depths will be negative or zero
     if (totalIntersectionDepth > 0.0f) {
@@ -158,9 +164,8 @@ void CollisionResolver::resolveIntersection(GameObject *gameObject1, GameObject 
 
         Vector displacement = distance * (totalIntersectionDepth / totalInvertedMass);
 
-        object1->setPosition(object1->getPosition() + (displacement * 0.2f * object1->getInvertedMass()));
-        object2->setPosition(object2->getPosition() - (displacement * 0.2f * object2->getInvertedMass()));
+        object1->setPosition(object1->getPosition() + (displacement * object1->getInvertedMass()));
+        object2->setPosition(object2->getPosition() - (displacement * object2->getInvertedMass()));
     }
-
 }
 
