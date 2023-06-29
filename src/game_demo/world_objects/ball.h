@@ -23,11 +23,12 @@ class Ball : public virtual GameObject, public Particle {
     private:
         sf::CircleShape circleShape; /** Stores a circle object from the SFML library */
         real radius; /** Stores the radius of the Ball */
-        GravityForce gravityForce; /** Interface applying gravity to the Ball */
-        DragForce dragForce = DragForce(0.0009f); /** Interface applying drag force to the Ball */
-
         BoundingBox boundingBox{}; /** Stores the bounding box of a game object */
         void updateBoundingBox(); /** Update the bounding box of the Ball */
+
+        GravityForce gravityForce; /** Interface applying gravity to the Ball */
+        DragForce dragForce = DragForce(0.0009f); /** Interface applying drag force to the Ball */
+        FrictionForce frictionForce = FrictionForce(); /** Interface applying friction force to the Ball */
 
     public:
         /** Default constructor and destructor */
@@ -47,9 +48,6 @@ class Ball : public virtual GameObject, public Particle {
         void calculateForces();
 
         [[nodiscard]] BoundingBox getBoundingBox() const override;
-
-        /** Get particle radius */
-        real getRadius() const;
 
         /** Change the ball color */
         void changeColor(sf::Color color);

@@ -1,7 +1,6 @@
 //
 // Created by dave on 28.03.23.
 //
-#include <iostream>
 #include "ball.h"
 
 Ball::Ball(real rad, real posX, real posY) {
@@ -19,13 +18,18 @@ Ball::Ball(real rad, real posX, real posY) {
     setMass(real(0.15f) * rad);
     setDamping(0.98f);
     setPosition(posX, posY);
-    setVelocity(5.0f * radius, 50.0f);
+    setVelocity(15.0f * radius, 50.0f);
     setAcceleration(20.0f, 0.0f);
 }
 
 void Ball::update(real delta) {
     // Apply forces to the Ball
     calculateForces();
+
+    // Check if the ball is on the ground and apply friction force
+    if (getPosition().y + radius <= 25.0f) {
+        frictionForce.updateForce(this);
+    }
 
     // Perform integration
     integrate(delta);
@@ -52,10 +56,6 @@ void Ball::updateBoundingBox() {
 void Ball::calculateForces() {
     gravityForce.updateForce(this);
     dragForce.updateForce(this);
-}
-
-real Ball::getRadius() const {
-    return radius;
 }
 
 void Ball::changeColor(sf::Color color) {

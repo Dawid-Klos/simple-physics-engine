@@ -93,14 +93,14 @@ namespace engine {
      */
     class FrictionForce : public ForceGeneratorAbstract {
         private:
-            real frictionCoefficient = 0.01f; /** Constant value applied to the friction force formula */
+            real frictionCoefficient = 0.015f; /** Constant value applied to the friction force formula */
             Vector velocity;  /** Used to store the velocity of Particle for calculations */
             Vector frictionForce; /** Used to store the friction force that is applied to Particle */
         public:
             void updateForce(Particle *particle) override {
                 velocity = particle->getVelocity();
                 velocity.normalize();
-                frictionForce.addScaledVector(velocity, -1);
+                frictionForce.addScaledVector(velocity, -1.0f);
                 frictionForce *= frictionCoefficient;
 
                 particle->addForce(frictionForce);
