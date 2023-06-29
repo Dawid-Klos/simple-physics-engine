@@ -27,9 +27,9 @@ Spring::Spring(real len, Vector anchorPos) {
     springMassShape.setPosition(anchorPos.x, anchorPos.y - springLength);
 
     /** Initialise Particle variables */
-    setMass(real(0.015) * springLength);
+    setMass(real(0.005) * springLength);
     setDamping(0.90f);
-    setVelocity(10.0f, -100.0f);
+    setVelocity(0.0f, 0.0f);
     setPosition(anchorPos.x, anchorPos.y - springLength);
 }
 
@@ -49,7 +49,6 @@ void Spring::update(real delta) {
     // Set the line end position the same as the mass position
     line[1].position.x = newPosition.x;
     line[1].position.y = newPosition.y;
-
     springMassShape.setPosition(newPosition.x, newPosition.y);
 
     updateBoundingBox();
@@ -82,7 +81,7 @@ Vector Spring::getCurrentPosition() {
     return getPosition();
 }
 
-Particle *Spring::getParticle() {
+Particle* Spring::getParticle() {
     return this;
 }
 
@@ -91,8 +90,12 @@ BoundingBox Spring::getBoundingBox() const {
 }
 
 void Spring::updateBoundingBox() {
-    boundingBox.xMin = getPosition().x;
-    boundingBox.xMax = getPosition().x + springLength / 3;
+    boundingBox.xMin = getPosition().x - springLength / 6;
+    boundingBox.xMax = getPosition().x + springLength / 6;
     boundingBox.yMin = getPosition().y - springLength / 6;
     boundingBox.yMax = getPosition().y + springLength / 6;
+}
+
+void Spring::changeColor(sf::Color color) {
+    springMassShape.setFillColor(color);
 }

@@ -29,7 +29,7 @@ struct BoundingBox {
 class GameObject {
     /**
      * Abstract base class represents a game object that can be drawn in the simulation.
-     * Additionally, keep bounding box properties for collision detection purposes.
+     * Additionally, requires implementation of properties and methods for collision detection purposes.
      */
 public:
     ObjectType objectType{};
@@ -37,11 +37,9 @@ public:
     virtual ~GameObject() = default;
     virtual void update(float delta) = 0;
     virtual void draw(sf::RenderWindow& window) = 0;
-
-    /** Getter for accessing Particle instance */
-    virtual Particle* getParticle() = 0;
-
-    [[nodiscard]] virtual BoundingBox getBoundingBox() const = 0;
+    virtual Particle* getParticle() = 0; /** Getter for accessing Particle instance */
+    [[nodiscard]] virtual BoundingBox getBoundingBox() const = 0; /** Getter for accessing the bounding box properties */
+    virtual void changeColor(sf::Color color) = 0; /** Change the color of the object */
 };
 
 #endif //SIMPLE_PHYSICS_ENGINE_GAME_OBJECT_H

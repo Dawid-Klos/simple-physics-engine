@@ -64,7 +64,7 @@ void CollisionDetector::detectCollisions() {
                     break; // intervals sorted, no more overlaps possible
                 }
 
-                // Skip collision detection between walls
+                // Skip collision detection between stationary objects
                 if ((gameObjects[interval.objectIndex]->objectType == WALL &&
                      gameObjects[other.objectIndex]->objectType == WALL) ||
                     (gameObjects[interval.objectIndex]->objectType == WALL &&
@@ -80,21 +80,22 @@ void CollisionDetector::detectCollisions() {
 
                 if (objectsCollides(gameObjects[interval.objectIndex], gameObjects[other.objectIndex])) {
                     overlappingPairsMap[interval.objectIndex].push_back(other.objectIndex);
-                     overlappingPairsMap[other.objectIndex].push_back(interval.objectIndex);
+                    overlappingPairsMap[other.objectIndex].push_back(interval.objectIndex);
                 }
             }
         }
     }
-    int collisionCount = 0;
+
+    sf::Color collisionColor = sf::Color::Red;
     // Step 5: Do more precise collision detection for overlapping pairs
     for (int i = 0; i < gameObjects.size(); i++) {
         for (int pair : overlappingPairsMap[i]) {
             // Do narrow phase collision detection between game objects
             if (objectsCollides(gameObjects[i], gameObjects[pair])) {
-                // print object types that collide for debugging
-//                std::cout << "Collision!i: " << collisionCount << " Object: " << gameObjects[i] << " and " << gameObjects[pair] << std::endl;
+                gameObjects[i]->changeColor(collisionColor);
+                gameObjects[pair]->changeColor(collisionColor);
+
                 collisionResolver.addCollision(gameObjects[i], gameObjects[pair]);
-                collisionCount += 1;
             }
         }
     }

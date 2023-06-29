@@ -47,6 +47,9 @@ class Spring : public virtual GameObject, public Particle {
         /** Return pointer to spring Particle */
         Particle* getParticle() override;
 
+        /** Change the color of the object */
+        void changeColor(sf::Color color) override;
+
         /** Calculate forces that apply to the Spring object */
         void calculateForces();
 

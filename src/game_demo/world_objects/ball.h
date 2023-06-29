@@ -44,13 +44,15 @@ class Ball : public virtual GameObject, public Particle {
         /** Getter for accessing Particle instance */
         Particle* getParticle() override;
 
+        /** Change the ball color */
+        void changeColor(sf::Color color) override;
+
         /** Calculate forces that apply to the Ball */
         void calculateForces();
 
+        /** Getter for accessing the bounding box properties */
         [[nodiscard]] BoundingBox getBoundingBox() const override;
 
-        /** Change the ball color */
-        void changeColor(sf::Color color);
 };
 
 #endif //SIMPLE_PHYSICS_ENGINE_BALL_H
