@@ -8,17 +8,17 @@ Ball::Ball(real rad, real posX, real posY) {
     objectType = BALL;
     radius = rad;
 
-    /** Set the Ball shape object properties and position in the simulation */
+    // Set the Ball shape object properties and position in the simulation
     circleShape.setRadius(radius);
     circleShape.setOrigin(radius, radius);
     circleShape.setFillColor(sf::Color{169, 151, 223});
     circleShape.setPosition(posX, posY);
 
-    /** Set the Particle object properties for physics calculations */
-    setMass(real(0.15f) * rad);
+    // Set the Particle object properties for physics calculations
+    setMass(real(0.1f) * rad);
     setDamping(0.98f);
     setPosition(posX, posY);
-    setVelocity(15.0f * radius, 50.0f);
+    setVelocity(8.0f * radius, 20.0f);
     setAcceleration(20.0f, 0.0f);
 }
 
@@ -27,7 +27,7 @@ void Ball::update(real delta) {
     calculateForces();
 
     // Check if the ball is on the ground and apply friction force
-    if (getPosition().y + radius <= 25.0f) {
+    if (getPosition().y + radius <= 40.0f) {
         frictionForce.updateForce(this);
     }
 

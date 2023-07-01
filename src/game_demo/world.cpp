@@ -6,7 +6,7 @@
 
 void World::setScreenBoundaries(real window_width, real window_height) {
     // Screen - left wall
-    screen.leftWall = new Wall(1.0f, window_height, 0.0f, 0.0f, sf::Color::Black);
+    screen.leftWall = new Wall(1.0f, window_height, -1.0f, 0.0f, sf::Color::Black);
     worldObjects.push_back(screen.leftWall);
     renderer->addObjectToDetector(screen.leftWall);
 
@@ -28,9 +28,9 @@ void World::setScreenBoundaries(real window_width, real window_height) {
 }
 
 void World::createBall() {
-    if (ballsTimer >= 500) return;
+    if (ballsTimer >= 100) return;
 
-    GameObject* ball = new Ball(5.0f, 150.0f, 450.0f);
+    GameObject* ball = new Ball(10.0f, 100.0f, 1000.0f);
 
     worldObjects.push_back(ball);
     renderer->addObjectToDetector(ball);
@@ -39,24 +39,25 @@ void World::createBall() {
 }
 
 void World::createSpringSystem(real WINDOW_WIDTH, real WINDOW_HEIGHT) {
-   spring = new Spring(100.0f, {WINDOW_WIDTH, WINDOW_HEIGHT});
+    spring = new Spring(80.0f, {WINDOW_WIDTH, WINDOW_HEIGHT});
     worldObjects.push_back(spring);
     renderer->addObjectToDetector(spring);
 }
 
 void World::updateSpringSystemInfo() {
-    // Print information on screen about the Spring
-    Vector acceleration = spring->getCurrentAcceleration();
+    // Print information on screen about the Spring object
     Vector velocity =  spring->getCurrentVelocity();
     Vector position =  spring->getCurrentPosition();
 
-    ss << "Acc = x: " << acceleration.x << "  y: " << acceleration.y << std::endl;
     ss << "Vel = x: " << velocity.x << "  y: " << velocity.y << std::endl;
     ss << "Pos = x: " << position.x << "  y: " << position.y << std::endl;
+    ss << "Objects count: " << worldObjects.size() << std::endl;
 }
 
 void World::update() {
-    updateSpringSystemInfo();
+    if (spring != nullptr) {
+        updateSpringSystemInfo();
+    }
 
     renderer->drawText(ss.str());
     ss.str(std::string());

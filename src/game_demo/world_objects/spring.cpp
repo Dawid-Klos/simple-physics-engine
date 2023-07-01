@@ -27,8 +27,8 @@ Spring::Spring(real len, Vector anchorPos) {
     springMassShape.setPosition(anchorPos.x, anchorPos.y - springLength);
 
     /** Initialise Particle variables */
-    setMass(real(0.005) * springLength);
-    setDamping(0.90f);
+    setMass(real(0.01) * springLength);
+    setDamping(0.99f);
     setVelocity(0.0f, 0.0f);
     setPosition(anchorPos.x, anchorPos.y - springLength);
 }
@@ -61,8 +61,8 @@ void Spring::calculateForces() {
 }
 
 void Spring::extendSpring() {
-    // Vector someForce = {0.0f, (-springParticle.getSpringRestLength() * 0.5f), 0.0f};
-//    springParticle.setAcceleration(someForce);
+    Vector someForce = {0.0f, (-springLength * 0.35f)};
+    setAcceleration(someForce);
 }
 
 void Spring::move(Vector acc) {

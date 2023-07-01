@@ -5,20 +5,18 @@
 #ifndef SIMPLE_PHYSICS_ENGINE_WORLD_H
 #define SIMPLE_PHYSICS_ENGINE_WORLD_H
 
-#include <SFML/Graphics.hpp>
 #include <sstream>
 
-#include "engine/precision.h"
+#include <SFML/Graphics.hpp>
 
-#include "game_demo/world_objects/spring.h"
+#include "world_objects/spring.h"
 #include "simulation_renderer.h"
-#include "wall.h"
 
 using namespace engine;
 
 class World {
     private:
-        /** Screen boundaries */
+        /** Structure that represents screen boundaries */
         struct ScreenBoundaries {
             GameObject* leftWall;
             GameObject* rightWall;
@@ -28,12 +26,12 @@ class World {
 
         ScreenBoundaries screen{};
 
-        /** Stores pointers to the Ball objects */
+        /** Stores pointers to all GameObjects */
         std::vector<GameObject*> worldObjects;
         unsigned int ballsTimer = 0;
-//
-//        /** Spring object */
-        Spring* spring;
+
+        /** Spring object */
+        Spring* spring{};
 
         /** Stream for displaying text on the screen */
         std::ostringstream ss;
@@ -43,6 +41,9 @@ class World {
 
     public:
         explicit World(SimulationRenderer &_renderer) : renderer(&_renderer) {};
+
+        /** Update the world */
+        void update();
 
         /** Create a new Ball object */
         void createBall();
@@ -55,9 +56,6 @@ class World {
 
         /** Draw spring system information on the screen */
         void updateSpringSystemInfo();
-
-        /** Update the world */
-        void update();
 };
 
 
