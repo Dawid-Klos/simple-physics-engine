@@ -65,28 +65,21 @@ void CollisionDetector::detectCollisions() {
                 }
 
                 // Skip collision detection between stationary objects
-                if ((gameObjects[interval.objectIndex]->objectType == WALL &&
-                     gameObjects[other.objectIndex]->objectType == WALL) ||
-                    (gameObjects[interval.objectIndex]->objectType == WALL &&
-                     gameObjects[other.objectIndex]->objectType == FLOOR) ||
-                    (gameObjects[interval.objectIndex]->objectType == FLOOR &&
-                     gameObjects[other.objectIndex]->objectType == WALL) ||
-                    (gameObjects[interval.objectIndex]->objectType == FLOOR &&
-                     gameObjects[other.objectIndex]->objectType == FLOOR)
-                        )
+                if ((gameObjects[interval.objectIndex]->objectType == WALL || gameObjects[interval.objectIndex]->objectType == FLOOR) &&
+                    (gameObjects[other.objectIndex]->objectType == WALL || gameObjects[other.objectIndex]->objectType == FLOOR))
                 {
                     continue;
                 }
 
-                if (objectsCollides(gameObjects[interval.objectIndex], gameObjects[other.objectIndex])) {
-                    overlappingPairsMap[interval.objectIndex].push_back(other.objectIndex);
-                    overlappingPairsMap[other.objectIndex].push_back(interval.objectIndex);
-                }
+                // Add overlapping pairs to map
+                overlappingPairsMap[interval.objectIndex].push_back(other.objectIndex);
+                overlappingPairsMap[other.objectIndex].push_back(interval.objectIndex);
             }
         }
     }
 
     sf::Color collisionColor = sf::Color::Red;
+
     // Step 5: Do more precise collision detection for overlapping pairs
     for (int i = 0; i < gameObjects.size(); i++) {
         for (int pair : overlappingPairsMap[i]) {
@@ -102,13 +95,16 @@ void CollisionDetector::detectCollisions() {
 }
 
 bool CollisionDetector::objectsCollides(GameObject *collider, GameObject *otherCollider) {
+    BoundingBox colliderBox = collider->getBoundingBox();
+    BoundingBox otherColliderBox = otherCollider->getBoundingBox();
+
     // Use bounding boxes to determine narrow collision detection
-    if (collider->getBoundingBox().xMin < otherCollider->getBoundingBox().xMax &&
-        collider->getBoundingBox().xMax > otherCollider->getBoundingBox().xMin &&
-        collider->getBoundingBox().yMin < otherCollider->getBoundingBox().yMax &&
-        collider->getBoundingBox().yMax > otherCollider->getBoundingBox().yMin) {
+    if(colliderBox.xMin < otherColliderBox.xMax &&
+       colliderBox.xMax > otherColliderBox.xMin &&
+       colliderBox.yMin < otherColliderBox.yMax &&
+       colliderBox.yMax > otherColliderBox.yMin) {
         return true;
     }
+
     return false;
 }
-

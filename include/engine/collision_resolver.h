@@ -24,7 +24,7 @@ namespace engine {
             };
 
             std::vector<Collision> collisions; /** Stores all collisions between two particles */
-            real contactCoefficient = 0.75f; /** Coefficient of restitution */
+            real contactCoefficient = 0.95f; /** Coefficient of restitution */
             Vector contactDirection; /** Direction of contact */
 
         public:
@@ -39,9 +39,6 @@ namespace engine {
 
             /** Resolve a collision between two objects */
             void resolveCollision(GameObject* object1, GameObject*  object2);
-
-            /** Resolve intersection between two objects */
-            void resolveIntersection(GameObject* gameObject1, GameObject* gameObject2) const;
 
             /** Resolve collision with a wall */
             void resolveWallCollision(GameObject* collider) const;

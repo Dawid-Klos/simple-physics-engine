@@ -15,6 +15,7 @@ void CollisionResolver::resolve() {
     if (collisions.size() < 2) return;
 
     for (auto& collision : collisions) {
+        // Resolve collision between static objects
         if (collision.object1->objectType == WALL) {
             resolveWallCollision(collision.object2);
             continue;
@@ -27,17 +28,15 @@ void CollisionResolver::resolve() {
 
         if(collision.object1->objectType == FLOOR) {
             resolveFloorCollision(collision.object2);
-//            resolveIntersection(collision.object1, collision.object2);
             continue;
         }
 
         if(collision.object2->objectType == FLOOR) {
             resolveFloorCollision(collision.object1);
-//            resolveIntersection(collision.object1, collision.object2);
             continue;
         }
 
-        // If not wall or floor collision, resolve normal collision
+        // Resolve collision between dynamic objects
         resolveCollision(collision.object1, collision.object2);
     }
 
@@ -59,6 +58,7 @@ void CollisionResolver::resolveCollision(GameObject* gameObject1, GameObject* ga
     contactDirection.normalize();
     contactDirection.invert();
 
+    // Calculate the separating velocity
     Vector velocityDifference = collider->getVelocity() - otherCollider->getVelocity();
     real separatingVelocity = velocityDifference.getScalarProduct(contactDirection);
 
@@ -91,6 +91,7 @@ void CollisionResolver::resolveWallCollision(GameObject *collider) const {
     Particle* wallCollider = collider->getParticle();
     Vector contactNormal;
 
+    // Check if it is a left or right wall
     if (wallCollider->getPosition().x < 100.0f) {
         contactNormal = Vector(wallCollider->getPosition().x * -0.9f, wallCollider->getPosition().y) - wallCollider->getPosition();
     } else {
@@ -125,7 +126,6 @@ void CollisionResolver::resolveFloorCollision(GameObject *collider) const {
     real inverseMass = floorCollider->getInvertedMass();
     Vector normalForce = gravity * inverseMass * -1.0f;
 
-    // Calculate the velocity after collision (bounce or restitution)
     Vector colliderVelocity = floorCollider->getVelocity();
 
     if(colliderVelocity.y >= 0.0f) { return; }
@@ -137,35 +137,3 @@ void CollisionResolver::resolveFloorCollision(GameObject *collider) const {
     Vector newVelocity = colliderVelocity + colliderVelocity * -contactCoefficient * 2.0f;
     floorCollider->setVelocity(-newVelocity.x, newVelocity.y);
 }
-
-void CollisionResolver::resolveIntersection(GameObject *gameObject1, GameObject *gameObject2) const {
-    // Calculate intersection depth based on the bounding boxes
-    real intersectionDepthX = fmin(gameObject1->getBoundingBox().xMax, gameObject2->getBoundingBox().xMax) - fmax(gameObject1->getBoundingBox().xMin, gameObject2->getBoundingBox().xMin);
-    real intersectionDepthY = fmin(gameObject1->getBoundingBox().yMax, gameObject2->getBoundingBox().yMax) - fmax(gameObject1->getBoundingBox().yMin, gameObject2->getBoundingBox().yMin);
-
-    // Calculate the total intersection depth
-    real totalIntersectionDepth = (intersectionDepthX + intersectionDepthY) * 0.5f;
-
-    // If the objects are not intersecting, the intersection depths will be negative or zero
-    if (totalIntersectionDepth > 0.0f) {
-
-        std::cout << "intersection depth: " << totalIntersectionDepth << std::endl;
-
-        // Use the totalIntersectionDepth to resolve the collision between the objects
-        Particle* object1 = gameObject1->getParticle();
-        Particle* object2 = gameObject2->getParticle();
-
-        real totalInvertedMass = object1->getInvertedMass() + object2->getInvertedMass();
-
-        if (totalInvertedMass <= 0.0f) return;
-
-        Vector distance = object1->getPosition() - object2->getPosition();
-        distance.normalize();
-
-        Vector displacement = distance * (totalIntersectionDepth / totalInvertedMass);
-
-        object1->setPosition(object1->getPosition() + (displacement * object1->getInvertedMass()));
-        object2->setPosition(object2->getPosition() - (displacement * object2->getInvertedMass()));
-    }
-}
-

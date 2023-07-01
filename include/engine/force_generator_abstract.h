@@ -57,7 +57,7 @@ namespace engine {
      */
     class SpringForce : public ForceGeneratorAbstract {
         private:
-            real k = 0.1f; /** Constant value needed to calculate spring force */
+            real k = 0.08f; /** Constant value needed to calculate spring force */
             real restLength{}; /** Length of the spring in rest */
             Vector origin{}; /** Spring origin position */
 
@@ -93,7 +93,7 @@ namespace engine {
      */
     class FrictionForce : public ForceGeneratorAbstract {
         private:
-            real frictionCoefficient = 0.015f; /** Constant value applied to the friction force formula */
+            real frictionCoefficient = 0.005f; /** Constant value applied to the friction force formula */
             Vector velocity;  /** Used to store the velocity of Particle for calculations */
             Vector frictionForce; /** Used to store the friction force that is applied to Particle */
         public:

@@ -9,10 +9,9 @@
 #ifndef SIMPLE_PHYSICS_ENGINE_COLLISIONDETECTOR_H
 #define SIMPLE_PHYSICS_ENGINE_COLLISIONDETECTOR_H
 
-#include <engine/vector.h>
 #include <vector>
-#include <unordered_map>
 
+#include <engine/vector.h>
 #include "collision_resolver.h"
 
 using namespace std;
@@ -26,8 +25,11 @@ namespace engine {
     private:
         /** Stores pointers to all objects that occur in the simulation */
         std::vector<GameObject*> gameObjects;
+
+        /** Reference to the collision resolver used to call resolution of colliding objects */
         CollisionResolver& collisionResolver;
 
+        /** Stores index and intervals for each object along each axis */
         struct Interval {
             int objectIndex;
             real min;

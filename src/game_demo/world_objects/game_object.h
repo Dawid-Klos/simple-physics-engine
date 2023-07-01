@@ -12,6 +12,10 @@ class Ball;
 
 using namespace engine;
 
+/**
+ * Enum that represents different object types.
+ * Used for collision detection purposes.
+ */
 enum ObjectType {
     BALL,
     SPRING,
@@ -19,6 +23,10 @@ enum ObjectType {
     WALL
 };
 
+/**
+ * Struct that represents a bounding box with minimum and maximum x and y coordinates.
+ * Used for collision detection purposes.
+ */
 struct BoundingBox {
     float xMin;
     float xMax;
@@ -35,7 +43,7 @@ public:
     ObjectType objectType{};
 
     virtual ~GameObject() = default;
-    virtual void update(float delta) = 0;
+    virtual void update(real delta) = 0;
     virtual void draw(sf::RenderWindow& window) = 0;
     virtual Particle* getParticle() = 0; /** Getter for accessing Particle instance */
     [[nodiscard]] virtual BoundingBox getBoundingBox() const = 0; /** Getter for accessing the bounding box properties */
