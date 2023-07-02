@@ -37,6 +37,8 @@ set(
         ${WORLD_OBJECTS}/ball.cpp
         ${WORLD_OBJECTS}/spring.h
         ${WORLD_OBJECTS}/spring.cpp
+        ${WORLD_OBJECTS}/box.h
+        ${WORLD_OBJECTS}/box.cpp
         ${GAME_DEMO}/simulation_renderer.h
         ${GAME_DEMO}/simulation_renderer.cpp
         ${GAME_DEMO}/world.h

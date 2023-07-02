@@ -7,8 +7,10 @@
 
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <engine/vector.h>
+#include <engine/particle.h>
 class Wall;
 class Ball;
+class Box;
 
 using namespace engine;
 
@@ -19,6 +21,7 @@ using namespace engine;
 enum ObjectType {
     BALL,
     SPRING,
+    BOX,
     FLOOR,
     WALL
 };
@@ -47,7 +50,7 @@ public:
     virtual void draw(sf::RenderWindow& window) = 0;
     virtual Particle* getParticle() = 0; /** Getter for accessing Particle instance */
     [[nodiscard]] virtual BoundingBox getBoundingBox() const = 0; /** Getter for accessing the bounding box properties */
-    virtual void changeColor(sf::Color color) = 0; /** Change the color of the object */
+    virtual void indicateCollision(sf::Color color) = 0; /** Change the color of the object */
 };
 
 #endif //SIMPLE_PHYSICS_ENGINE_GAME_OBJECT_H

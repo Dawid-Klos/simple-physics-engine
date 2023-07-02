@@ -38,12 +38,17 @@ class World {
 
         /** Instance of SimulationRenderer used to draw objects in simulation */
         SimulationRenderer* renderer;
+        sf::RenderWindow* window;
+        sf::Event event{};
 
     public:
-        explicit World(SimulationRenderer &_renderer) : renderer(&_renderer) {};
+        explicit World(SimulationRenderer &_renderer) : renderer(&_renderer) { window = renderer->getWindow(); }
 
         /** Update the world */
         void update();
+
+        /** Collect user input */
+        void processInput();
 
         /** Create a new Ball object */
         void createBall();

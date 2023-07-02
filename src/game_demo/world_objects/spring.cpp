@@ -5,37 +5,45 @@
 #include "spring.h"
 
 Spring::Spring(real len, Vector anchorPos) {
-    /** Set spring line position - line[0] anchor - line[1] end */
-    line[0] = sf::Vector2f(anchorPos.x, anchorPos.y);
+    // Set spring line position - line[0] anchor - line[1] end
+    line[0] = sf::Vector2f(anchorPos.x, anchorPos.y - 40.0f);
     line[1] = sf::Vector2f(anchorPos.x, anchorPos.y - springLength);
 
-    /** Store spring length in rest */
+    // Store spring length in rest
     springLength = len;
 
-    /** Initialize spring force system */
-    springForce.initSpringParameters(springLength, anchorPos);
+    // Initialize spring force system
+    springForce.initSpringParameters(springLength, Vector{line[0].position.x, line[0].position.y});
     objectType = SPRING;
 
-    /** Set line color */
+    // Set line color
     line[0].color = sf::Color(48,54,47);
     line[1].color = sf::Color(48,54,47);
 
-    /** Set spring mass - SFML shape object properties */
+    // Set spring mass - SFML shape object properties
     springMassShape.setRadius(springLength / 6);
-    springMassShape.setFillColor(sf::Color(218, 116, 34));
     springMassShape.setOrigin(springLength / 6, springLength / 6);
-    springMassShape.setPosition(anchorPos.x, anchorPos.y - springLength);
+    springMassShape.setPosition(anchorPos.x, line[0].position.y - springLength);
 
-    /** Initialise Particle variables */
+    springMassShape.setFillColor(sf::Color{218, 116, 34});
+    springMassShape.setOutlineThickness(2.0f);
+    springMassShape.setOutlineColor(sf::Color{82, 40, 62});
+
+
+    // Initialise Particle variables
+    updateBoundingBox();
     setMass(real(0.01) * springLength);
     setDamping(0.99f);
     setVelocity(0.0f, 0.0f);
-    setPosition(anchorPos.x, anchorPos.y - springLength);
+    setPosition(anchorPos.x, line[0].position.y - springLength);
 }
 
 void Spring::draw(sf::RenderWindow &window) {
     window.draw(line, 2, sf::Lines);
     window.draw(springMassShape);
+
+    // Reset color after collision
+    indicateCollision(sf::Color{82, 40, 62});
 }
 
 void Spring::update(real delta) {
@@ -60,17 +68,8 @@ void Spring::calculateForces() {
     springForce.updateForce(this);
 }
 
-void Spring::extendSpring() {
-    Vector someForce = {0.0f, (-springLength * 0.35f)};
-    setAcceleration(someForce);
-}
-
 void Spring::move(Vector acc) {
     setAcceleration(acc);
-}
-
-Vector Spring::getCurrentAcceleration() {
-    return getAcceleration();
 }
 
 Vector Spring::getCurrentVelocity() {
@@ -96,6 +95,6 @@ void Spring::updateBoundingBox() {
     boundingBox.yMax = getPosition().y + springLength / 6;
 }
 
-void Spring::changeColor(sf::Color color) {
-    springMassShape.setFillColor(color);
+void Spring::indicateCollision(sf::Color color) {
+    springMassShape.setOutlineColor(color);
 }

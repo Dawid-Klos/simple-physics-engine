@@ -4,29 +4,30 @@
 
 #include "wall.h"
 
-Wall::Wall(real width, real height, real posX, real posY, sf::Color color) {
+Wall::Wall(real width, real height, real posX, real posY) {
     // Init basic properties
     objectType = WALL;
     wallWidth = width;
     wallHeight = height;
 
     // Init shape properties
-    shape.setFillColor(color);
+    shape.setFillColor(sf::Color{231, 111, 81});
     shape.setPosition(posX, posY);
     shape.setSize(sf::Vector2f(width, height));
+    shape.setOrigin(width / 2.0f, height / 2.0f);
 
     // Set bounding box based on width, height, posX and posY
-    boundingBox.xMin = posX;
-    boundingBox.xMax = posX + wallWidth;
-    boundingBox.yMin = posY;
-    boundingBox.yMax = posY + wallHeight;
+    boundingBox.xMin = posX - wallWidth / 2.0f;
+    boundingBox.xMax = posX + wallWidth / 2.0f;
+    boundingBox.yMin = posY - wallHeight / 2.0f;
+    boundingBox.yMax = posY + wallHeight / 2.0f;
 
     // Set the Particle object properties for physics calculations
-    this->setPosition(posX, posY);
-    this->setMass(0.0f);
-    this->setDamping(0.99f);
-    this->setVelocity(0.0f, 0.0f);
-    this->setAcceleration(0.0f, 0.0f);
+    setPosition(posX, posY);
+    setMass(0.0f);
+    setDamping(0.99f);
+    setVelocity(0.0f, 0.0f);
+    setAcceleration(0.0f, 0.0f);
 }
 
 void Wall::draw(sf::RenderWindow &window) {
@@ -34,15 +35,9 @@ void Wall::draw(sf::RenderWindow &window) {
 }
 
 void Wall::update(real delta) {
+    // Reset color
+    indicateCollision(sf::Color{231, 111, 81});
     // Static object, no update needed
-}
-
-real Wall::getWidth() const {
-    return wallWidth;
-}
-
-real Wall::getHeight() const {
-    return wallHeight;
 }
 
 BoundingBox Wall::getBoundingBox() const {
@@ -53,8 +48,8 @@ Particle* Wall::getParticle() {
     return this;
 }
 
-void Wall::changeColor(sf::Color color) {
-    shape.setFillColor(color);
+void Wall::indicateCollision(sf::Color color) {
+    shape.setOutlineColor(color);
 }
 
 Wall::Wall() = default;

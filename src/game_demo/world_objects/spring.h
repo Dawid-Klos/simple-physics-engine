@@ -48,7 +48,7 @@ class Spring : public virtual GameObject, public Particle {
         Particle* getParticle() override;
 
         /** Change the color of the object */
-        void changeColor(sf::Color color) override;
+        void indicateCollision(sf::Color color) override;
 
         /** Calculate forces that apply to the Spring object */
         void calculateForces();
@@ -56,11 +56,7 @@ class Spring : public virtual GameObject, public Particle {
         /** Moves the spring based on the acceleration applied */
         void move(Vector acc);
 
-        /** Extends the Spring by constant value */
-        void extendSpring();
-
         /** Get particle acceleration, velocity and position */
-        Vector getCurrentAcceleration();
         Vector getCurrentVelocity();
         Vector getCurrentPosition();
 };

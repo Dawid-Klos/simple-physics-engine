@@ -45,10 +45,10 @@ void CollisionDetector::detectCollisions() {
 
     // Step 3: Update sorted lists each frame
     for (int i = 0; i < gameObjects.size(); i++) {
-        intervals[0][i].min = gameObjects[i]->getBoundingBox().xMin * 0.95f;
-        intervals[0][i].max = gameObjects[i]->getBoundingBox().xMax * 0.95f;
-        intervals[1][i].min = gameObjects[i]->getBoundingBox().yMin * 0.95f;
-        intervals[1][i].max = gameObjects[i]->getBoundingBox().yMax * 0.95f;
+        intervals[0][i].min = gameObjects[i]->getBoundingBox().xMin * 1.1f;
+        intervals[0][i].max = gameObjects[i]->getBoundingBox().xMax * 1.1f;
+        intervals[1][i].min = gameObjects[i]->getBoundingBox().yMin * 1.1f;
+        intervals[1][i].max = gameObjects[i]->getBoundingBox().yMax * 1.1f;
     }
 
     // Step 4: Check for overlaps along all axes
@@ -85,8 +85,8 @@ void CollisionDetector::detectCollisions() {
         for (int pair : overlappingPairsMap[i]) {
             // Do narrow phase collision detection between game objects
             if (objectsCollides(gameObjects[i], gameObjects[pair])) {
-                gameObjects[i]->changeColor(collisionColor);
-                gameObjects[pair]->changeColor(collisionColor);
+                gameObjects[i]->indicateCollision(collisionColor);
+                gameObjects[pair]->indicateCollision(collisionColor);
 
                 collisionResolver.addCollision(gameObjects[i], gameObjects[pair]);
             }

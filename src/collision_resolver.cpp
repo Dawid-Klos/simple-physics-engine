@@ -2,11 +2,17 @@
 // Created by dave on 17.04.23.
 //
 #include "engine/collision_resolver.h"
-#include <iostream>
-using namespace engine;
 
 void CollisionResolver::addCollision(GameObject* object1, GameObject* object2) {
     Collision newCollision = {object1, object2};
+
+    // check if collision already exists
+    for (auto& collision : collisions) {
+        if (collision.object1 == object1 && collision.object2 == object2) {
+            return;
+        }
+    }
+
     collisions.push_back(newCollision);
 }
 
@@ -39,13 +45,15 @@ void CollisionResolver::resolve() {
         // Resolve collision between dynamic objects
         resolveCollision(collision.object1, collision.object2);
     }
-
-    removeResolvedCollisions();
 }
 
 void CollisionResolver::removeResolvedCollisions() {
-    std::cout << "Removing resolved collisions - " << collisions.size() << std::endl;
+
     collisions.clear();
+}
+
+unsigned int CollisionResolver::getCollisionsSize() const {
+    return collisions.size();
 }
 
 void CollisionResolver::resolveCollision(GameObject* gameObject1, GameObject* gameObject2) {
@@ -81,9 +89,6 @@ void CollisionResolver::resolveCollision(GameObject* gameObject1, GameObject* ga
     // Apply impulse directly to the velocity for ParticleTwo
     Vector object2Impulse = otherCollider->getVelocity() + resultingImpulse * otherCollider->getInvertedMass() * real(-1);
     otherCollider->setVelocity(object2Impulse);
-
-    // Resolve intersection
-//    resolveIntersection(gameObject1, gameObject2);
 }
 
 

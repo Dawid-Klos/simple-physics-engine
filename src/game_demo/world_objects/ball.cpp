@@ -12,14 +12,17 @@ Ball::Ball(real rad, real posX, real posY) {
     circleShape.setRadius(radius);
     circleShape.setOrigin(radius, radius);
     circleShape.setFillColor(sf::Color{169, 151, 223});
+//    circleShape.setOutlineColor(sf::Color{233, 196, 106});
+    circleShape.setOutlineThickness(2.0f);
     circleShape.setPosition(posX, posY);
 
     // Set the Particle object properties for physics calculations
+    updateBoundingBox();
     setMass(real(0.1f) * rad);
     setDamping(0.98f);
     setPosition(posX, posY);
     setVelocity(8.0f * radius, 20.0f);
-    setAcceleration(20.0f, 0.0f);
+    setAcceleration(200.0f, 0.0f);
 }
 
 void Ball::update(real delta) {
@@ -44,6 +47,9 @@ void Ball::update(real delta) {
 
 void Ball::draw(sf::RenderWindow &window) {
     window.draw(circleShape);
+
+    // Reset color after drawing
+    indicateCollision(sf::Color{42, 157, 143});
 }
 
 void Ball::updateBoundingBox() {
@@ -58,8 +64,8 @@ void Ball::calculateForces() {
     dragForce.updateForce(this);
 }
 
-void Ball::changeColor(sf::Color color) {
-    circleShape.setFillColor(color);
+void Ball::indicateCollision(sf::Color color) {
+    circleShape.setOutlineColor(color);
 }
 
 BoundingBox Ball::getBoundingBox() const {

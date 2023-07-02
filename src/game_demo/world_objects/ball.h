@@ -45,7 +45,7 @@ class Ball : public virtual GameObject, public Particle {
         Particle* getParticle() override;
 
         /** Change the ball color */
-        void changeColor(sf::Color color) override;
+        void indicateCollision(sf::Color color) override;
 
         /** Calculate forces that apply to the Ball */
         void calculateForces();

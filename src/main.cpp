@@ -18,7 +18,7 @@ int main() {
     while (renderer->running()) {
 
         // Create a new ball every 1 seconds
-        if (ballsTimer.getElapsedTime().asSeconds() > 0.15f) {
+        if (ballsTimer.getElapsedTime().asSeconds() > 1.0f) {
             ballsTimer.restart();
             world.createBall();
         }

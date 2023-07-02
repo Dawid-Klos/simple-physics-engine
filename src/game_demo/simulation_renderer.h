@@ -27,7 +27,6 @@ private:
 
     /** Stores the SFML RenderWindow object */
     sf::RenderWindow* window;
-    sf::Event event{};
 
     /** SFML object used to measure time between frames */
     sf::Clock clock;
@@ -36,6 +35,7 @@ private:
     /** Collision detection system */
     CollisionResolver collisionResolver;
     CollisionDetector collisionDetector = CollisionDetector(collisionResolver);
+    unsigned int collisionsCount = 0;
 
 public:
     /** Default constructor */
@@ -51,8 +51,11 @@ public:
     /** Render the simulation */
     void render(const vector<GameObject*>& myObjects);
 
-    /** Update the events */
-    void updateEvents(const vector<GameObject*>& myObjects);
+    /** Return pointer to the SFML RenderWindow object */
+    sf::RenderWindow* getWindow() const;
+
+    /** Return number of objects in the collision detector system */
+    unsigned int getCollisionsCount() const;
 
     /** Add objects to the collision detector system */
     void addObjectToDetector(GameObject* gameObject);

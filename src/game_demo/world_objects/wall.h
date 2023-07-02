@@ -14,7 +14,7 @@
 
 using namespace engine;
 
-class Wall : public GameObject, public Particle {
+class Wall : public virtual GameObject, public Particle {
     private:
         sf::RectangleShape shape; /** Stores a rectangle object from the SFML library */
         BoundingBox boundingBox{}; /** Stores the bounding box of a game object */
@@ -24,7 +24,7 @@ class Wall : public GameObject, public Particle {
 
     public:
         Wall();
-        Wall(real width, real height, real posX, real posY, sf::Color color);
+        Wall(real width, real height, real posX, real posY);
 
         /** Draw this object by calling SFML window */
         void draw(sf::RenderWindow &window) override;
@@ -38,13 +38,7 @@ class Wall : public GameObject, public Particle {
         [[nodiscard]] BoundingBox getBoundingBox() const override;
 
         /** Change the color of the object */
-        void changeColor(sf::Color color) override;
-
-        /** Return the wall width */
-        real getWidth() const;
-
-        /** Return the wall height */
-        real getHeight() const;
+        void indicateCollision(sf::Color color) override;
 };
 
 
