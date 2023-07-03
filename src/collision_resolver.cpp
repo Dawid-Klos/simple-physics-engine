@@ -118,7 +118,7 @@ void CollisionResolver::resolveFloorCollision(GameObject *collider) const {
     Particle* floorCollider = collider->getParticle();
 
     // Calculate Fn - Normal force
-    Vector gravity = {0.0f, -25.0f};
+    Vector gravity = {0.0f, -50.0f};
     real inverseMass = floorCollider->getInvertedMass();
     Vector normalForce = gravity * inverseMass * -1.0f;
 

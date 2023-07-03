@@ -62,9 +62,9 @@ void SimulationRenderer::update(const vector<GameObject*>& myObjects) {
     delta = clock.restart().asSeconds() * 5.0f;
 
     // Create sub-steps for collision detection
-    real dt_sub = delta / 8.0f;
+    real dt_sub = delta / 4.0f;
 
-    for (int i = 0; i < 8; i++) {
+    for (int i = 0; i < 4; i++) {
         // Collision detection
         collisionDetector.detectCollisions();
         collisionResolver.resolve();
