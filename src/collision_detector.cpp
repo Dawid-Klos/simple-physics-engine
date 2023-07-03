@@ -1,7 +1,6 @@
 //
 // Created by dave on 17.04.23.
 //
-#include <iostream>
 #include "engine/collision_detector.h"
 
 using namespace engine;
@@ -45,10 +44,10 @@ void CollisionDetector::detectCollisions() {
 
     // Step 3: Update sorted lists each frame
     for (int i = 0; i < gameObjects.size(); i++) {
-        intervals[0][i].min = gameObjects[i]->getBoundingBox().xMin * 1.1f;
-        intervals[0][i].max = gameObjects[i]->getBoundingBox().xMax * 1.1f;
-        intervals[1][i].min = gameObjects[i]->getBoundingBox().yMin * 1.1f;
-        intervals[1][i].max = gameObjects[i]->getBoundingBox().yMax * 1.1f;
+        intervals[0][i].min = gameObjects[i]->getBoundingBox().xMin;
+        intervals[0][i].max = gameObjects[i]->getBoundingBox().xMax;
+        intervals[1][i].min = gameObjects[i]->getBoundingBox().yMin;
+        intervals[1][i].max = gameObjects[i]->getBoundingBox().yMax;
     }
 
     // Step 4: Check for overlaps along all axes
@@ -61,7 +60,8 @@ void CollisionDetector::detectCollisions() {
                 Interval& other = intervals[i][k];
 
                 if (interval.max < other.min) {
-                    break; // intervals sorted, no more overlaps possible
+                    // if this point is reached - intervals sorted, no more overlaps possible
+                    break;
                 }
 
                 // Skip collision detection between stationary objects

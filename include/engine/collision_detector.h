@@ -19,37 +19,66 @@ using namespace std;
 namespace engine {
     /**
      * Collision detector responsible for detecting objects that intersects with each other.
+     * Sweep and prune algorithm is used to detect collisions with broad and narrow phase.
+     * Broad phase is done by sorting objects along x axis and narrow phase is done by
+     * checking if objects bounding boxes intersect.
      */
     class CollisionDetector {
-        TEST_FRIENDS;
+        TEST_FRIENDS; /**< Used for testing private methods. */
     private:
-        /** Stores pointers to all objects that occur in the simulation */
-        std::vector<GameObject*> gameObjects;
+        std::vector<GameObject*> gameObjects; /**< Stores pointers to all objects that occur in the simulation */
 
         /** Reference to the collision resolver used to call resolution of colliding objects */
         CollisionResolver& collisionResolver;
 
-        /** Stores index and intervals for each object along each axis */
+        /** Represents an interval which is used to detect collisions.
+         * Each object has two intervals, one for x axis and one for y axis.
+         * Each interval stores the index of the object and the min and max value of the interval.
+         * */
         struct Interval {
-            int objectIndex;
-            real min;
-            real max;
+            int objectIndex; /**< Stores the index of the object. */
+            real min; /**< Stores the minimum value of the interval. */
+            real max; /**< Stores the maximum value of the interval. */
         };
-        std::vector<std::vector<Interval>> intervals;
+        std::vector<std::vector<Interval>> intervals; /**< Stores index and intervals for each object along x and y axis */
 
     public:
+        /**
+         * Collision detector constructor. Requires a reference to the collision resolver used to call
+         * resolution of colliding objects.
+         *
+         * @param resolver Reference to the collision resolver
+         * */
         explicit CollisionDetector(CollisionResolver& resolver) : collisionResolver(resolver) {}
 
-        /** Add a object to the collision detector */
+        /**
+         * Adds object to the collision detector.
+         *
+         * @param gameObject Pointer to the game object to be added
+         * */
         void addObject(GameObject* gameObject);
 
-        /** Create intervals for each object */
+        /**
+         * Creates intervals for each object in the game objects vector.
+         * One for x-axis and one for y-axis.
+         *
+         * @see Interval
+         * */
         void createIntervals();
 
-        /** Use bounding boxes to determine narrow collision intervals */
+        /**
+         * Uses bounding boxes to determine narrow collision detection for two objects.
+         *
+         * @param collider Pointer to the game object to be checked for collision
+         * @param otherCollider Pointer to the other game object to be checked for collision
+         *
+         * @return True if the objects bounding boxes intersect, false otherwise
+         * */
         static bool objectsCollides(GameObject* collider, GameObject* otherCollider);
 
-        /** Detect collisions between balls */
+        /**
+         * Runs the algorithm to detect collisions between game objects.
+         * */
         void detectCollisions();
     };
 }

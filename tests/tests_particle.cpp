@@ -113,10 +113,10 @@ TEST(ParticleTest, SetMass) {
     Particle particle = Particle();
     particle.setMass(real(10.0f));
 
-    real mass = particle.getMass();
+    real mass = particle.getInvertedMass();
 
     // we are storing inverted mass
-    ASSERT_EQ(mass, real(10.0f));
+    ASSERT_EQ(mass, real(1.0f));
 }
 
 // get inverted mass

@@ -49,7 +49,7 @@ namespace engine {
 
         // create multiple balls
         for (int i = 0; i < 10; i++) {
-            Ball* ball = new Ball(10, real(i+1), real(i+2));
+            GameObject* ball = new Ball(10, real(i+1), real(i+2));
             collisionDetector.detector.addObject(ball);
         }
 

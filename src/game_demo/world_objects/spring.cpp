@@ -5,7 +5,7 @@
 #include "spring.h"
 
 Spring::Spring(real len, Vector anchorPos) {
-    // Set spring line position - line[0] anchor - line[1] end
+    // Set spring line position - line[0] anchor - line[1] end with spring mass
     line[0] = sf::Vector2f(anchorPos.x, anchorPos.y - 40.0f);
     line[1] = sf::Vector2f(anchorPos.x, anchorPos.y - springLength);
 
@@ -30,7 +30,7 @@ Spring::Spring(real len, Vector anchorPos) {
     springMassShape.setOutlineColor(sf::Color{82, 40, 62});
 
 
-    // Initialise Particle variables
+    // Initialise Particle properties
     updateBoundingBox();
     setMass(real(0.01) * springLength);
     setDamping(0.99f);
@@ -66,18 +66,6 @@ void Spring::calculateForces() {
     gravityForce.updateForce(this);
     dragForce.updateForce(this);
     springForce.updateForce(this);
-}
-
-void Spring::move(Vector acc) {
-    setAcceleration(acc);
-}
-
-Vector Spring::getCurrentVelocity() {
-    return getVelocity();
-}
-
-Vector Spring::getCurrentPosition() {
-    return getPosition();
 }
 
 Particle* Spring::getParticle() {

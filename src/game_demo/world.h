@@ -6,17 +6,23 @@
 #define SIMPLE_PHYSICS_ENGINE_WORLD_H
 
 #include <sstream>
-
 #include <SFML/Graphics.hpp>
 
-#include "world_objects/spring.h"
 #include "simulation_renderer.h"
 
 using namespace engine;
-
+/**
+ * Class that represents the world of the simulation. It is responsible for setting the screen boundaries,
+ * creating new objects, processing user input and updating the simulation.
+ *
+ * @see SimulationRenderer
+ */
 class World {
     private:
-        /** Structure that represents screen boundaries */
+        /** Structure that represents screen boundaries.
+         *
+         * @see setScreenBoundaries
+         * */
         struct ScreenBoundaries {
             GameObject* leftWall;
             GameObject* rightWall;
@@ -24,44 +30,54 @@ class World {
             GameObject* topWall;
         };
 
-        ScreenBoundaries screen{};
+        ScreenBoundaries screen{}; /**< Stores an object containing pointers to the screen boundaries. */
+        std::vector<GameObject*> worldObjects; /**< Stores pointers to all GameObjects that occurs in the simulation */
 
-        /** Stores pointers to all GameObjects */
-        std::vector<GameObject*> worldObjects;
-        unsigned int ballsTimer = 0;
+        unsigned int ballsTimer = 0; /**< Timer used to create new balls in the simulation. */
 
-        /** Spring object */
-        Spring* spring{};
-
-        /** Stream for displaying text on the screen */
-        std::ostringstream ss;
-
-        /** Instance of SimulationRenderer used to draw objects in simulation */
-        SimulationRenderer* renderer;
-        sf::RenderWindow* window;
-        sf::Event event{};
+        std::ostringstream ss; /**< Stream for displaying text on the screen. */
+        SimulationRenderer* renderer; /**< A pointer to the instance of SimulationRenderer used to render and draw objects in simulation. */
+        sf::RenderWindow* window; /**< Stores a pointer to the RenderWindow object. */
+        sf::Event event{}; /**< SFML event object used to process user input. */
 
     public:
         explicit World(SimulationRenderer &_renderer) : renderer(&_renderer) { window = renderer->getWindow(); }
 
-        /** Update the world */
+        /**
+         * Updates the state of the world by updating all objects in the simulation.
+         * It processes input, updates objects and then renders them by calling the renderer.
+         * */
         void update();
 
-        /** Collect user input */
+        /**
+         * Collects the user input and performs specified
+         * */
         void processInput();
 
-        /** Create a new Ball object */
+        /**
+         * Creates a new Ball object and adds it into the simulation.
+         * Balls counter is used to create a defined number of balls in the simulation.
+         * */
         void createBall();
 
-        /** Set screen boundaries - walls */
+        /**
+         * Sets the screen boundaries - walls, floor and ceiling.
+         *
+         * @param window_width width of the window.
+         * @param window_height height of the window.
+         * */
         void setScreenBoundaries(real window_width, real window_height);
 
-        /** Crate spring system */
+        /**
+         * Crates spring system and places it in the middle of the screen based on the window size.
+         *
+         * @param WINDOW_WIDTH width of the window.
+         * @param WINDOW_HEIGHT height of the window.
+         * */
         void createSpringSystem(real WINDOW_WIDTH, real WINDOW_HEIGHT);
 
-        /** Draw spring system information on the screen */
+        /** Draws spring system information on the screen */
         void updateSpringSystemInfo();
 };
-
 
 #endif //SIMPLE_PHYSICS_ENGINE_WORLD_H

@@ -14,30 +14,69 @@
 
 using namespace engine;
 
+/**
+ * Represents a Wall object (rectangle). Inherits from Game object virtual base class that requires implementation
+ * of basic functions. It allows for easier manipulation of different game objects in the game world.
+ *
+ * It also inherits from Particle class that specifies physics properties of the Wall. Is is a static
+ * object, so there is no implementation of integrate function and the mass is set to 0.
+ *
+ */
 class Wall : public virtual GameObject, public Particle {
     private:
-        sf::RectangleShape shape; /** Stores a rectangle object from the SFML library */
-        BoundingBox boundingBox{}; /** Stores the bounding box of a game object */
+        sf::RectangleShape shape; /**< Stores a rectangle object from the SFML library. */
+        BoundingBox boundingBox{}; /**< Stores the bounding box properties. */
 
-        real wallWidth; /** Stores width of the wall */
-        real wallHeight; /** Stores height of the wall */
+        real wallWidth; /**< Stores width of the wall. */
+        real wallHeight; /**< Stores height of the wall. */
 
     public:
-        Wall();
+        /**
+         * Default constructor for the Wall object.
+         *
+         * @param width width of the wall
+         * @param height height of the wall
+         * @param posX starting x position of the wall
+         * @param posY starting y position of the wall
+         */
         Wall(real width, real height, real posX, real posY);
 
-        /** Draw this object by calling SFML window */
+        /**
+         * Draws this object by calling the SFML render window draw function.
+         *
+         * @param window SFML render window reference
+         * */
         void draw(sf::RenderWindow &window) override;
 
-        /** Update this object position by calling integrate function from Particle class */
+        /**
+         * Updates position by calling integrating function inherited from the Particle class.
+         *
+         * @param delta Time step
+         * */
         void update(real delta) override;
 
-        /** Getter for accessing Particle instance */
+        /**
+        * Returns a pointer to the Particle for accessing physics properties.
+        * It is an approach used to access physics properties of the Wall object.
+        *
+        * @return Pointer to the Particle
+        * */
         Particle* getParticle() override;
 
+        /**
+        * Returns the bounding box properties.
+        * It is an approach used to access bounding box properties of the Ball object
+        * in order to check for collisions.
+        *
+        * @return Bounding box properties
+        * */
         [[nodiscard]] BoundingBox getBoundingBox() const override;
 
-        /** Change the color of the object */
+        /**
+        * Changes the ball outline color, indicating collision
+        *
+        * @param color Color to be set for the outline
+        * */
         void indicateCollision(sf::Color color) override;
 };
 

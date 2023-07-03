@@ -4,18 +4,18 @@
 #include "simulation_renderer.h"
 
 SimulationRenderer::SimulationRenderer(real width, real height) {
-    // Init screen size
+    // Initialize screen size
     WINDOW_WIDTH = width;
     WINDOW_HEIGHT = height;
 
-    // enable anti-aliasing
+    // Enable anti-aliasing
     sf::ContextSettings settings;
     settings.antialiasingLevel = 8;
 
     // Initialize new window object
     window = new sf::RenderWindow(sf::VideoMode((unsigned int)WINDOW_WIDTH, (unsigned int)WINDOW_HEIGHT), "Physics Simulation", sf::Style::Default, settings);
 
-    // Set FPS limit
+    // Set limit for frames-per-second in simulation
     unsigned int fps = 60;
     window->setFramerateLimit(fps);
 
@@ -49,14 +49,22 @@ void SimulationRenderer::drawText(const sf::String &str) {
     worldInfo.setString(str);
 }
 
+sf::RenderWindow *SimulationRenderer::getWindow() const {
+    return window;
+}
+
+unsigned int SimulationRenderer::getCollisionsCount() const {
+    return collisionsCount;
+}
+
 void SimulationRenderer::update(const vector<GameObject*>& myObjects) {
     // Update delta time
     delta = clock.restart().asSeconds() * 5.0f;
 
     // Create sub-steps for collision detection
-    real dt_sub = delta / 4.0f;
+    real dt_sub = delta / 8.0f;
 
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 8; i++) {
         // Collision detection
         collisionDetector.detectCollisions();
         collisionResolver.resolve();
@@ -85,12 +93,4 @@ void SimulationRenderer::render(const vector<GameObject*>& myObjects) {
 
     // Display new frame
     window->display();
-}
-
-sf::RenderWindow *SimulationRenderer::getWindow() const {
-    return window;
-}
-
-unsigned int SimulationRenderer::getCollisionsCount() const {
-    return collisionsCount;
 }

@@ -6,12 +6,13 @@
 #define SIMPLE_PHYSICS_ENGINE_PRECISION_H
 
 #include <cfloat>
-
+// Code adapted from Millington, 2010
 /**
- * Code adapted from Millington, 2010
+ * Namespace engine contains all the classes and methods used to simulate physics.
+ * It is used to avoid name collisions with other libraries.
  */
-
 namespace engine {
+
     /**
      * Defines a real number precision. Allows to simply change the precision if needed.
      * By default single-precision is used.
@@ -28,9 +29,6 @@ namespace engine {
      */
     #define real_pow powf
 }
-
-/**
- * End of adapted code
- */
+// End of adapted code
 
 #endif //SIMPLE_PHYSICS_ENGINE_PRECISION_H

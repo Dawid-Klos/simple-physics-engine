@@ -32,8 +32,8 @@ Box::Box(real width, real height, real posX, real posY) {
 void Box::draw(sf::RenderWindow &window) {
     window.draw(shape);
 
-    // Reset color after drawing
-    indicateCollision(sf::Color{38, 70, 83});
+    // Reset outline color after drawing
+    shape.setOutlineColor(sf::Color{38, 70, 83});
 }
 
 void Box::update(real delta) {
@@ -79,5 +79,3 @@ void Box::updateBoundingBox() {
     boundingBox.yMin = getPosition().y - boxHeight / 2;
     boundingBox.yMax = getPosition().y + boxHeight / 2;
 }
-
-Box::Box() = default;

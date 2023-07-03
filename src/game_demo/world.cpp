@@ -42,15 +42,15 @@ void World::createBall() {
 
 
 void World::createSpringSystem(real WINDOW_WIDTH, real WINDOW_HEIGHT) {
-    spring = new Spring(80.0f, {WINDOW_WIDTH, WINDOW_HEIGHT});
+    GameObject* spring = new Spring(80.0f, {WINDOW_WIDTH, WINDOW_HEIGHT});
     worldObjects.push_back(spring);
     renderer->addObjectToDetector(spring);
 }
 
 void World::updateSpringSystemInfo() {
     // Print information on screen about the Spring object
-    Vector velocity =  spring->getCurrentVelocity();
-    Vector position =  spring->getCurrentPosition();
+    Vector velocity =  worldObjects[0]->getParticle()->getVelocity();
+    Vector position =  worldObjects[0]->getParticle()->getPosition();
 
     ss << "Spring system:\n" << std::endl;
     ss << "--> Velocity   x: " << velocity.x << "  y: " << velocity.y << std::endl;
@@ -62,9 +62,8 @@ void World::updateSpringSystemInfo() {
 }
 
 void World::update() {
-    if (spring != nullptr) {
-        updateSpringSystemInfo();
-    }
+    // Update spring system
+    updateSpringSystemInfo();
 
     renderer->drawText(ss.str());
     ss.str(std::string());
@@ -75,7 +74,6 @@ void World::update() {
 }
 
 void World::processInput() {
-
     while (window->pollEvent(event)) {
         switch (event.type) {
             case sf::Event::Closed:

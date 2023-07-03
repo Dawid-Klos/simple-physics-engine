@@ -8,7 +8,7 @@
 using namespace engine;
 
 void Particle::setMass(real mass) {
-    // Ensure mass not equal to 0
+    // Ensure mass not smaller than 0
     if(mass < 0.0f) { return; }
 
     // invertedMass used for acceleration calculation

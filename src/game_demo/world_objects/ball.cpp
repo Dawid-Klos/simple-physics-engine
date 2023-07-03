@@ -4,7 +4,7 @@
 #include "ball.h"
 
 Ball::Ball(real rad, real posX, real posY) {
-    // Init basic properties
+    // Initialize basic properties
     objectType = BALL;
     radius = rad;
 
@@ -12,7 +12,6 @@ Ball::Ball(real rad, real posX, real posY) {
     circleShape.setRadius(radius);
     circleShape.setOrigin(radius, radius);
     circleShape.setFillColor(sf::Color{169, 151, 223});
-//    circleShape.setOutlineColor(sf::Color{233, 196, 106});
     circleShape.setOutlineThickness(2.0f);
     circleShape.setPosition(posX, posY);
 
@@ -22,7 +21,7 @@ Ball::Ball(real rad, real posX, real posY) {
     setDamping(0.98f);
     setPosition(posX, posY);
     setVelocity(8.0f * radius, 20.0f);
-    setAcceleration(200.0f, 0.0f);
+    setAcceleration(100.0f, 0.0f);
 }
 
 void Ball::update(real delta) {
@@ -48,8 +47,8 @@ void Ball::update(real delta) {
 void Ball::draw(sf::RenderWindow &window) {
     window.draw(circleShape);
 
-    // Reset color after drawing
-    indicateCollision(sf::Color{42, 157, 143});
+    // Reset outline color after drawing
+    circleShape.setOutlineColor(sf::Color{42, 157, 143});
 }
 
 void Ball::updateBoundingBox() {

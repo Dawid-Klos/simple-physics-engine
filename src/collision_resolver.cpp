@@ -5,14 +5,6 @@
 
 void CollisionResolver::addCollision(GameObject* object1, GameObject* object2) {
     Collision newCollision = {object1, object2};
-
-    // check if collision already exists
-    for (auto& collision : collisions) {
-        if (collision.object1 == object1 && collision.object2 == object2) {
-            return;
-        }
-    }
-
     collisions.push_back(newCollision);
 }
 
@@ -48,7 +40,6 @@ void CollisionResolver::resolve() {
 }
 
 void CollisionResolver::removeResolvedCollisions() {
-
     collisions.clear();
 }
 

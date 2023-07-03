@@ -8,9 +8,6 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <engine/vector.h>
 #include <engine/particle.h>
-class Wall;
-class Ball;
-class Box;
 
 using namespace engine;
 
@@ -28,29 +25,40 @@ enum ObjectType {
 
 /**
  * Struct that represents a bounding box with minimum and maximum x and y coordinates.
- * Used for collision detection purposes.
+ * Used for narrow collision detection phase.
  */
 struct BoundingBox {
-    float xMin;
-    float xMax;
-    float yMin;
-    float yMax;
+    real xMin;
+    real xMax;
+    real yMin;
+    real yMax;
 };
 
+/**
+ * Abstract base class represents a game object that can be drawn in the simulation.
+ * Additionally, requires implementation of properties and methods for collision detection purposes.
+ */
 class GameObject {
-    /**
-     * Abstract base class represents a game object that can be drawn in the simulation.
-     * Additionally, requires implementation of properties and methods for collision detection purposes.
-     */
-public:
-    ObjectType objectType{};
+    public:
+        /** Stores the type of the object */
+        ObjectType objectType{};
 
-    virtual ~GameObject() = default;
-    virtual void update(real delta) = 0;
-    virtual void draw(sf::RenderWindow& window) = 0;
-    virtual Particle* getParticle() = 0; /** Getter for accessing Particle instance */
-    [[nodiscard]] virtual BoundingBox getBoundingBox() const = 0; /** Getter for accessing the bounding box properties */
-    virtual void indicateCollision(sf::Color color) = 0; /** Change the color of the object */
+        virtual ~GameObject() = default;
+
+        /** Updates the object's properties */
+        virtual void update(real delta) = 0;
+
+        /** Draws the object on the screen */
+        virtual void draw(sf::RenderWindow& window) = 0;
+
+        /** Returns a pointer to the gameObject particle */
+        virtual Particle* getParticle() = 0;
+
+        /** Returns the bounding box properties */
+        [[nodiscard]] virtual BoundingBox getBoundingBox() const = 0;
+
+        /** Indicates occurring collision by changing the outline color of an object */
+        virtual void indicateCollision(sf::Color color) = 0;
 };
 
 #endif //SIMPLE_PHYSICS_ENGINE_GAME_OBJECT_H

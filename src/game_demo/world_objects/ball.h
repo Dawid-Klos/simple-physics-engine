@@ -6,51 +6,82 @@
 #define SIMPLE_PHYSICS_ENGINE_BALL_H
 
 #include <SFML/Graphics/CircleShape.hpp>
-#include <SFML/Graphics/RenderWindow.hpp>
 
 #include "engine/particle.h"
 #include "engine/force_generator_abstract.h"
 #include "game_object.h"
-#include "wall.h"
 
 using namespace engine;
 
 /**
- * Represents a single Ball shape object. Inherits from Game object base class.
- * Stores an instance of the Particle class to allow for applying physics.
+ * Represents a Ball object (circle). Inherits from Game object virtual base class that requires implementation
+ * of basic functions. It allows for easier manipulation of different game objects in the game world.
+ *
+ * It also inherits from Particle class that specifies physics properties of the Ball.
+ * Additionally, implements ForceGenerator interfaces to apply forces to the Ball - GravityForce, DragForce
+ * and FrictionForce.
  */
 class Ball : public virtual GameObject, public Particle {
     private:
-        sf::CircleShape circleShape; /** Stores a circle object from the SFML library */
-        real radius; /** Stores the radius of the Ball */
-        BoundingBox boundingBox{}; /** Stores the bounding box of a game object */
-        void updateBoundingBox(); /** Update the bounding box of the Ball */
+        sf::CircleShape circleShape; /**< Stores a circle object from the SFML library. */
+        real radius; /**< Stores the radius of the Ball. */
+        BoundingBox boundingBox{}; /**< Stores the bounding box properties. */
+        void updateBoundingBox(); /**< Updates the bounding box of the Ball. */
 
-        GravityForce gravityForce; /** Interface applying gravity to the Ball */
-        DragForce dragForce = DragForce(0.0009f); /** Interface applying drag force to the Ball */
-        FrictionForce frictionForce = FrictionForce(); /** Interface applying friction force to the Ball */
+        GravityForce gravityForce = GravityForce(); /**< Interface applying gravity to the Ball. */
+        DragForce dragForce = DragForce(0.0009f); /**< Interface applying drag force to the Ball. */
+        FrictionForce frictionForce = FrictionForce(); /**< Interface applying friction force to the Ball. */
 
     public:
-        /** Default constructor and destructor */
+        /**
+         * Default constructor for the Ball object.
+         *
+         * @param radius Radius of the Ball
+         * @param posX X position of the Ball
+         * @param posY Y position of the Ball
+         * */
         explicit Ball(real radius, real posX, real posY);
         ~Ball() override = default;
 
-        /** Draw this object by calling SFML window */
+        /**
+         * Draws this object by calling the SFML render window draw function.
+         *
+         * @param window SFML render window reference
+         * */
         void draw(sf::RenderWindow &window) override;
 
-        /** Update this object position by calling integrate function from Particle class */
+        /**
+         * Updates position by calling integrating function inherited from the Particle class.
+         *
+         * @param delta Time step
+         * */
         void update(real delta) override;
 
-        /** Getter for accessing Particle instance */
+        /**
+         * Returns a pointer to the Particle for accessing physics properties.
+         * It is an approach used to access physics properties of the Ball object.
+         *
+         * @return Pointer to the Particle
+         * */
         Particle* getParticle() override;
 
-        /** Change the ball color */
+        /**
+         * Changes the ball outline color, indicating collision
+         *
+         * @param color Color to be set for the outline
+         * */
         void indicateCollision(sf::Color color) override;
 
-        /** Calculate forces that apply to the Ball */
+        /** Calculates forces that applies to the Ball object */
         void calculateForces();
 
-        /** Getter for accessing the bounding box properties */
+        /**
+         * Returns the bounding box properties.
+         * It is an approach used to access bounding box properties of the Ball object
+         * in order to check for collisions.
+         *
+         * @return Bounding box properties
+         * */
         [[nodiscard]] BoundingBox getBoundingBox() const override;
 
 };

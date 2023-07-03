@@ -32,11 +32,12 @@ Wall::Wall(real width, real height, real posX, real posY) {
 
 void Wall::draw(sf::RenderWindow &window) {
     window.draw(shape);
+
+    // Reset color after drawing
+    indicateCollision(sf::Color{231, 111, 81});
 }
 
 void Wall::update(real delta) {
-    // Reset color
-    indicateCollision(sf::Color{231, 111, 81});
     // Static object, no update needed
 }
 
@@ -51,5 +52,3 @@ Particle* Wall::getParticle() {
 void Wall::indicateCollision(sf::Color color) {
     shape.setOutlineColor(color);
 }
-
-Wall::Wall() = default;
